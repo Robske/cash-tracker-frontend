@@ -1,0 +1,164 @@
+<!-- Stats by period -->
+
+<div class="content-item mb-3 pb-2">
+	<div class="row">
+		<div class="col-12 mb-1">
+			<!-- Choose period -->
+			<ng-container *ngFor="let period of _result.availablePeriods">
+				<h6 class="d-inline-block me-3" (click)="_localstorage.setSharedResultPeriod(period)"
+					[ngClass]="_localstorage.getSharedResultPeriod() == period ? 'text-decoration-underline' : ''"
+					role="button">
+					<fa-icon class="fs-6" [icon]="iconCarrot"></fa-icon>
+					{{ period | titlecase }}
+				</h6>
+			</ng-container>
+
+			<!-- Show none -->
+			<h6 class="d-inline-block me-3" (click)="_localstorage.setSharedResultPeriod('')"
+				[ngClass]="_localstorage.getSharedResultPeriod() == '' ? 'text-decoration-underline' : 'text-decoration-underline'"
+				role="button">
+				<fa-icon class="fs-6" [icon]="iconHide"></fa-icon>
+			</h6>
+		</div>
+
+		<div class="col-12 col-lg-11">
+			<div class="row">
+				<ng-container *ngFor="let period of _result.availablePeriods">
+					<!-- Show day -->
+					<ng-container *ngIf="_localstorage.getSharedResultPeriod() == period">
+						<div class="col-sm-4 col-md-2 col-xxl-1" *ngFor="let winlose of _result.getPeriodStats(period)">
+							<h5 class="mb-1" routerLink="/profile/{{ winlose[0] }}" role="button">{{
+								winlose[1]
+								}}
+							</h5>
+							<h6 [ngClass]="winlose[2] >= 0 ? 'text-success' : 'text-danger'">
+								€{{winlose[2] | number:'1.0-2' }}
+							</h6>
+						</div>
+					</ng-container>
+				</ng-container>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 5 last records of each user -->
+<div class="row">
+	<ng-container *ngIf="_result.allUserResults.length != 0">
+		<!-- loop per user -->
+		<div *ngFor="let result of _result.allUserResults" class="col-12 col-xxl-6 mb-3">
+			<div class="content-item">
+				<!-- user name header -->
+				<h3 role="button" routerLink="/profile/{{ result[0] }}">
+					{{ result[1] }}
+					<h4 class="d-inline-block me-2"
+						[ngClass]="_result.getPeriodResultByUser('alltime', result[0]) >= 0 ? 'text-success' : 'text-danger'">
+						€{{ _result.getPeriodResultByUser('alltime', result[0]) | number:'1.0-2'}}
+					</h4>
+
+					<h4 class="d-inline-block float-end online-status">
+						<fa-icon [icon]="iconOnlineStatus" class="fs-6"
+							*ngIf="_user.getPingByUser(result[0]) >= 0 && _user.getPingByUser(result[0]) <= 600"
+							[ngClass]="{
+								'text-success' : _user.getPingByUser(result[0]) >= 0 && _user.getPingByUser(result[0]) <= 60,
+								'text-warning' : _user.getPingByUser(result[0]) > 60 && _user.getPingByUser(result[0]) <= 600}"></fa-icon>
+						<fa-icon [icon]="iconOfflineStatus" class="fs-6 opacity-50"
+							*ngIf="_user.getPingByUser(result[0]) == -1 || _user.getPingByUser(result[0]) > 600"></fa-icon>
+					</h4>
+
+					<div class="last-online fs-6 text-center float-end online"
+						*ngIf="_user.getPingByUser(result[0]) >= 0 && _user.getPingByUser(result[0]) <= 60">
+						Online
+					</div>
+
+					<div class="last-online fs-6 text-center float-end online"
+						*ngIf="_user.getPingByUser(result[0]) > 60 && _user.getPingByUser(result[0]) <= 600">
+						Away
+					</div>
+
+					<div class="last-online fs-6 float-end offline d-none d-sm-block"
+						*ngIf="_user.getPingByUser(result[0]) > 600">
+						<ng-container *ngIf="!_user.getPingDetailByUser(result[0])">
+							<span *ngIf="_user.getPingByUser(result[0]) / 60 / 60 / 24 >= 1">
+								{{ math.floor(_user.getPingByUser(result[0]) / 60 / 60 / 24) | number: '1.0-0' }}
+								day<ng-container
+									*ngIf="_user.getPingByUser(result[0]) / 60 / 60 / 24 >= 2">s</ng-container> ago
+							</span>
+							<span
+								*ngIf="_user.getPingByUser(result[0]) / 60 / 60 / 24 < 1 && _user.getPingByUser(result[0]) / 60 / 60 / 24 >= 0.5">
+								&lt; 24 hours ago
+							</span>
+							<span *ngIf="_user.getPingByUser(result[0]) / 60 / 60 / 24 < 0.5">
+								&lt; 12 hours ago
+							</span>
+						</ng-container>
+
+						<ng-container *ngIf="_user.getPingDetailByUser(result[0])">
+							<span *ngIf="_user.getPingByUser(result[0]) / 60 / 60 / 24 >= 1">
+								{{ math.floor(_user.getPingByUser(result[0]) / 60 / 60 / 24) | number: '1.0-0' }}
+								day<ng-container
+									*ngIf="_user.getPingByUser(result[0]) / 60 / 60 / 24 >= 2">s</ng-container>
+								<ng-container
+									*ngIf="_user.getPingByUser(result[0]) / 60 / 60 / 24 >= 1 && _user.getPingByUser(result[0]) / 60 / 60 % 24 >= 1">,</ng-container>
+							</span>
+
+							<span *ngIf="_user.getPingByUser(result[0]) / 60 / 60 % 24 >= 1">
+								{{ math.floor(_user.getPingByUser(result[0]) / 60 / 60) % 24 | number: '1.0-0' }}
+								hour<ng-container
+									*ngIf="_user.getPingByUser(result[0]) / 60 / 60 % 24 >= 2">s</ng-container><ng-container
+									*ngIf="_user.getPingByUser(result[0]) / 60 / 60 % 60 >= 1 && _user.getPingByUser(result[0]) / 60 % 60 >= 1 && _user.getPingByUser(result[0]) / 60 / 60 / 24 < 1">,</ng-container>
+							</span>
+							<span
+								*ngIf="_user.getPingByUser(result[0]) / 60 % 60 >= 1 && _user.getPingByUser(result[0]) / 60 / 60 / 24 < 1">
+								{{ math.floor(_user.getPingByUser(result[0]) / 60) % 60 | number: '1.0-0' }}
+								minute<ng-container
+									*ngIf="_user.getPingByUser(result[0]) / 60 % 60 >= 2">s</ng-container>
+							</span>
+							ago
+						</ng-container>
+					</div>
+				</h3>
+
+				<!-- user records table -->
+				<div class="table-border">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th scope="col">Date</th>
+								<th scope="col">Casino</th>
+								<th scope="col">Type</th>
+								<th class="d-none d-md-table-cell text-center" scope="col">Deposit</th>
+								<th class="d-none d-md-table-cell text-center" scope="col">Withdrawal</th>
+								<th class="text-center" scope="col">Win / Lose</th>
+								<th class="p-0" scope="col"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let record of result[2]"
+								[ngClass]="datePipe.transform(_result.today, 'yyyy-MM-dd') === datePipe.transform(record.date, 'yyyy-MM-dd') ? 'today' : ''">
+								<td>{{ record.date | date:"dd-MM" }}</td>
+								<td>{{ record.casino }}</td>
+								<td>
+									{{ record.type }}
+									<span class="recordNote" *ngIf="record.note.length > 0"
+										[innerHtml]="record.note"></span>
+								</td>
+								<td class="d-none d-md-table-cell text-center">€{{ record.deposit }}</td>
+								<td class="d-none d-md-table-cell text-center">€{{ record.withdrawal }}</td>
+								<td class="text-center fw-bold">
+									<span
+										[ngClass]="(record.withdrawal - record.deposit) >= 0 ? 'text-success' : 'text-danger'">
+										€{{ record.withdrawal - record.deposit | number:'1.0-2' }}
+									</span>
+								</td>
+								<td>
+									&nbsp;<fa-icon *ngIf="record.note.length > 0" [icon]="iconNote"></fa-icon>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</ng-container>
+</div>

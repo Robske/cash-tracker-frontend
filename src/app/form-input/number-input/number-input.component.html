@@ -1,0 +1,7 @@
+<div class="input">
+	<label *ngIf="label.length > 0">
+		{{ label }}
+	</label>
+	<input type="number" [step]="step" [(ngModel)]="input" (ngModelChange)="onModelChange($event)"
+		[placeholder]="placeholder" #textInput="ngModel" class="form-control" />
+</div>

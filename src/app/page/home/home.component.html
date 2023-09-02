@@ -1,0 +1,133 @@
+<div class="row" *ngIf="_result.userStatsToday != undefined">
+	<div class="col-12 col-lg-6">
+		<div class="content-item mb-3">
+			<div class="row">
+				<div class="col-12">
+					<h3 class="mb-0">
+						Hello, {{ user }}
+						<fa-icon [icon]="iconUp" class="text-success fs-5"
+							*ngIf="_result.userStatsToday.total > 0"></fa-icon>
+						<fa-icon [icon]="iconDown" class="text-danger fs-5"
+							*ngIf="_result.userStatsToday.total < 0"></fa-icon>
+					</h3>
+				</div>
+
+				<!-- Top line -->
+				<div class="col-12">
+					<p class="fst-italic">
+						Your total for today is
+						<span class="fs-6" [ngClass]="{
+								'text-success' : _result.userStatsToday.total > 0,
+								'text-danger' : _result.userStatsToday.total < 0
+							}">
+							€{{ _result.userStatsToday.total | number:'1.0-2' }}
+						</span>
+					</p>
+				</div>
+
+				<div class="col-12">
+					<!-- Today records -->
+					<div *ngIf="_result.userStatsToday.records.length != 0" class="table-border">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th scope="col">Casino</th>
+									<th scope="col">Type</th>
+									<th class="d-none d-sm-table-cell text-center" scope="col">Deposit</th>
+									<th class="d-none d-sm-table-cell text-center" scope="col">Withdrawal</th>
+									<th class="text-center" scope="col">Win / Lose</th>
+									<th class="p-0" scope="col"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let record of _result.userStatsToday.records">
+									<td>{{ record.casino }}</td>
+									<td>
+										{{ record.type }}
+										<span class="recordNote" *ngIf="record.note.length > 0"
+											[innerHtml]="record.note"></span>
+									</td>
+									<td class="d-none d-sm-table-cell text-center">€{{ record.deposit }}</td>
+									<td class="d-none d-sm-table-cell text-center">€{{ record.withdrawal }}</td>
+									<td class="text-center">
+										<span
+											[ngClass]="(record.withdrawal - record.deposit) >= 0 ? 'text-success' : 'text-danger'">
+											€{{ record.withdrawal - record.deposit | number:'1.0-2' }}
+										</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="content-item mb-3" *ngIf="_result.playedToday.length != 0">
+			<div class="row">
+				<div class="col-12 col-md-9 col-lg-12 col-xl-9 col-xxl-8">
+					<h3>
+						Don't miss out
+						<fa-icon [icon]="iconDice"></fa-icon>
+					</h3>
+					<div class="col-12">
+						<p class="fst-italic">
+							Find out which casinos are played in today.
+						</p>
+					</div>
+					<div class="table-border">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th scope="col">Casino</th>
+									<th scope="col">Type</th>
+									<th scope="col" class="text-center">Times played</th>
+									<th scope="col" class="text-center">Total</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let row of _result.playedToday">
+									<td>{{ row.casino }}</td>
+									<td>{{ row.type }}</td>
+									<td class="text-center">{{ row.count }}x</td>
+									<td class="text-center" [ngClass]="row.net >= 0 ? 'text-success' : 'text-danger'">
+										€{{ row.net | number:'1.0-2' }}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-12 col-lg-6">
+		<div class="content-item mb-3" *ngFor="let period of _result.availablePeriods">
+			<h3 class="mb-0">{{ period | titlecase }}</h3>
+			<!-- <hr> -->
+			<p *ngIf="_result.getPeriodStats(period).length == 0" class="fst-italic mb-0">
+				We're sorry for the lack of data in this section, please wait untill one of our staff members hands in
+				their work.
+			</p>
+
+			<div *ngIf="_result.getPeriodStats(period).length != 0" class="row">
+				<div class="col-12">
+					<div *ngFor="let winlose of _result.getPeriodStats(period)" class="d-inline-block">
+						<table>
+							<tbody>
+								<td class="player-profit" routerLink="/profile/{{ winlose[0] }}" role="button">
+									{{ winlose[1] }}
+								</td>
+								<td class="player-name" [ngClass]="winlose[2] >= 0 ? 'text-success' : 'text-danger'">
+									€{{winlose[2] | number:'1.0-2'}}
+								</td>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

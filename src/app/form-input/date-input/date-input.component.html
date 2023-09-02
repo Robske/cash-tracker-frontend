@@ -1,0 +1,7 @@
+<div class="input">
+	<label>
+		{{ label }}
+	</label>
+	<input type="date" value="input" [(ngModel)]="input" (ngModelChange)="onModelChange($event)"
+		[placeholder]="placeholder" #textInput="ngModel" class="form-control" />
+</div>

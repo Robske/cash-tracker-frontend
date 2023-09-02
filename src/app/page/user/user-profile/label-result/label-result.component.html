@@ -1,0 +1,9 @@
+<span class="label-result">
+	{{ label }}
+	<span class="float-end me-3" [ngClass]="{
+		'text-success' : result > 0,
+		'text-danger' : result < 0
+	}">
+		€{{ result }}
+	</span>
+</span>
