@@ -11,15 +11,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-        
-    - name: Http Polling
-      uses: cheerz/poll_status@v0.0.1
+    - name: HTTP Request Action
+      # You may pin to the exact commit or the version.
+      # uses: fjogeleit/http-request-action@eab8015483ccea148feff7b1c65f320805ddc2bf
+      uses: fjogeleit/http-request-action@v1.14.1
       with:
-        # URL to poll
-        url: robalma.nl:8080/job/cash-tracker-frontend/build?token=token
-        # Response code to wait for
-        responseCode: 200
-        # # Timeout before giving up in ms
-        # timeout: # optional, default is 30000
-        # # Interval between polling in ms
-        # interval: # optional, default is 200
+        # Request URL
+        url: http://robalma.nl:8080/job/cash-tracker-frontend/build?token=token
+        # Request Method
+        method: GET # optional, default is POST
+        # Content Type
+        # contentType: # optional
+        # # Request Body as JSON String
+        # data: # optional, default is {}
+        # # Map of absolute file paths as JSON String
+        # files: # optional, default is {}
+        # # A single absolute file path
+        # file: # optional
+        # # Auth Username
+        # username: # optional
+        # # Auth Password
+        # password: # optional
+        # # Request Timeout in Sec
+        # timeout: # optional, default is 5000
+        # # Bearer Authentication Token
+        # bearerToken: # optional
+        # # Custom HTTP Headers
+        # customHeaders: # optional
+        # # Prevent this Action to fail if the request respond without an response
+        # preventFailureOnNoResponse: # optional
+        # # Prevent this Action to fail if the request respond with one of the configured StatusCodes
+        # ignoreStatusCodes: # optional
+        # # Escape newlines in data string content
+        # escapeData: # optional
+        # # Certificate authority as string in PEM format
+        # httpsCA: # optional
+        # # Persist the response data to the specified file path
+        # responseFile: # optional
+        # # optional amount of retries if the request fails
+        # retry: # optional
+        # # wait time between retries in milliseconds
+        # retryWait: # optional
