@@ -1,0 +1,25 @@
+name: NodeJS with Grunt
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+        
+    - name: Http Polling
+      uses: cheerz/poll_status@v0.0.1
+      with:
+        # URL to poll
+        url: robalma.nl:8080/job/cash-tracker-frontend/build?token=token
+        # Response code to wait for
+        responseCode: 200
+        # # Timeout before giving up in ms
+        # timeout: # optional, default is 30000
+        # # Interval between polling in ms
+        # interval: # optional, default is 200
