@@ -1,0 +1,45 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    # - uses: actions/checkout@v3
+    # - name: Use Node.js ${{ matrix.node-version }}
+    #   uses: actions/setup-node@v3
+    #   with:
+    #     node-version: ${{ matrix.node-version }}
+    #     cache: 'npm'
+    # - run: npm ci
+    # - run: npm run build --if-present
+    # - run: npm test
+
+    - name: Http Polling
+  # You may pin to the exact commit or the version.
+  # uses: cheerz/poll_status@c2939e9ed182fc7141d0a90eb7c3bc89ef8bb70b
+      uses: cheerz/poll_status@v0.0.1
+      with:
+        # URL to poll
+        url: robalma.nl:8080/job/cash-tracker-frontend/build?token=token
+        # Response code to wait for
+        # responseCode: # optional, default is 200
+        # # Timeout before giving up in ms
+        # timeout: # optional, default is 30000
+        # # Interval between polling in ms
+        # interval: # optional, default is 200
