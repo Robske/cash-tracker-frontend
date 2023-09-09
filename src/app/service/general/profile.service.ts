@@ -39,8 +39,9 @@ export class ProfileService {
 
   public updateFilters() {
     for (let index = 0; index < this.usersData.length; index++) {
-      const data = this.usersData[index];
-      data.visibleStats = this._record.applyFilterToStats(data.stats)
+      const userData = this.usersData[index];
+      userData.visibleStats = this._record.applyFilterToStats(userData.stats)
+      userData.dayResults = this._record.getDayResult(userData.visibleStats.records);
     }
   }
 
@@ -56,6 +57,9 @@ export class ProfileService {
             name: user.value,
             stats: new Stats,
             visibleStats: new Stats,
+            dayResults: [],
+            lowestDay: 0,
+            highestDay: 0,
             monthResults: [],
             yearResults: [],
             casinoResults: [],
@@ -63,15 +67,18 @@ export class ProfileService {
 
           usersDataIndex = this.usersData.findIndex((userData: UserProfile) => userData.id === user.key);
         }
-
+        let userData = this.usersData[usersDataIndex]
         this._record.getUserRecords(user.key).subscribe((stats: Stats) => {
-          this.usersData[usersDataIndex].stats = stats;
-          this.usersData[usersDataIndex].visibleStats = this._record.applyFilterToStats(stats);
+          userData.stats = stats;
+          userData.visibleStats = this._record.applyFilterToStats(stats);
+          userData.dayResults = this._record.getDayResult(userData.visibleStats.records);
+          userData.lowestDay = Math.min(...userData.dayResults.map((x: KeyValue<string, number>) => x.value));
+          userData.highestDay = Math.max(...userData.dayResults.map((x: KeyValue<string, number>) => x.value));
         });
 
-        this._result.getMonthByMonthByUser(user.key).subscribe((result: PeriodDetails[]) => this.usersData[usersDataIndex].monthResults = result.slice(0, 12));
-        this._result.getYearByYearByUser(user.key).subscribe((result: PeriodDetails[]) => this.usersData[usersDataIndex].yearResults = result.slice(0, 12));
-        this._result.getCasinoResultByUser(user.key).subscribe((result: KeyValue<string, number>[]) => this.usersData[usersDataIndex].casinoResults = result);
+        this._result.getMonthByMonthByUser(user.key).subscribe((result: PeriodDetails[]) => userData.monthResults = result.slice(0, 12));
+        this._result.getYearByYearByUser(user.key).subscribe((result: PeriodDetails[]) => userData.yearResults = result.slice(0, 12));
+        this._result.getCasinoResultByUser(user.key).subscribe((result: KeyValue<string, number>[]) => userData.casinoResults = result);
       }
 
       this.statsLoaded = true;
@@ -84,6 +91,9 @@ class UserProfile {
   name!: string;
   stats!: Stats;
   visibleStats!: Stats;
+  dayResults!: KeyValue<string, number>[];
+  lowestDay!: number;
+  highestDay!: number;
   monthResults!: PeriodDetails[];
   yearResults!: PeriodDetails[];
   casinoResults!: KeyValue<string, number>[];

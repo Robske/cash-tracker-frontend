@@ -21,6 +21,7 @@ import { UserConnectionComponent } from './page/user/user-connection/user-connec
 import { PatchNotesComponent } from './page/general/patch-notes/patch-notes.component';
 import { UserSettingsComponent } from './page/user/user-settings/user-settings.component';
 import { LabelResultComponent } from './page/user/user-profile/label-result/label-result.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { LabelResultComponent } from './page/user/user-profile/label-result/labe
     ReactiveFormsModule,
     HttpClientModule,
     FontAwesomeModule,
+    NgApexchartsModule,
   ],
   providers: [
     DatePipe,

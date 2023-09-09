@@ -8,6 +8,7 @@ import { ResultService } from './service/general/result.service';
 import { ProfileService } from './service/general/profile.service';
 import { RecordService } from './service/core/record.service';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

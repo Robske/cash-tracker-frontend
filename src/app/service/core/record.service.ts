@@ -4,6 +4,8 @@ import { Record } from 'src/app/model/record';
 import { Observable, Subject } from 'rxjs';
 import { Stats } from 'src/app/model/stats';
 import { faL } from '@fortawesome/free-solid-svg-icons';
+import { KeyValue } from '@angular/common';
+import { subscriptionLogsToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 @Injectable({
   providedIn: 'root'
@@ -173,6 +175,27 @@ export class RecordService {
     }
 
     output.total_records = output.records.length;
+    return output;
+  }
+
+  public getDayResult(records: Record[]) {
+    if (records.length === 0) return [];
+
+    let output: KeyValue<string, number>[] = [];
+    let day: string = records[0].date;
+    let dayNet: number = 0;
+
+    for (let index = 0; index < records.length; index++) {
+      const record = records[index];
+      if (record.date !== day) {
+        output.push({ key: day, value: Number(dayNet.toFixed(2)) });
+        day = record.date;
+      }
+
+      dayNet += record.withdrawal - record.deposit;
+    }
+
+    output.push({ key: day, value: Number(dayNet.toFixed(2)) });
     return output;
   }
 }

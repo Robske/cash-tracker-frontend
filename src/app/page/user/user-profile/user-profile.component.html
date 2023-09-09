@@ -32,6 +32,8 @@
 
 	<hr class="d-none d-lg-block opacity-25">
 
+
+
 	<div class="row">
 		<div class="col-12">
 			<div class="d-inline-block me-3">
@@ -64,7 +66,7 @@
 						<h5>
 							Types
 							<fa-icon class="fs-6" [icon]="iconReverse" role="button" class="reverse-button fs-6"
-								(click)="_record.toggleTypeInverse(); _profile.updateFilters();" [ngClass]="{
+								(click)="_record.toggleTypeInverse(); _profile.updateFilters(); updateChart();" [ngClass]="{
 													'dark': _localstorage.isDarkmode(),
 													'light': !_localstorage.isDarkmode(),
 													'active': _record.inverseFilterRecordType
@@ -74,7 +76,7 @@
 																				'dark': _localstorage.isDarkmode(),
 																				'light': !_localstorage.isDarkmode(),
 																				'active': hasValue(_record.filterRecordType, type.value)}"
-							(click)="_record.addOrRemoveFilterRecordType(type.value); _profile.updateFilters();">
+							(click)="_record.addOrRemoveFilterRecordType(type.value); _profile.updateFilters(); updateChart();">
 							{{ type.value }}
 						</span>
 					</div>
@@ -82,7 +84,7 @@
 						<h5>
 							Casinos
 							<fa-icon class="fs-6" [icon]="iconReverse" role="button" class="reverse-button fs-6"
-								(click)="_record.toggleCasinoInverse(); _profile.updateFilters();" [ngClass]="{
+								(click)="_record.toggleCasinoInverse(); _profile.updateFilters(); updateChart();" [ngClass]="{
 																												'dark': _localstorage.isDarkmode(),
 																												'light': !_localstorage.isDarkmode(),
 																												'active': _record.inverseFilterCasino
@@ -95,7 +97,7 @@
 																												'dark': _localstorage.isDarkmode(),
 																												'light': !_localstorage.isDarkmode(),
 																												'active': hasValue(_record.filterCasino, casino.value)}"
-									(click)="_record.addOrRemoveFilterCasino(casino.value); _profile.updateFilters();">
+									(click)="_record.addOrRemoveFilterCasino(casino.value); _profile.updateFilters(); updateChart();">
 									{{ casino.value }}
 								</span>
 							</div>
@@ -105,7 +107,7 @@
 																																'dark': _localstorage.isDarkmode(),
 																																'light': !_localstorage.isDarkmode(),
 																																'active': hasValue(_record.filterCasino, casino.value)}"
-									(click)="_record.addOrRemoveFilterCasino(casino.value); _profile.updateFilters();">
+									(click)="_record.addOrRemoveFilterCasino(casino.value); _profile.updateFilters(); updateChart();">
 									{{ casino.value }}
 								</span>
 							</div>
@@ -164,7 +166,10 @@
 					</table>
 				</div>
 			</div>
+		</div>
 
-
+		<div clas="col-12">
+			<apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
+				[title]="chartOptions.title"></apx-chart>
 		</div>
 	</div>

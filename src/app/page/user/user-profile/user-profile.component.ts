@@ -1,5 +1,5 @@
 import { KeyValue } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterContentInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { faCaretRight, faCaretLeft, faCaretDown, faEye, faEyeSlash, faShuffle } from '@fortawesome/free-solid-svg-icons';
@@ -11,13 +11,30 @@ import { CasinoService } from 'src/app/service/core/casino.service';
 import { RecordTypeService } from 'src/app/service/core/record-type.service';
 import { FormControl } from '@angular/forms';
 import { ProfileService } from 'src/app/service/general/profile.service';
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexTitleSubtitle
+} from "ng-apexcharts";
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  title: ApexTitleSubtitle;
+};
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements AfterContentInit {
+  // @ViewChild("chart") chart: ChartComponent;
+  public chartOptions: ChartOptions;
+
   public userId: string = '';
   public user: UserProfile | undefined;
   public userVisibleStats: Stats | undefined;
@@ -58,14 +75,43 @@ export class UserProfileComponent implements OnInit {
     this.noteInput.valueChanges.subscribe(async (note) => {
       _record.filterNote = note;
       _profile.updateFilters();
+      this.updateChart();
     });
+
+    this.chartOptions = {
+      series: [
+        {
+          name: "My-series",
+          data: []
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "line"
+      },
+      title: {
+        text: "My First Angular Chart"
+      },
+      xaxis: {
+        categories: []
+      }
+    };
   }
 
-  public ngOnInit(): void {
+  public ngAfterContentInit(): void {
     this.routeSubscription = this.route.params.subscribe(
       (params: any) => {
         this.userId = params['userid'];
+        this.updateChart();
       });
+
+    let loadedGraph = false;
+    while (!loadedGraph) {
+      if (this._profile.getUserData(this.userId).dayResults != undefined) {
+        this.updateChart();
+        loadedGraph = true;
+      }
+    }
   }
 
   public hasValue(array: string[], value: string): boolean {
@@ -74,6 +120,30 @@ export class UserProfileComponent implements OnInit {
 
   public getMonthName(month: string): string {
     return this.monthNames[Number(month) - 1];
+  }
+
+  public updateChart() {
+    if (this._profile.getUserData(this.userId).dayResults == undefined)
+      return
+
+    this.chartOptions = {
+      series: [
+        {
+          name: "My-series",
+          data: this._profile.getUserData(this.userId).dayResults.map((x: KeyValue<string, number>) => x.value)
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "line"
+      },
+      title: {
+        text: this._profile.getUserData(this.userId).name
+      },
+      xaxis: {
+        categories: this._profile.getUserData(this.userId).dayResults.map((x: KeyValue<string, number>) => x.key.split("T")[0])
+      }
+    };
   }
 }
 
