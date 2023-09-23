@@ -88,7 +88,7 @@ hr {
 		&:active,
 		&:focus-visible {
 			color: var(--white) !important;
-			background-color: var(--black) !important;
+			background-color: rgba(0, 0, 0, .8) !important;
 			border-color: var(--white) !important;
 		}
 	}
@@ -180,7 +180,8 @@ tr {
 
 			&:hover,
 			&:active,
-			&:focus-visible {
+			&:focus-visible,
+			&.active {
 				color: var(--black) !important;
 				background-color: var(--white) !important;
 				border-color: var(--black) !important;

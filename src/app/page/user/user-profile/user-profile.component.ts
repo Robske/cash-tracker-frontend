@@ -1,8 +1,8 @@
 import { KeyValue } from '@angular/common';
-import { Component, AfterContentInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { faCaretRight, faCaretLeft, faCaretDown, faEye, faEyeSlash, faShuffle } from '@fortawesome/free-solid-svg-icons';
+import { faCaretRight, faCaretLeft, faCaretDown, faEye, faEyeSlash, faShuffle, faChartSimple } from '@fortawesome/free-solid-svg-icons';
 import { RecordService } from 'src/app/service/core/record.service';
 import { Stats } from 'src/app/model/stats';
 import { faComment } from '@fortawesome/free-regular-svg-icons';
@@ -31,16 +31,16 @@ export type ChartOptions = {
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements AfterContentInit {
+export class UserProfileComponent implements OnInit {
   // @ViewChild("chart") chart: ChartComponent;
   public chartOptions: ChartOptions;
+  public showChart: boolean = false;
 
   public userId: string = '';
   public user: UserProfile | undefined;
   public userVisibleStats: Stats | undefined;
   public routeSubscription: Subscription | undefined;
   public noteInput = new FormControl();
-  public amountOfRecordsInput = new FormControl();
   public amountOfRecords: number = 10;
   private monthNames: string[] = [
     'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
@@ -58,6 +58,7 @@ export class UserProfileComponent implements AfterContentInit {
   public iconShow = faEye;
   public iconHide = faEyeSlash;
   public iconReverse = faShuffle;
+  public iconChart = faChartSimple;
 
   constructor(private route: ActivatedRoute, public _record: RecordService, public _localstorage: LocalstorageService,
     private _casino: CasinoService, private _recordType: RecordTypeService, public _profile: ProfileService) {
@@ -65,12 +66,6 @@ export class UserProfileComponent implements AfterContentInit {
     _profile.updateFilters();
     _casino.getAll().subscribe((casinos: KeyValue<string, string>[]) => this.casinos = casinos);
     _recordType.getAll().subscribe((recordTypes: KeyValue<string, string>[]) => this.recordTypes = recordTypes);
-
-    this.amountOfRecordsInput.setValue(this.amountOfRecords);
-    this.amountOfRecordsInput.valueChanges.subscribe(async (amount) => {
-      if (Number.isFinite(amount) && amount > 0)
-        this.amountOfRecords = this.math.floor(amount);
-    });
 
     this.noteInput.valueChanges.subscribe(async (note) => {
       _record.filterNote = note;
@@ -81,16 +76,16 @@ export class UserProfileComponent implements AfterContentInit {
     this.chartOptions = {
       series: [
         {
-          name: "My-series",
+          name: "",
           data: []
         }
       ],
       chart: {
-        height: 350,
+        height: 425,
         type: "line"
       },
       title: {
-        text: "My First Angular Chart"
+        text: ""
       },
       xaxis: {
         categories: []
@@ -98,20 +93,12 @@ export class UserProfileComponent implements AfterContentInit {
     };
   }
 
-  public ngAfterContentInit(): void {
+  public ngOnInit(): void {
     this.routeSubscription = this.route.params.subscribe(
       (params: any) => {
         this.userId = params['userid'];
         this.updateChart();
       });
-
-    let loadedGraph = false;
-    while (!loadedGraph) {
-      if (this._profile.getUserData(this.userId).dayResults != undefined) {
-        this.updateChart();
-        loadedGraph = true;
-      }
-    }
   }
 
   public hasValue(array: string[], value: string): boolean {
@@ -122,26 +109,37 @@ export class UserProfileComponent implements AfterContentInit {
     return this.monthNames[Number(month) - 1];
   }
 
+  public toggleChart() {
+    this.updateChart();
+    this.showChart = !this.showChart;
+  }
+
   public updateChart() {
     if (this._profile.getUserData(this.userId).dayResults == undefined)
       return
 
+    // get shallow copy
+    let data = this._profile.getUserData(this.userId).dayResults
+    // console.log(data)
+    // data = data.slice(data.length - 20, data.length);
+    // console.log(data);
+    // console.log(data.map((x: KeyValue<string, number>) => x.value))
     this.chartOptions = {
       series: [
         {
-          name: "My-series",
-          data: this._profile.getUserData(this.userId).dayResults.map((x: KeyValue<string, number>) => x.value)
+          name: "Net in €",
+          data: data.map((x: KeyValue<string, number>) => x.value)
         }
       ],
       chart: {
-        height: 350,
+        height: 425,
         type: "line"
       },
       title: {
         text: this._profile.getUserData(this.userId).name
       },
       xaxis: {
-        categories: this._profile.getUserData(this.userId).dayResults.map((x: KeyValue<string, number>) => x.key.split("T")[0])
+        categories: data.map((x: KeyValue<string, number>) => x.key.split("T")[0])
       }
     };
   }

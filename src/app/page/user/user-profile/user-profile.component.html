@@ -1,39 +1,48 @@
 <div class="content-item"
 	*ngIf="_profile.statsLoaded && _profile.getUserData(userId) != undefined && _profile.getUserData(userId).visibleStats != undefined && _profile.getUserData(userId).visibleStats.total != undefined">
-	<h3 class="mb-1">{{ _profile.getUserData(userId).name }}</h3>
-	<div class="d-none d-lg-flex flex-row">
-		<div class="me-3"
-			*ngFor="let _ of [].constructor(math.ceil(_profile.getUserData(userId).yearResults.length / 6)); let i=index;">
-			<h5><span *ngIf="i == 0">Year</span>&nbsp;</h5>
-			<div *ngFor="let result of _profile.getUserData(userId).yearResults">
-				<app-label-result [label]="result.period_indicator_abstract" [result]="result.net"></app-label-result>
+	<h3 class="mb-1 d-inline-block">{{ _profile.getUserData(userId).name }}</h3>
+	<button (click)="toggleChart()" class="btn btn-outline-primary btn-sm d-inline-block float-end">
+		<fa-icon [icon]="iconChart" class="me-1"></fa-icon>
+		<span *ngIf="showChart">Stop</span>
+		<span *ngIf="!showChart">Start</span>
+		chart mode
+	</button>
+
+	<!-- Periodic and casino stats -->
+	<div *ngIf="!showChart">
+		<div class="d-none d-lg-flex flex-row">
+			<div class="me-3"
+				*ngFor="let _ of [].constructor(math.ceil(_profile.getUserData(userId).yearResults.length / 6)); let i=index;">
+				<h5><span *ngIf="i == 0">Year</span>&nbsp;</h5>
+				<div *ngFor="let result of _profile.getUserData(userId).yearResults">
+					<app-label-result [label]="result.period_indicator_abstract" [result]="result.net"></app-label-result>
+				</div>
 			</div>
-		</div>
 
-		<div class="me-3"
-			*ngFor="let _ of [].constructor(math.ceil(_profile.getUserData(userId).monthResults.length / 6)); let i=index;">
-			<h5><span *ngIf="i == 0">Month</span>&nbsp;</h5>
+			<div class="me-3"
+				*ngFor="let _ of [].constructor(math.ceil(_profile.getUserData(userId).monthResults.length / 6)); let i=index;">
+				<h5><span *ngIf="i == 0">Month</span>&nbsp;</h5>
 
-			<div *ngFor="let result of _profile.getUserData(userId).monthResults.slice(i*6, i*6+6)">
-				<app-label-result
-					label="'{{ result.period_indicator_abstract }} {{ getMonthName(result.period_indicator_detail) }}"
-					[result]="result.net"></app-label-result>
+				<div *ngFor="let result of _profile.getUserData(userId).monthResults.slice(i*6, i*6+6)">
+					<app-label-result
+						label="'{{ result.period_indicator_abstract }} {{ getMonthName(result.period_indicator_detail) }}"
+						[result]="result.net"></app-label-result>
+				</div>
 			</div>
-		</div>
 
-		<div class="me-3 d-none d-xxl-block"
-			*ngFor="let _ of [].constructor(math.ceil(_profile.getUserData(userId).casinoResults.length / 6)); let i=index;">
-			<h5><span *ngIf="i == 0">Casino</span>&nbsp;</h5>
-			<div *ngFor="let result of _profile.getUserData(userId).casinoResults.slice(i*6, i*6+6)">
-				<app-label-result [label]="result.key" [result]="result.value"></app-label-result>
+			<div class="me-3 d-none d-xxl-block"
+				*ngFor="let _ of [].constructor(math.ceil(_profile.getUserData(userId).casinoResults.length / 6)); let i=index;">
+				<h5><span *ngIf="i == 0">Casino</span>&nbsp;</h5>
+				<div *ngFor="let result of _profile.getUserData(userId).casinoResults.slice(i*6, i*6+6)">
+					<app-label-result [label]="result.key" [result]="result.value"></app-label-result>
+				</div>
 			</div>
 		</div>
 	</div>
 
-	<hr class="d-none d-lg-block opacity-25">
+	<hr class="d-none d-lg-block opacity-25" *ngIf="!showChart">
 
-
-
+	<!-- Shown records generic stats -->
 	<div class="row">
 		<div class="col-12">
 			<div class="d-inline-block me-3">
@@ -60,6 +69,7 @@
 		</div>
 
 		<div class="row">
+			<!-- Record filters -->
 			<div class="d-none d-xl-block col-4">
 				<div class="row">
 					<div class="col-6">
@@ -120,13 +130,24 @@
 				</div>
 			</div>
 
+			<!-- Timeline chart -->
+			<div class="d-none d-xl-block col-8" id="timeline" *ngIf="showChart">
+				<apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
+					[title]="chartOptions.title"></apx-chart>
+			</div>
 
-			<div class="col-12 col-xl-8">
-				<div class="d-none d-lg-block text-end">
-					<span class="me-1">Show</span>
-					<app-number-input id="amountOfShownRecords" class="d-inline-block"
-						[formControl]="amountOfRecordsInput"></app-number-input>
-					<span class="ms-1">records</span>
+			<!-- Listing of records -->
+			<div class="col-12" [ngClass]="showChart ? 'col-xl-12' : 'col-xl-8'">
+				<div class="d-none d-lg-block mb-1 text-end">
+					<button class="btn btn-outline-primary btn-sm d-inline-block me-1"
+						[ngClass]="amountOfRecords == 10 ? 'active' : ''" (click)="amountOfRecords = 10">
+						Show last 10 records
+					</button>
+
+					<button class="btn btn-outline-primary btn-sm d-inline-block"
+						[ngClass]="amountOfRecords != 10 ? 'active' : ''" (click)="amountOfRecords = 999999999">
+						Show all records
+					</button>
 				</div>
 
 				<!-- user records table -->
@@ -167,9 +188,5 @@
 				</div>
 			</div>
 		</div>
-
-		<div clas="col-12">
-			<apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis"
-				[title]="chartOptions.title"></apx-chart>
-		</div>
 	</div>
+</div>

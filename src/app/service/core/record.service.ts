@@ -180,11 +180,12 @@ export class RecordService {
 
   public getDayResult(records: Record[]) {
     if (records.length === 0) return [];
-
+    records.reverse();
     let output: KeyValue<string, number>[] = [];
     let day: string = records[0].date;
     let dayNet: number = 0;
 
+    let total: number = 0;
     for (let index = 0; index < records.length; index++) {
       const record = records[index];
       if (record.date !== day) {
@@ -192,10 +193,12 @@ export class RecordService {
         day = record.date;
       }
 
-      dayNet += record.withdrawal - record.deposit;
+      dayNet = dayNet + (record.withdrawal - record.deposit);
     }
 
     output.push({ key: day, value: Number(dayNet.toFixed(2)) });
+    if (output.length < 100)
+      console.log(output);
     return output;
   }
 }
