@@ -165,7 +165,8 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr *ngFor="let record of _profile.getUserData(userId).visibleStats.records.slice(0, amountOfRecords)">
+							<tr
+								*ngFor="let record of _profile.getUserData(userId).visibleStats.records.slice().reverse().slice(0, amountOfRecords)">
 								<td>{{ record.date | date:"dd-MM" }}</td>
 								<td>{{ record.casino }}</td>
 								<td>
