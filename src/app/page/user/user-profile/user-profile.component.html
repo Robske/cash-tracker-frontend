@@ -170,8 +170,12 @@
 								<tr
 									*ngFor="let record of _profile.getUserData(userId).visibleStats.records.slice().reverse().slice(0, amountOfRecords)">
 									<td>{{ record.date | date:"dd-MM" }}</td>
-									<td>{{ record.casino }}</td>
-									<td>
+									<td (click)="_record.addOrRemoveFilterCasino(record.casino); _profile.updateFilters(); updateChart();"
+										role="button">
+										{{ record.casino }}</td>
+									<td
+										(click)="_record.addOrRemoveFilterRecordType(record.type); _profile.updateFilters(); updateChart();"
+										role="button">
 										{{ record.type }}
 										<span class="recordNote" *ngIf="record.note.length > 0" [innerHtml]="record.note"></span>
 									</td>

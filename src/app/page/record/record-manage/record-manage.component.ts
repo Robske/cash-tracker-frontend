@@ -36,10 +36,10 @@ export class RecordManageComponent {
     _recordType.getAll().subscribe((recordTypes: KeyValue<string, string>[]) => this.recordTypes = recordTypes);
     // this.records = _profile.getUserData(_localstorage.getUserId()).stats.records;
 
-    if (_profile.getUserData(_localstorage.getUserId()).stats != undefined)
-      this.records = _profile.getUserData(_localstorage.getUserId()).stats.records;
-    else
-      _record.getUserRecords(_localstorage.getUserId(), false).subscribe((stats: Stats) => this.records = stats.records);
+    // if (_profile.getUserData(_localstorage.getUserId()).stats != undefined)
+    //   this.records = _profile.getUserData(_localstorage.getUserId()).stats.records;
+    // else
+    _record.getUserRecords(_localstorage.getUserId(), false).subscribe((stats: Stats) => this.records = stats.records);
   }
 
   public setEditRecord(id: string) {
