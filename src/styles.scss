@@ -36,8 +36,12 @@ h6,
 nav {
 	font-family: 'Chakra-Petch';
 
-	li {
+	li.nav-item {
 		padding: 0 .25rem;
+
+		a {
+			font-weight: 800;
+		}
 	}
 }
 
@@ -48,6 +52,11 @@ hr {
 
 .text-success {
 	color: rgb(0, 170, 50) !important;
+	font-weight: 800;
+}
+
+.text-danger {
+	font-weight: 800;
 }
 
 .bg-dark {
@@ -137,8 +146,9 @@ tr {
 
 	.content-item {
 		padding: 20px;
-		background-color: rgba(255, 255, 255, .85);
+		background-color: rgb(248, 249, 250);
 		border-radius: 5px;
+		margin-bottom: 1rem;
 
 		.table-border {
 			border: 2px solid rgba(0, 0, 0, .1);
@@ -168,6 +178,10 @@ tr {
 
 	.flexible-text-color-revert {
 		color: var(--black);
+	}
+
+	nav li.nav-item a {
+		font-weight: normal;
 	}
 
 	.btn {

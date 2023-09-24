@@ -37,7 +37,6 @@ export class RecordApiService {
   }
 
   public delete(id: string) {
-    console.log('delete: ' + id);
     return this.client.delete(environment.api_secondary + 'record/delete/' + id + '?requester=' + this._localstorage.getUserId());
   }
 

@@ -8,6 +8,7 @@ import { LocalstorageService } from 'src/app/service/general/localstorage.servic
 import { Stats } from 'src/app/model/stats';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faPencil, faXmark, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { ProfileService } from 'src/app/service/general/profile.service';
 
 @Component({
   selector: 'app-record-manage',
@@ -18,20 +19,27 @@ export class RecordManageComponent {
   public casinos: KeyValue<string, string>[] = [];
   public recordTypes: KeyValue<string, string>[] = [];
   public records: Record[] = [];
-
+  public amountOfRecords: number = 15;
   public edit: boolean = false;
   public editRecord: Record | undefined;
   public form?: FormGroup<any>;
+
+
   public iconEdit = faPencil;
   public iconClose = faXmark;
   public iconRemove = faTrash;
 
   constructor(private _casino: CasinoService, private _recordType: RecordTypeService,
     private _record: RecordService, public _localstorage: LocalstorageService,
-    private fb: FormBuilder) {
+    private fb: FormBuilder, public _profile: ProfileService) {
     _casino.getAll().subscribe((casinos: KeyValue<string, string>[]) => this.casinos = casinos);
     _recordType.getAll().subscribe((recordTypes: KeyValue<string, string>[]) => this.recordTypes = recordTypes);
-    _record.getUserRecords(_localstorage.getUserId(), false).subscribe((stats: Stats) => this.records = stats.records);
+    // this.records = _profile.getUserData(_localstorage.getUserId()).stats.records;
+
+    if (_profile.getUserData(_localstorage.getUserId()).stats != undefined)
+      this.records = _profile.getUserData(_localstorage.getUserId()).stats.records;
+    else
+      _record.getUserRecords(_localstorage.getUserId(), false).subscribe((stats: Stats) => this.records = stats.records);
   }
 
   public setEditRecord(id: string) {

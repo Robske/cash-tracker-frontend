@@ -197,8 +197,6 @@ export class RecordService {
     }
 
     output.push({ key: day, value: Number(dayNet.toFixed(2)) });
-    if (output.length < 100)
-      console.log(output);
     return output;
   }
 }

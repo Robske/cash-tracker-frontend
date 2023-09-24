@@ -32,7 +32,6 @@ export type ChartOptions = {
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
-  // @ViewChild("chart") chart: ChartComponent;
   public chartOptions: ChartOptions;
   public showChart: boolean = false;
 
@@ -120,10 +119,10 @@ export class UserProfileComponent implements OnInit {
 
     // get shallow copy
     let data = this._profile.getUserData(this.userId).dayResults
-    // console.log(data)
-    // data = data.slice(data.length - 20, data.length);
-    // console.log(data);
-    // console.log(data.map((x: KeyValue<string, number>) => x.value))
+
+    if (data.length > 20)
+      data.unshift({ key: "T", value: 0 })
+
     this.chartOptions = {
       series: [
         {
@@ -140,7 +139,8 @@ export class UserProfileComponent implements OnInit {
       },
       xaxis: {
         categories: data.map((x: KeyValue<string, number>) => x.key.split("T")[0])
-      }
+      },
+
     };
   }
 }
