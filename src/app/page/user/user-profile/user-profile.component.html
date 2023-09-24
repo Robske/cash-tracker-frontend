@@ -1,36 +1,34 @@
 <ng-container
 	*ngIf="_profile.statsLoaded && _profile.getUserData(userId) != undefined && _profile.getUserData(userId).visibleStats != undefined && _profile.getUserData(userId).visibleStats.total != undefined">
 	<div class="content-item" *ngIf="!showChart">
-		<h3 class="mb-1 d-inline-block">{{ _profile.getUserData(userId).name }}</h3>
+		<!-- <h3 class="mb-1 d-inline-block">{{ _profile.getUserData(userId).name }}</h3> -->
 
 		<!-- Periodic and casino stats -->
-		<div>
-			<div class="d-none d-lg-flex flex-row">
-				<div class="me-3"
-					*ngFor="let _ of [].constructor(math.ceil(_profile.getUserData(userId).yearResults.length / 6)); let i=index;">
-					<h5><span *ngIf="i == 0">Year</span>&nbsp;</h5>
-					<div *ngFor="let result of _profile.getUserData(userId).yearResults">
-						<app-label-result [label]="result.period_indicator_abstract" [result]="result.net"></app-label-result>
-					</div>
+		<div class="d-none d-lg-flex flex-row">
+			<div class="me-3"
+				*ngFor="let _ of [].constructor(math.ceil(_profile.getUserData(userId).yearResults.length / 6)); let i=index;">
+				<h5><span *ngIf="i == 0">Year</span>&nbsp;</h5>
+				<div *ngFor="let result of _profile.getUserData(userId).yearResults">
+					<app-label-result [label]="result.period_indicator_abstract" [result]="result.net"></app-label-result>
 				</div>
+			</div>
 
-				<div class="me-3"
-					*ngFor="let _ of [].constructor(math.ceil(_profile.getUserData(userId).monthResults.length / 6)); let i=index;">
-					<h5><span *ngIf="i == 0">Month</span>&nbsp;</h5>
+			<div class="me-3"
+				*ngFor="let _ of [].constructor(math.ceil(_profile.getUserData(userId).monthResults.length / 6)); let i=index;">
+				<h5><span *ngIf="i == 0">Month</span>&nbsp;</h5>
 
-					<div *ngFor="let result of _profile.getUserData(userId).monthResults.slice(i*6, i*6+6)">
-						<app-label-result
-							label="'{{ result.period_indicator_abstract }} {{ getMonthName(result.period_indicator_detail) }}"
-							[result]="result.net"></app-label-result>
-					</div>
+				<div *ngFor="let result of _profile.getUserData(userId).monthResults.slice(i*6, i*6+6)">
+					<app-label-result
+						label="'{{ result.period_indicator_abstract }} {{ getMonthName(result.period_indicator_detail) }}"
+						[result]="result.net"></app-label-result>
 				</div>
+			</div>
 
-				<div class="me-3 d-none d-xxl-block"
-					*ngFor="let _ of [].constructor(math.ceil(_profile.getUserData(userId).casinoResults.length / 6)); let i=index;">
-					<h5><span *ngIf="i == 0">Casino</span>&nbsp;</h5>
-					<div *ngFor="let result of _profile.getUserData(userId).casinoResults.slice(i*6, i*6+6)">
-						<app-label-result [label]="result.key" [result]="result.value"></app-label-result>
-					</div>
+			<div class="me-3 d-none d-xxl-block"
+				*ngFor="let _ of [].constructor(math.ceil(_profile.getUserData(userId).casinoResults.length / 6)); let i=index;">
+				<h5><span *ngIf="i == 0">Casino</span>&nbsp;</h5>
+				<div *ngFor="let result of _profile.getUserData(userId).casinoResults.slice(i*6, i*6+6)">
+					<app-label-result [label]="result.key" [result]="result.value"></app-label-result>
 				</div>
 			</div>
 		</div>
@@ -41,13 +39,18 @@
 		<!-- Shown records generic stats -->
 		<div class="row">
 			<div class="col-12">
-				<div class="d-inline-block me-3">
-					<span>
-						{{ _profile.getUserData(userId).visibleStats.total_records }} records |
-						deposit €{{ _profile.getUserData(userId).visibleStats.deposit | number:'1.0-2'}} |
-						withdrawal €{{ _profile.getUserData(userId).visibleStats.withdrawal | number:'1.0-2' }} |
-						net €{{ _profile.getUserData(userId).visibleStats.total | number:'1.0-2' }}
-					</span>
+				<!-- List of connections -->
+				<div class="d-none d-lg-inline-block mb-3 fs-big">
+					<ng-container *ngFor="let connection of _profile.usersData">
+						<div class="d-inline-block me-2" role="button" routerLink="/profile/{{connection.id}}">
+							<fa-icon [icon]="iconCarotRight" *ngIf="connection.id === userId" class="text-warning"></fa-icon>
+							{{ connection.name }}
+							<span [ngClass]="{'text-success' : connection.visibleStats.total > 0,
+																						  'text-danger' : connection.visibleStats.total < 0}">
+								€{{ connection.visibleStats.total | number:'1.0-2' }}
+							</span>
+						</div>
+					</ng-container>
 				</div>
 
 				<button (click)="toggleChart()" class="btn btn-outline-primary btn-sm d-inline-block float-end">
@@ -56,20 +59,6 @@
 					<span *ngIf="!showChart">Start</span>
 					chart mode
 				</button>
-
-				<div class="d-none d-lg-block float-xxl-end">
-					<ng-container *ngFor="let connection of _profile.usersData">
-						<h6 class="d-inline-block me-4" role="button" routerLink="/profile/{{connection.id}}">
-							<fa-icon [icon]="iconCarotRight" *ngIf="connection.id === userId" class="text-warning"></fa-icon>
-							{{ connection.name }}
-							<span [ngClass]="{'text-success' : connection.visibleStats.total > 0,
-														  'text-danger' : connection.visibleStats.total < 0}">
-								€{{ connection.visibleStats.total | number:'1.0-2' }}
-							</span>
-						</h6>
-					</ng-container>
-				</div>
-
 			</div>
 
 			<div class="row">
@@ -142,8 +131,13 @@
 
 				<!-- Listing of records -->
 				<div class="col-12" [ngClass]="showChart ? 'col-xl-12' : 'col-xl-8'">
-					<div class="d-none d-lg-block mb-1 text-center">
-
+					<div class="d-inline-block me-3">
+						<span>
+							{{ _profile.getUserData(userId).visibleStats.total_records }} records |
+							deposit €{{ _profile.getUserData(userId).visibleStats.deposit | number:'1.0-2'}} |
+							withdrawal €{{ _profile.getUserData(userId).visibleStats.withdrawal | number:'1.0-2' }} |
+							net €{{ _profile.getUserData(userId).visibleStats.total | number:'1.0-2' }}
+						</span>
 					</div>
 
 					<!-- user records table -->
@@ -189,7 +183,7 @@
 						<button class="btn btn-outline-warning btn-sm d-inline-block"
 							[ngClass]="amountOfRecords == 10 ? 'active' : ''" (click)="amountOfRecords = 10"
 							*ngIf="amountOfRecords != 10">
-							Show only 10 records
+							Show 10
 						</button>
 						<ng-container *ngIf="amountOfRecords < _profile.getUserData(userId).visibleStats.records.length">
 							<button class="btn btn-outline-primary btn-sm d-inline-block ms-2"
@@ -198,7 +192,7 @@
 							</button>
 							<button class="btn btn-outline-primary btn-sm d-inline-block ms-2"
 								[ngClass]="amountOfRecords == 999999999 ? 'active' : ''" (click)="amountOfRecords = 999999999">
-								Show all records
+								Show all
 							</button>
 						</ng-container>
 					</div>
