@@ -1,7 +1,13 @@
 <ng-container
 	*ngIf="_profile.statsLoaded && _profile.getUserData(userId) != undefined && _profile.getUserData(userId).visibleStats != undefined && _profile.getUserData(userId).visibleStats.total != undefined">
 	<div class="content-item" *ngIf="!showChart">
-		<!-- <h3 class="mb-1 d-inline-block">{{ _profile.getUserData(userId).name }}</h3> -->
+		<h3 class="mb-1 d-inline-block">{{ _profile.getUserData(userId).name }}</h3>
+
+		<button (click)="toggleChart()" class="btn btn-outline-primary btn-sm d-inline-block float-end" *ngIf="!showChart">
+			<fa-icon [icon]="iconChart" class="me-1"></fa-icon>
+			<span *ngIf="!showChart">Start</span>
+			chart mode
+		</button>
 
 		<!-- Periodic and casino stats -->
 		<div class="d-none d-lg-flex flex-row">
@@ -34,7 +40,6 @@
 		</div>
 	</div>
 
-	<!-- <hr class="d-none d-lg-block opacity-25" *ngIf="!showChart"> -->
 	<div class="content-item">
 		<!-- Shown records generic stats -->
 		<div class="row">
@@ -53,10 +58,10 @@
 					</ng-container>
 				</div>
 
-				<button (click)="toggleChart()" class="btn btn-outline-primary btn-sm d-inline-block float-end">
+				<button (click)="toggleChart()" class="btn btn-outline-primary btn-sm d-inline-block float-end"
+					*ngIf="showChart">
 					<fa-icon [icon]="iconChart" class="me-1"></fa-icon>
-					<span *ngIf="showChart">Stop</span>
-					<span *ngIf="!showChart">Start</span>
+					<span>Stop</span>
 					chart mode
 				</button>
 			</div>
@@ -131,13 +136,20 @@
 
 				<!-- Listing of records -->
 				<div class="col-12" [ngClass]="showChart ? 'col-xl-12' : 'col-xl-8'">
-					<div class="d-inline-block me-3">
-						<span>
-							{{ _profile.getUserData(userId).visibleStats.total_records }} records |
-							deposit €{{ _profile.getUserData(userId).visibleStats.deposit | number:'1.0-2'}} |
-							withdrawal €{{ _profile.getUserData(userId).visibleStats.withdrawal | number:'1.0-2' }} |
-							net €{{ _profile.getUserData(userId).visibleStats.total | number:'1.0-2' }}
-						</span>
+					<div>
+						<div class="d-inline-block me-3 lh-lg">
+							<span>
+								{{ _profile.getUserData(userId).visibleStats.total_records }} records |
+								deposit €{{ _profile.getUserData(userId).visibleStats.deposit | number:'1.0-2'}} |
+								withdrawal €{{ _profile.getUserData(userId).visibleStats.withdrawal | number:'1.0-2' }} |
+								net €{{ _profile.getUserData(userId).visibleStats.total | number:'1.0-2' }}
+							</span>
+						</div>
+						<button class="btn btn-outline-warning btn-sm d-inline-block float-end"
+							[ngClass]="amountOfRecords == 10 ? 'active' : ''" (click)="amountOfRecords = 10"
+							*ngIf="amountOfRecords != 10">
+							Show 10
+						</button>
 					</div>
 
 					<!-- user records table -->
