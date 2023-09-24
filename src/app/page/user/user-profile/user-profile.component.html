@@ -192,11 +192,8 @@
 
 					<!-- Show more records -->
 					<div class="d-none d-lg-block text-center mt-2">
-						<button class="btn btn-outline-warning btn-sm d-inline-block"
-							[ngClass]="amountOfRecords == 10 ? 'active' : ''" (click)="amountOfRecords = 10"
-							*ngIf="amountOfRecords != 10">
-							Show 10
-						</button>
+
+
 						<ng-container *ngIf="amountOfRecords < _profile.getUserData(userId).visibleStats.records.length">
 							<button class="btn btn-outline-primary btn-sm d-inline-block ms-2"
 								(click)="amountOfRecords = amountOfRecords + 50">
@@ -206,6 +203,18 @@
 								[ngClass]="amountOfRecords == 999999999 ? 'active' : ''" (click)="amountOfRecords = 999999999">
 								Show all
 							</button>
+						</ng-container>
+
+						<ng-container *ngIf="amountOfRecords != 10">
+							<div class="text-warning d-inline-block ms-2" (click)="scrollToTop()" role="button">
+								<!-- Scroll to top -->
+								<fa-icon [icon]="iconScroll"></fa-icon>
+							</div>
+
+							<!-- <button class="btn btn-outline-warning btn-sm d-inline-block ms-2"
+														[ngClass]="amountOfRecords == 10 ? 'active' : ''" (click)="amountOfRecords = 10">
+														Show 10
+													</button> -->
 						</ng-container>
 					</div>
 				</div>

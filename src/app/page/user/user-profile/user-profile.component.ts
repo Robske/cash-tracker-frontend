@@ -2,7 +2,7 @@ import { KeyValue } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { faCaretRight, faCaretLeft, faCaretDown, faEye, faEyeSlash, faShuffle, faChartSimple } from '@fortawesome/free-solid-svg-icons';
+import { faCaretRight, faCaretLeft, faCaretDown, faEye, faEyeSlash, faShuffle, faChartSimple, faCircleChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { RecordService } from 'src/app/service/core/record.service';
 import { Stats } from 'src/app/model/stats';
 import { faComment } from '@fortawesome/free-regular-svg-icons';
@@ -58,6 +58,7 @@ export class UserProfileComponent implements OnInit {
   public iconHide = faEyeSlash;
   public iconReverse = faShuffle;
   public iconChart = faChartSimple;
+  public iconScroll = faCircleChevronUp;
 
   constructor(private route: ActivatedRoute, public _record: RecordService, public _localstorage: LocalstorageService,
     private _casino: CasinoService, private _recordType: RecordTypeService, public _profile: ProfileService) {
@@ -142,6 +143,10 @@ export class UserProfileComponent implements OnInit {
       },
 
     };
+  }
+
+  public scrollToTop() {
+    window.scrollTo(0, 0);
   }
 }
 
