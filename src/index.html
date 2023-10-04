@@ -15,7 +15,7 @@
 
 <script>
   function checkOnlineFocus() {
-    if (document.hasFocus()) {
+    if (document.hasFocus() && localStorage.getItem('userId') != null) {
       let xhr = new XMLHttpRequest();
       xhr.open("GET", 'https://vps.robalma.nl:5002/user/ping/' + localStorage.getItem('userId'));
       xhr.send();
