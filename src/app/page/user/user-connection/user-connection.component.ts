@@ -4,6 +4,7 @@ import { ConnectionService } from 'src/app/service/core/connection.service';
 import { UserService } from 'src/app/service/core/user.service';
 import { LocalstorageService } from 'src/app/service/general/localstorage.service';
 import { faLinkSlash, faLink } from '@fortawesome/free-solid-svg-icons';
+import { ProfileService } from 'src/app/service/general/profile.service';
 
 @Component({
   selector: 'app-user-connection',
@@ -17,13 +18,14 @@ export class UserConnectionComponent {
   public iconLink = faLink;
   public iconUnlink = faLinkSlash;
 
-  constructor(private _connection: ConnectionService, private _user: UserService, public _localstorage: LocalstorageService) {
+  constructor(private _connection: ConnectionService, private _user: UserService, public _localstorage: LocalstorageService, private _profile: ProfileService) {
     this.updateData();
   }
 
   private updateData() {
     this._user.getAll().subscribe((users: KeyValue<string, string>[]) => this.allUsers = users);
     this._connection.getConnectionsByUser(this._localstorage.getUserId()).subscribe((connections: KeyValue<string, string>[]) => this.connections = connections);
+    this._profile.updateProfileData();
   }
 
   public deleteConnection(target: string) {

@@ -28,7 +28,6 @@ export class ProfileService {
     private _recordType: RecordTypeService, private _result: ResultService) {
     _casino.getAll().subscribe((casinos: KeyValue<string, string>[]) => this.casinos = casinos);
     _recordType.getAll().subscribe((recordTypes: KeyValue<string, string>[]) => this.recordTypes = recordTypes);
-
     _record.resetFilters();
     this.noteInput.valueChanges.subscribe(async (note) => _record.filterNote = note);
   }
@@ -67,6 +66,7 @@ export class ProfileService {
 
           usersDataIndex = this.usersData.findIndex((userData: UserProfile) => userData.id === user.key);
         }
+
         let userData = this.usersData[usersDataIndex]
         this._record.getUserRecords(user.key).subscribe((stats: Stats) => {
           userData.stats = stats;
