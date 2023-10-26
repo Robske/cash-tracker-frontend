@@ -14,7 +14,7 @@
 		<ng-container *ngFor="let connection of allUsers">
 			<div *ngIf="!hasValue(connections, connection.key) && connection.key != _localstorage.getUserId()">
 				<fa-icon class="text-success me-3" [icon]="iconLink" role="button"
-					(click)="createConnection(connection.key)"></fa-icon>
+					(click)="createConnection(connection.key) "></fa-icon>
 				{{ connection.value }}
 			</div>
 		</ng-container>
