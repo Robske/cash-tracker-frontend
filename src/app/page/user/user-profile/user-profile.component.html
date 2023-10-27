@@ -1,9 +1,10 @@
 <ng-container
-	*ngIf="_profile.statsLoaded && _profile.getUserData(userId) != undefined && _profile.getUserData(userId).visibleStats != undefined && _profile.getUserData(userId).visibleStats.total != undefined">
+	*ngIf="_profile.getUserData(userId) != undefined && _profile.getUserData(userId).visibleStats != undefined && _general.casinos.length != 0 && _general.recordTypes.length != 0">
 	<div class="content-item" *ngIf="!showChart">
 		<h3 class="mb-1 d-inline-block">{{ _profile.getUserData(userId).name }}</h3>
 
-		<button (click)="toggleChart()" class="btn btn-outline-primary btn-sm d-inline-block float-end" *ngIf="!showChart">
+		<button (click)="toggleChart()" class="btn btn-outline-primary btn-sm float-end d-none d-xl-inline-block"
+			*ngIf="!showChart">
 			<fa-icon [icon]="iconChart" class="me-1"></fa-icon>
 			<span *ngIf="!showChart">Start</span>
 			chart mode
@@ -58,7 +59,7 @@
 					</ng-container>
 				</div>
 
-				<button (click)="toggleChart()" class="btn btn-outline-primary btn-sm d-inline-block float-end"
+				<button (click)="toggleChart()" class="btn btn-outline-primary btn-sm d-none d-xl-inline-block float-end"
 					*ngIf="showChart">
 					<fa-icon [icon]="iconChart" class="me-1"></fa-icon>
 					<span>Stop</span>
@@ -67,7 +68,7 @@
 			</div>
 
 			<div class="row">
-				<!-- Record filters -->
+				<!-- Filters -->
 				<div class="d-none d-xl-block col-4">
 					<div class="row">
 						<div class="col-6">
@@ -80,7 +81,8 @@
 													'active': _record.inverseFilterRecordType
 													}"></fa-icon>
 							</h5>
-							<span *ngFor="let type of recordTypes" class="filter-item mb-1 d-inline-block" role="button" [ngClass]="{
+							<span *ngFor="let type of _general.recordTypes" class="filter-item mb-1 d-inline-block" role="button"
+								[ngClass]="{
 																				'dark': _localstorage.isDarkmode(),
 																				'light': !_localstorage.isDarkmode(),
 																				'active': hasValue(_record.filterRecordType, type.value)}"
@@ -100,7 +102,7 @@
 							</h5>
 							<div class="row">
 								<div class="col-6 ps-0 pe-1">
-									<span *ngFor="let casino of casinos.slice(0, math.ceil(casinos.length / 2))"
+									<span *ngFor="let casino of _general.casinos.slice(0, math.ceil(_general.casinos.length / 2))"
 										class="filter-item mb-1 d-inline-block casino" role="button" [ngClass]="{
 																												'dark': _localstorage.isDarkmode(),
 																												'light': !_localstorage.isDarkmode(),
@@ -110,7 +112,8 @@
 									</span>
 								</div>
 								<div class="col-6 ps-1 pe-0">
-									<span *ngFor="let casino of casinos.slice(math.ceil(casinos.length / 2), casinos.length)"
+									<span
+										*ngFor="let casino of _general.casinos.slice(math.ceil(_general.casinos.length / 2), _general.casinos.length)"
 										class="filter-item mb-1 d-inline-block casino" role="button" [ngClass]="{
 																																'dark': _localstorage.isDarkmode(),
 																																'light': !_localstorage.isDarkmode(),

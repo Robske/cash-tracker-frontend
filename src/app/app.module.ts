@@ -18,7 +18,6 @@ import { DatePipe } from '@angular/common';
 import { UserProfileComponent } from './page/user/user-profile/user-profile.component';
 import { RecordManageComponent } from './page/record/record-manage/record-manage.component';
 import { UserConnectionComponent } from './page/user/user-connection/user-connection.component';
-import { PatchNotesComponent } from './page/general/patch-notes/patch-notes.component';
 import { UserSettingsComponent } from './page/user/user-settings/user-settings.component';
 import { LabelResultComponent } from './page/user/user-profile/label-result/label-result.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
@@ -37,7 +36,6 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     UserProfileComponent,
     RecordManageComponent,
     UserConnectionComponent,
-    PatchNotesComponent,
     UserSettingsComponent,
     LabelResultComponent,
   ],

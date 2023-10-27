@@ -18,6 +18,7 @@ import {
   ApexXAxis,
   ApexTitleSubtitle
 } from "ng-apexcharts";
+import { GeneralService } from 'src/app/service/general/general.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -46,9 +47,6 @@ export class UserProfileComponent implements OnInit {
   ]
   public math = Math;
   public allUsers: KeyValue<string, string>[] = [];
-  public casinos: KeyValue<string, string>[] = [];
-  public recordTypes: KeyValue<string, string>[] = [];
-
 
   public iconCarotRight = faCaretRight;
   public iconCarotLeft = faCaretLeft;
@@ -61,11 +59,9 @@ export class UserProfileComponent implements OnInit {
   public iconScroll = faCircleChevronUp;
 
   constructor(private route: ActivatedRoute, public _record: RecordService, public _localstorage: LocalstorageService,
-    private _casino: CasinoService, private _recordType: RecordTypeService, public _profile: ProfileService) {
+    private _casino: CasinoService, private _recordType: RecordTypeService, public _profile: ProfileService, public _general: GeneralService) {
     _record.resetFilters();
     _profile.updateFilters();
-    _casino.getAll().subscribe((casinos: KeyValue<string, string>[]) => this.casinos = casinos);
-    _recordType.getAll().subscribe((recordTypes: KeyValue<string, string>[]) => this.recordTypes = recordTypes);
 
     this.noteInput.valueChanges.subscribe(async (note) => {
       _record.filterNote = note;

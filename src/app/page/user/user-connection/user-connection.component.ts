@@ -25,7 +25,7 @@ export class UserConnectionComponent {
   private updateData() {
     this._user.getAll().subscribe((users: KeyValue<string, string>[]) => this.allUsers = users);
     this._connection.getConnectionsByUser(this._localstorage.getUserId()).subscribe((connections: KeyValue<string, string>[]) => this.connections = connections);
-    this._profile.updateProfileData();
+    this._profile.usersData = [];
   }
 
   public deleteConnection(target: string) {

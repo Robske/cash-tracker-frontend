@@ -21,13 +21,10 @@ export class ProfileService {
   public noteInput = new FormControl();
   public casinos: KeyValue<string, string>[] = [];
   public recordTypes: KeyValue<string, string>[] = [];
-  public statsLoaded: boolean = false;
 
   constructor(private _user: UserService, public _record: RecordService,
-    public _localstorage: LocalstorageService, private _casino: CasinoService,
-    private _recordType: RecordTypeService, private _result: ResultService) {
-    _casino.getAll().subscribe((casinos: KeyValue<string, string>[]) => this.casinos = casinos);
-    _recordType.getAll().subscribe((recordTypes: KeyValue<string, string>[]) => this.recordTypes = recordTypes);
+    public _localstorage: LocalstorageService, private _result: ResultService) {
+
     _record.resetFilters();
     this.noteInput.valueChanges.subscribe(async (note) => _record.filterNote = note);
   }
@@ -80,8 +77,6 @@ export class ProfileService {
         this._result.getYearByYearByUser(user.key).subscribe((result: PeriodDetails[]) => userData.yearResults = result.slice(0, 12));
         this._result.getCasinoResultByUser(user.key).subscribe((result: KeyValue<string, number>[]) => userData.casinoResults = result);
       }
-
-      this.statsLoaded = true;
     });
   }
 }

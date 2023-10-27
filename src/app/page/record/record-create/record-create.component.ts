@@ -9,6 +9,7 @@ import { LocalstorageService } from 'src/app/service/general/localstorage.servic
 import { faComment } from '@fortawesome/free-regular-svg-icons';
 import { ProfileService } from 'src/app/service/general/profile.service';
 import { ResultService } from 'src/app/service/general/result.service';
+import { GeneralService } from 'src/app/service/general/general.service';
 
 @Component({
   selector: 'app-record-create',
@@ -18,20 +19,20 @@ import { ResultService } from 'src/app/service/general/result.service';
 export class RecordCreateComponent {
   public form?: FormGroup<any>;
   public today: string;
-  public casinos: KeyValue<string, string>[] | undefined;
-  public recordTypes: KeyValue<string, string>[] | undefined;
+  public casinos: KeyValue<string, string>[] = [];
+  public recordTypes: KeyValue<string, string>[] = [];
   public noteLength: number = 0;
   public createdRecord: boolean = false;
   public newRecord?: Record;
   public iconNote = faComment;
 
-  constructor(private fb: FormBuilder, private datePipe: DatePipe, private _casino: CasinoService, public _result: ResultService,
-    private _recordType: RecordTypeService, private _record: RecordService, public _localstorage: LocalstorageService) {
+  constructor(private fb: FormBuilder, private datePipe: DatePipe, public _result: ResultService, public _general: GeneralService,
+    private _record: RecordService, public _localstorage: LocalstorageService) {
     this.today = datePipe.transform(new Date(), 'yyyy-MM-dd') || '2020-01-01';
 
     // get casinos and record types
-    _casino.getAll().subscribe((casinos: KeyValue<string, string>[]) => this.casinos = casinos);
-    _recordType.getAll().subscribe((recordTypes: KeyValue<string, string>[]) => this.recordTypes = recordTypes);
+    // _casino.getAll().subscribe((casinos: KeyValue<string, string>[]) => this.casinos = casinos);
+    // _recordType.getAll().subscribe((recordTypes: KeyValue<string, string>[]) => this.recordTypes = recordTypes);
 
     this.form = this.form = this.fb.group({
       date: this.fb.nonNullable.control(this.today, { validators: [Validators.required] }),
