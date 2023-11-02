@@ -15,13 +15,13 @@ export class UserService {
   private inverval: any;
 
   constructor(private _userApi: UserApiService, private _recordApi: RecordApiService, private _localstorage: LocalstorageService, @Inject(DOCUMENT) private document: Document) {
-    if (_localstorage.getUserId() !== '') {
+    if (_localstorage.ifUser()) {
       this.getNewToken();
       this.getPings();
     }
 
     this.inverval = setInterval(() => {
-      if (document.hasFocus() && _localstorage.getUserId() !== '') {
+      if (document.hasFocus() && _localstorage.ifUser()) {
         this.getNewToken();
         this.getPings();
       }

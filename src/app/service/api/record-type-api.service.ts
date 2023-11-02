@@ -10,6 +10,6 @@ export class RecordTypeApiService {
   constructor(private client: HttpClient) { }
 
   public getAll() {
-    return this.client.get(environment.api_secondary + 'record-type/all', { responseType: 'json' });
+    return this.client.get(environment.api_url + 'record-type/all', { responseType: 'json' });
   }
 }

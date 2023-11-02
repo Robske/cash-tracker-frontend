@@ -11,14 +11,14 @@ export class ConnectionApiService {
   constructor(private client: HttpClient) { }
 
   public getAllByUser(user: string): Observable<Object> {
-    return this.client.get(environment.api_secondary + 'connection/all/' + user, { responseType: 'json' });
+    return this.client.get(environment.api_url + 'connection/all/' + user, { responseType: 'json' });
   }
 
   public create(user: string, target: string): Observable<Object> {
-    return this.client.get(environment.api_secondary + 'connection/create/' + user + '/' + target, { responseType: 'text' });
+    return this.client.get(environment.api_url + 'connection/create/' + user + '/' + target, { responseType: 'text' });
   }
 
   public delete(user: string, target: string) {
-    return this.client.get(environment.api_secondary + 'connection/delete/' + user + '/' + target, { responseType: 'text' });
+    return this.client.get(environment.api_url + 'connection/delete/' + user + '/' + target, { responseType: 'text' });
   }
 }

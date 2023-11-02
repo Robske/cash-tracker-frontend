@@ -13,34 +13,30 @@ export class RecordApiService {
   constructor(private client: HttpClient, private _localstorage: LocalstorageService) { }
 
   public getTodayByUser(user: string): Observable<Object> {
-    return this.client.get(environment.api_secondary + 'record/today/' + user, { responseType: 'json' });
+    return this.client.get(environment.api_url + 'record/today/' + user, { responseType: 'json' });
   }
 
   public getLastXByUser(user: string, limit: number): Observable<Object> {
-    return this.client.get(environment.api_secondary + 'record/lastX/' + user + '/' + limit, { responseType: 'json' });
+    return this.client.get(environment.api_url + 'record/lastX/' + user + '/' + limit, { responseType: 'json' });
   }
 
   public getAllByUser(user: string): Observable<Object> {
-    return this.client.get(environment.api_secondary + 'record/all/' + user, { responseType: 'json' });
+    return this.client.get(environment.api_url + 'record/all/' + user, { responseType: 'json' });
   }
 
   public getLastUpdateHash(user: string): Observable<Object> {
-    return this.client.get(environment.api_secondary + 'record/last-update-hash?requester=' + user, { responseType: 'json' });
+    return this.client.get(environment.api_url + 'record/last-update-hash?requester=' + user, { responseType: 'json' });
   }
 
   public create(record: Record): Observable<Object> {
-    return this.client.post(environment.api_secondary + 'record/create', record);
+    return this.client.post(environment.api_url + 'record/create', record);
   }
 
   public update(record: Record): Observable<Object> {
-    return this.client.put(environment.api_secondary + 'record/update', record);
+    return this.client.put(environment.api_url + 'record/update', record);
   }
 
   public delete(id: string) {
-    return this.client.delete(environment.api_secondary + 'record/delete/' + id + '?requester=' + this._localstorage.getUserId());
+    return this.client.delete(environment.api_url + 'record/delete/' + id + '?requester=' + this._localstorage.getUserId());
   }
-
-  // public restore(id: string) {
-  //   return this.client.post(environment.api_primary + 'records/' + id + '/restore', null);
-  // }
 }

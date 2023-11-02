@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { UserService } from '../core/user.service';
 import { RecordService } from '../core/record.service';
 import { LocalstorageService } from './localstorage.service';
-import { CasinoService } from '../core/casino.service';
-import { RecordTypeService } from '../core/record-type.service';
 import { KeyValue } from '@angular/common';
 import { Stats } from 'src/app/model/stats';
 import { Subscription } from 'rxjs';

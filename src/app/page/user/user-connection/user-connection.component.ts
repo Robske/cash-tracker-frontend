@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { ConnectionService } from 'src/app/service/core/connection.service';
 import { UserService } from 'src/app/service/core/user.service';
 import { LocalstorageService } from 'src/app/service/general/localstorage.service';
-import { faLinkSlash, faLink } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { ProfileService } from 'src/app/service/general/profile.service';
 
 @Component({
@@ -15,8 +15,8 @@ export class UserConnectionComponent {
   public allUsers: KeyValue<string, string>[] = [];
   public connections: KeyValue<string, string>[] = [];
 
-  public iconLink = faLink;
-  public iconUnlink = faLinkSlash;
+  public iconLink = faArrowRight;
+  public iconUnlink = faArrowLeft;
 
   constructor(private _connection: ConnectionService, private _user: UserService, public _localstorage: LocalstorageService, private _profile: ProfileService) {
     this.updateData();
@@ -26,6 +26,7 @@ export class UserConnectionComponent {
     this._user.getAll().subscribe((users: KeyValue<string, string>[]) => this.allUsers = users);
     this._connection.getConnectionsByUser(this._localstorage.getUserId()).subscribe((connections: KeyValue<string, string>[]) => this.connections = connections);
     this._profile.usersData = [];
+    this._profile.updateProfileData();
   }
 
   public deleteConnection(target: string) {

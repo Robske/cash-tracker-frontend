@@ -8,11 +8,9 @@ import { LocalstorageService } from 'src/app/service/general/localstorage.servic
   styleUrls: ['./user-settings.component.scss']
 })
 export class UserSettingsComponent {
-  constructor(public _user: UserService, public _localstorage: LocalstorageService) {
+  constructor(public _user: UserService, public _localstorage: LocalstorageService) { }
 
-  }
-
-  public updatePingDetailed(detail: string) {
+  protected updatePingDetailed(detail: string) {
     this._user.updatePing(detail).subscribe((x: any) => this._user.getPings());
   }
 }

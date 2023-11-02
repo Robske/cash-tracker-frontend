@@ -61,7 +61,6 @@ export class UserProfileComponent implements OnInit {
   constructor(private route: ActivatedRoute, public _record: RecordService, public _localstorage: LocalstorageService,
     private _casino: CasinoService, private _recordType: RecordTypeService, public _profile: ProfileService, public _general: GeneralService) {
     _record.resetFilters();
-    _profile.updateFilters();
 
     this.noteInput.valueChanges.subscribe(async (note) => {
       _record.filterNote = note;

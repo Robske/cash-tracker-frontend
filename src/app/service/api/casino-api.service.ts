@@ -11,6 +11,6 @@ export class CasinoApiService {
   constructor(private client: HttpClient) { }
 
   public getAll() {
-    return this.client.get(environment.api_secondary + 'casino/all', { responseType: 'json' });
+    return this.client.get(environment.api_url + 'casino/all', { responseType: 'json' });
   }
 }

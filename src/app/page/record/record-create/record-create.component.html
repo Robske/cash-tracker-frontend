@@ -26,7 +26,8 @@
 			</div>
 
 			<div class="col-12 col-sm-6 col-lg-2">
-				<app-number-input label="Deposit" step="0.01" placeholder="0.00" formControlName="deposit"></app-number-input>
+				<app-number-input label="Deposit" step="0.01" placeholder="0.00"
+					formControlName="deposit"></app-number-input>
 			</div>
 
 			<div class="col-12 col-sm-6 col-lg-2">
@@ -50,7 +51,6 @@
 
 	<div *ngIf="createdRecord" class="bg-success p-2 mt-3 text-center rounded" style="--bs-bg-opacity: .75;">
 		Record created.<br>
-		Deposit: €{{ newRecord?.deposit }}, withdrawal: €{{ newRecord?.withdrawal }}
 	</div>
 </div>
 
@@ -83,7 +83,8 @@
 						<td class="d-none d-md-table-cell text-center">€{{ record.deposit }}</td>
 						<td class="d-none d-md-table-cell text-center">€{{ record.withdrawal }}</td>
 						<td class="text-center fw-bold">
-							<span [ngClass]="(record.withdrawal - record.deposit) >= 0 ? 'text-success' : 'text-danger'">
+							<span
+								[ngClass]="(record.withdrawal - record.deposit) >= 0 ? 'text-success' : 'text-danger'">
 								€{{ record.withdrawal - record.deposit | number:'1.0-2' }}
 							</span>
 						</td>
