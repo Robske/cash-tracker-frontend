@@ -1,11 +1,3 @@
-{{ userId }}
-{{ _profile.getUserData(userId) != undefined }}
-{{ _profile.getUserData(userId).name }}
-{{ _profile.getUserData(userId).visibleStats }}
-{{ _profile.getUserData(userId).visibleStats != undefined }}
-{{ _general.casinos.length != 0 }}
-{{ _general.recordTypes.length != 0 }}
-
 <ng-container
 	*ngIf="_profile.getUserData(userId) != undefined && _profile.getUserData(userId).visibleStats != undefined && _general.casinos.length != 0 && _general.recordTypes.length != 0">
 	<div class="content-item" *ngIf="!showChart">

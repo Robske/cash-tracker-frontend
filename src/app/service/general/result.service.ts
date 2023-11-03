@@ -13,6 +13,7 @@ import { KeyValue } from '@angular/common';
 @Injectable({
   providedIn: 'root'
 })
+// Service for all result related functions
 export class ResultService {
   public availablePeriods: string[] = ['day', 'week', 'month', 'alltime'];
   public allUserResults: [string, string, Record[]][] = [];
@@ -27,7 +28,7 @@ export class ResultService {
       this.periodResults.push({ period: this.availablePeriods[index], netResults: [] })
   }
 
-  // get all stats via api
+  // general function to update all result data
   public updateResultData(): void {
     this.today = new Date();
     for (let index = 0; index < this.availablePeriods.length; index++)
@@ -40,12 +41,13 @@ export class ResultService {
     this._record.getUserRecordsToday(this._localstorage.getUserId()).subscribe((stats: Stats) => this.userStatsToday = stats);
   }
 
+  // return period result for user
   public getPeriodResultByUser(period: string, user: string) {
     const periodResult = this.periodResults.find((x: PeriodResults) => (x.period === period))?.netResults.find((y: [string, string, number]) => y[0] === user)?.[2] ?? 0;
     return periodResult;
   }
 
-  // return period results
+  // return array of period results for user
   public getPeriodStats(period: string): [string, string, number][] {
     const netResultsIndex = this.periodResults.findIndex((x: PeriodResults) => x.period === period);
     return netResultsIndex !== -1 ? this.periodResults[netResultsIndex].netResults : [];
