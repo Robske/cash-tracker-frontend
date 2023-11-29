@@ -1,19 +1,5 @@
 <div class="row" *ngIf="_localstorage.getUserLoginMethod() == 'code'">
-	<div class="col-12">
-		<div class="content-item">
-			<div class="row">
-				<div class="col-12">
-					<h3>Create your username and password</h3>
-				</div>
-				<div class="col-12 col-md-6 col-lg-3">
-					<app-text-input [formControl]="usernameInput" [maxLength]="20" label="Username"></app-text-input>
-					<app-password-input [formControl]=" passwordInput" [maxLength]="50"
-						label="Password"></app-password-input>
-					<button (click)="onSubmit()" class="btn btn-outline-primary w-100 mt-3">Save</button>
-				</div>
-			</div>
-		</div>
-	</div>
+
 </div>
 <div class="row" *ngIf="_result.userStatsToday != undefined">
 	<div class="col-12 col-lg-6">
@@ -114,7 +100,19 @@
 							</tbody>
 						</table>
 					</div>
-
+				</div>
+			</div>
+		</div>
+		<div class="content-item" *ngIf="_localstorage.getUserLoginMethod() == 'code'">
+			<div class="row">
+				<div class="col-12">
+					<h3>Create your username and password</h3>
+				</div>
+				<div class="col-12 col-md-6">
+					<app-text-input [formControl]="usernameInput" [maxLength]="20" label="Username"></app-text-input>
+					<app-password-input [formControl]=" passwordInput" [maxLength]="50"
+						label="Password"></app-password-input>
+					<button (click)="onSubmit()" class="btn btn-outline-primary w-100 mt-3">Save</button>
 				</div>
 			</div>
 		</div>
