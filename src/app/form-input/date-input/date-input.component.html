@@ -1,7 +1,7 @@
 <div class="input">
-	<label>
+	<label *ngIf="label.length > 0" [for]="label">
 		{{ label }}
 	</label>
 	<input type="date" value="input" [(ngModel)]="input" (ngModelChange)="onModelChange($event)"
-		[placeholder]="placeholder" #textInput="ngModel" class="form-control" />
+		[placeholder]="placeholder" #textInput="ngModel" class="form-control" [id]="label" />
 </div>

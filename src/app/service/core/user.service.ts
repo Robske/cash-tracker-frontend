@@ -72,6 +72,7 @@ export class UserService {
 
   public loginByCode(code: string): Observable<boolean> {
     let result: Subject<boolean> = new Subject<boolean>();
+
     this._userApi.getByCode(code).subscribe((response: object) => {
       const user = JSON.parse(JSON.stringify(response));
 
@@ -82,6 +83,24 @@ export class UserService {
       } else
         result.next(false);
     });
+
+    return result;
+  }
+
+  public loginByUsernamePassword(username: string, password: string): Observable<boolean> {
+    let result: Subject<boolean> = new Subject<boolean>();
+
+    this._userApi.getByUsernamePassword(username, password).subscribe((response: object) => {
+      const user = JSON.parse(JSON.stringify(response));
+
+      if (user[0] != undefined) {
+        this._localstorage.setUser(user);
+        this._localstorage.setLastUpdateHash('');
+        result.next(true);
+      } else
+        result.next(false);
+    });
+
     return result;
   }
 
@@ -123,13 +142,12 @@ export class UserService {
     return result;
   }
 
-  private createPing(): void {
-    let _;
-    this._userApi.createPing().subscribe((x: any) => _ = x);
-  }
-
   public updatePing(detail: string) {
     return this._userApi.updatePing(detail);
+  }
+
+  public updateUsernamePassword(username: string, password: string): Observable<object> {
+    return this._userApi.updateUsernamePassword(username, password);
   }
 
   public getPings(): void {

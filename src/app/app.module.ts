@@ -21,6 +21,7 @@ import { UserConnectionComponent } from './page/user/user-connection/user-connec
 import { UserSettingsComponent } from './page/user/user-settings/user-settings.component';
 import { LabelResultComponent } from './page/user/user-profile/label-result/label-result.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { PasswordInputComponent } from './form-input/password-input/password-input.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     UserConnectionComponent,
     UserSettingsComponent,
     LabelResultComponent,
+    PasswordInputComponent,
   ],
   imports: [
     BrowserModule,

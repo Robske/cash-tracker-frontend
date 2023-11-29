@@ -1,8 +1,8 @@
 <div class="input">
-	<label *ngIf="label.length > 0">
+	<label *ngIf="label.length > 0" [for]="label">
 		{{ label }}
 	</label>
-	<select class="form-control" (change)="onSelect($event)">
+	<select class="form-control" (change)="onSelect($event)" [id]="label">
 		<option *ngIf="selected === ''" [ngValue]="" disabled selected>{{ placeholder }}</option>
 		<option *ngFor="let option of options" [selected]="option.key === selected">{{ option.value }}</option>
 	</select>

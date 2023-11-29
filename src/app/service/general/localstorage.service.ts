@@ -87,4 +87,12 @@ export class LocalstorageService {
   public setUserToken(token: string): void {
     localStorage.setItem('userToken', token);
   }
+
+  public getUserLoginMethod(): string {
+    return localStorage.getItem('userLoginMethod') ?? '';
+  }
+
+  public setUserLoginMethod(method: string): void {
+    localStorage.setItem('userLoginMethod', method);
+  }
 }

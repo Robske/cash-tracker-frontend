@@ -1,3 +1,20 @@
+<div class="row" *ngIf="_localstorage.getUserLoginMethod() == 'code'">
+	<div class="col-12">
+		<div class="content-item">
+			<div class="row">
+				<div class="col-12">
+					<h3>Create your username and password</h3>
+				</div>
+				<div class="col-12 col-md-6 col-lg-3">
+					<app-text-input [formControl]="usernameInput" [maxLength]="20" label="Username"></app-text-input>
+					<app-password-input [formControl]=" passwordInput" [maxLength]="50"
+						label="Password"></app-password-input>
+					<button (click)="onSubmit()" class="btn btn-outline-primary w-100 mt-3">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="row" *ngIf="_result.userStatsToday != undefined">
 	<div class="col-12 col-lg-6">
 		<div class="content-item">
@@ -5,8 +22,10 @@
 				<div class="col-12">
 					<h3 class="mb-0">
 						Hello, {{ user }}
-						<fa-icon [icon]="iconUp" class="text-success fs-5" *ngIf="_result.userStatsToday.total > 0"></fa-icon>
-						<fa-icon [icon]="iconDown" class="text-danger fs-5" *ngIf="_result.userStatsToday.total < 0"></fa-icon>
+						<fa-icon [icon]="iconUp" class="text-success fs-5"
+							*ngIf="_result.userStatsToday.total > 0"></fa-icon>
+						<fa-icon [icon]="iconDown" class="text-danger fs-5"
+							*ngIf="_result.userStatsToday.total < 0"></fa-icon>
 					</h3>
 				</div>
 
@@ -42,12 +61,14 @@
 									<td>{{ record.casino }}</td>
 									<td>
 										{{ record.type }}
-										<span class="recordNote" *ngIf="record.note.length > 0" [innerHtml]="record.note"></span>
+										<span class="recordNote" *ngIf="record.note.length > 0"
+											[innerHtml]="record.note"></span>
 									</td>
 									<td class="d-none d-sm-table-cell text-center">€{{ record.deposit }}</td>
 									<td class="d-none d-sm-table-cell text-center">€{{ record.withdrawal }}</td>
 									<td class="text-center">
-										<span [ngClass]="(record.withdrawal - record.deposit) >= 0 ? 'text-success' : 'text-danger'">
+										<span
+											[ngClass]="(record.withdrawal - record.deposit) >= 0 ? 'text-success' : 'text-danger'">
 											€{{ record.withdrawal - record.deposit | number:'1.0-2' }}
 										</span>
 									</td>
