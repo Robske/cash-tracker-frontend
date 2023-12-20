@@ -16,8 +16,7 @@
 				*ngFor="let _ of [].constructor(math.ceil(_profile.getUserData(userId).yearResults.length / 6)); let i=index;">
 				<h5><span *ngIf="i == 0">Year</span>&nbsp;</h5>
 				<div *ngFor="let result of _profile.getUserData(userId).yearResults">
-					<app-label-result [label]="result.period_indicator_abstract"
-						[result]="result.net"></app-label-result>
+					<app-label-result [label]="result.period_indicator_abstract" [result]="result.net"></app-label-result>
 				</div>
 			</div>
 
@@ -50,8 +49,7 @@
 				<div class="d-none d-lg-inline-block mb-3 fs-big">
 					<ng-container *ngFor="let connection of _profile.usersData">
 						<div class="d-inline-block me-2" role="button" routerLink="/profile/{{connection.id}}">
-							<fa-icon [icon]="iconCarotRight" *ngIf="connection.id === userId"
-								class="text-warning"></fa-icon>
+							<fa-icon [icon]="iconCarotRight" *ngIf="connection.id === userId" class="text-warning"></fa-icon>
 							{{ connection.name }}
 							<span [ngClass]="{'text-success' : connection.visibleStats.total > 0,
 																						  'text-danger' : connection.visibleStats.total < 0}">
@@ -61,8 +59,8 @@
 					</ng-container>
 				</div>
 
-				<button (click)="toggleChart()"
-					class="btn btn-outline-primary btn-sm d-none d-xl-inline-block float-end" *ngIf="showChart">
+				<button (click)="toggleChart()" class="btn btn-outline-primary btn-sm d-none d-xl-inline-block float-end"
+					*ngIf="showChart">
 					<fa-icon [icon]="iconChart" class="me-1"></fa-icon>
 					<span>Stop</span>
 					chart mode
@@ -77,15 +75,14 @@
 							<h5>
 								Types
 								<fa-icon class="fs-6" [icon]="iconReverse" role="button" class="reverse-button fs-6"
-									(click)="_record.toggleTypeInverse(); _profile.updateFilters(); updateChart();"
-									[ngClass]="{
+									(click)="_record.toggleTypeInverse(); _profile.updateFilters(); updateChart();" [ngClass]="{
 													'dark': _localstorage.isDarkmode(),
 													'light': !_localstorage.isDarkmode(),
 													'active': _record.inverseFilterRecordType
 													}"></fa-icon>
 							</h5>
-							<span *ngFor="let type of _general.recordTypes" class="filter-item mb-1 d-inline-block"
-								role="button" [ngClass]="{
+							<span *ngFor="let type of _general.recordTypes" class="filter-item mb-1 d-inline-block" role="button"
+								[ngClass]="{
 																				'dark': _localstorage.isDarkmode(),
 																				'light': !_localstorage.isDarkmode(),
 																				'active': hasValue(_record.filterRecordType, type.value)}"
@@ -97,8 +94,7 @@
 							<h5>
 								Casinos
 								<fa-icon class="fs-6" [icon]="iconReverse" role="button" class="reverse-button fs-6"
-									(click)="_record.toggleCasinoInverse(); _profile.updateFilters(); updateChart();"
-									[ngClass]="{
+									(click)="_record.toggleCasinoInverse(); _profile.updateFilters(); updateChart();" [ngClass]="{
 																												'dark': _localstorage.isDarkmode(),
 																												'light': !_localstorage.isDarkmode(),
 																												'active': _record.inverseFilterCasino
@@ -106,8 +102,7 @@
 							</h5>
 							<div class="row">
 								<div class="col-6 ps-0 pe-1">
-									<span
-										*ngFor="let casino of _general.casinos.slice(0, math.ceil(_general.casinos.length / 2))"
+									<span *ngFor="let casino of _general.casinos.slice(0, math.ceil(_general.casinos.length / 2))"
 										class="filter-item mb-1 d-inline-block casino" role="button" [ngClass]="{
 																												'dark': _localstorage.isDarkmode(),
 																												'light': !_localstorage.isDarkmode(),
@@ -182,17 +177,16 @@
 									<td (click)="_record.addOrRemoveFilterCasino(record.casino); _profile.updateFilters(); updateChart();"
 										role="button">
 										{{ record.casino }}</td>
-									<td (click)="_record.addOrRemoveFilterRecordType(record.type); _profile.updateFilters(); updateChart();"
+									<td
+										(click)="_record.addOrRemoveFilterRecordType(record.type); _profile.updateFilters(); updateChart();"
 										role="button">
 										{{ record.type }}
-										<span class="recordNote" *ngIf="record.note.length > 0"
-											[innerHtml]="record.note"></span>
+										<span class="recordNote" *ngIf="record.note.length > 0" [innerHtml]="record.note"></span>
 									</td>
 									<td class="d-none d-md-table-cell text-center">€{{ record.deposit }}</td>
 									<td class="d-none d-md-table-cell text-center">€{{ record.withdrawal }}</td>
 									<td class="text-center fw-bold">
-										<span
-											[ngClass]="(record.withdrawal - record.deposit) >= 0 ? 'text-success' : 'text-danger'">
+										<span [ngClass]="(record.withdrawal - record.deposit) >= 0 ? 'text-success' : 'text-danger'">
 											€{{ record.withdrawal - record.deposit | number:'1.0-2' }}
 										</span>
 									</td>
@@ -206,17 +200,13 @@
 
 					<!-- Show more records -->
 					<div class="d-none d-lg-block text-center mt-2">
-
-
-						<ng-container
-							*ngIf="amountOfRecords < _profile.getUserData(userId).visibleStats.records.length">
+						<ng-container *ngIf="amountOfRecords < _profile.getUserData(userId).visibleStats.records.length">
 							<button class="btn btn-outline-primary btn-sm d-inline-block ms-2"
 								(click)="amountOfRecords = amountOfRecords + 50">
 								Show 50 more
 							</button>
 							<button class="btn btn-outline-primary btn-sm d-inline-block ms-2"
-								[ngClass]="amountOfRecords == 999999999 ? 'active' : ''"
-								(click)="amountOfRecords = 999999999">
+								[ngClass]="amountOfRecords == 999999999 ? 'active' : ''" (click)="amountOfRecords = 999999999">
 								Show all
 							</button>
 						</ng-container>

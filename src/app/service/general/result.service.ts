@@ -181,34 +181,29 @@ export class ResultService {
   // Order user results by record date and created time
   private orderSharedResult(allResults: [string, string, Record[]][]): [string, string, Record[]][] {
     let output: [string, string, Record[]][] = [];
-    let timings: [string, Date, Date][] = [];
+    let timings: [string, Date][] = [];
 
     // loop over users
     for (let index = 0; index < allResults.length; index++) {
       const userResult = allResults[index];
+      if (userResult[2].length === 0) continue;
 
-      let lastRecordedDate = new Date();
       let lastRecordedTime = new Date();
-      lastRecordedDate.setDate(lastRecordedDate.getDate() - 999 * 999);
       lastRecordedTime.setDate(lastRecordedTime.getDate() - 999 * 999);
 
       // loop over records and determine last
       for (let index = 0; index < userResult[2].length; index++) {
         const record = userResult[2][index] as Record;
-        const recordDate = new Date(record.date);
         const recordTime = new Date(record.created_at);
-        if (recordDate >= lastRecordedDate) {
-          lastRecordedDate = recordDate;
 
-          if (recordTime >= lastRecordedTime)
-            lastRecordedTime = recordTime
-        }
-      };
+        if (recordTime >= lastRecordedTime)
+          lastRecordedTime = recordTime;
+      }
 
-      timings.push([userResult[0], lastRecordedDate, lastRecordedTime])
+      timings.push([userResult[0], lastRecordedTime])
     }
 
-    timings = timings.sort((a, b) => (a[2] > b[2]) ? -1 : 1).sort((a, b) => (a[1] > b[1]) ? -1 : 1);
+    timings = timings.sort((a, b) => (a[1] > b[1]) ? -1 : 1);
 
     // loop over sorted timings and add to output
     for (let index = 0; index < timings.length; index++)
