@@ -1,7 +1,0 @@
-<div class="input">
-	<label *ngIf="label.length > 0" [for]="label">
-		{{ label }}
-	</label>
-	<input type="text" [(ngModel)]="input" (ngModelChange)="onModelChange($event)" [placeholder]="placeholder"
-		[id]="label" #textInput="ngModel" class="form-control" maxlength="{{ maxLength }}" />
-</div>

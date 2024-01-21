@@ -1,0 +1,32 @@
+@import "../variables.less";
+
+.card {
+    margin-bottom: 0.5rem;
+
+    .card-title {
+        margin-bottom: 0;
+    }
+
+    .card-body {
+        padding: 0.5rem;
+    
+        .table {
+            margin-bottom: 0;
+
+            th, tr, td {
+                border: none;
+            }
+
+            tr.record-today {
+                td {
+                    color: @text-1 !important;
+                }
+            }
+
+            td {
+                color: @text-2 !important;
+                padding: 0 0.5rem;
+            }
+        }
+    }
+}

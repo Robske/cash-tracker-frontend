@@ -1,0 +1,140 @@
+@import "app/variables.less";
+
+@font-face {
+	font-family: 'Chakra-Petch';
+	src: url(/assets/fonts/chakra_petch/ChakraPetch-Regular.ttf) format("truetype");
+}
+
+@font-face {
+	font-family: 'Alegreya-sans';
+	src: url(/assets/fonts/alegreya_sans/AlegreyaSans-Regular.ttf) format("truetype");
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+nav {
+	font-family: 'Chakra-Petch';
+
+	li.nav-item {
+		padding: 0 .25rem;
+	}
+}
+
+body {
+    background-color: @main-1;
+    color: @text-1;
+    font-size: 1rem;
+	font-family: 'Alegreya-sans', sans-serif;
+}
+
+p {
+    margin: 0.5rem 0;
+}
+
+hr {
+	border-top: 2px solid;
+	opacity: 1;
+}
+
+.bread-crumb {
+    color: @text-2;
+    text-decoration: none;
+}
+
+.overflow {
+    max-height: calc(~"100vh - 125px");
+    overflow-y: auto;
+}
+
+tr {
+    &:hover {
+        .record-comment {
+            display: block;
+        }
+    }
+}
+
+td {
+    .record-comment {
+        display: none;
+        position: absolute;
+        margin-top: -0.1rem;
+        max-width: 30rem;
+        padding: 0.25rem 0.75rem;
+        background-color: @main-1;
+        border: 2px solid @main-3;
+        border-radius: 10px;
+        z-index: 2;
+        font-weight: normal;
+        border-color: #fff;
+    }
+
+}
+
+.w-1 {
+    min-width: 1rem;
+}
+
+.w-2 {
+    min-width: 2rem;
+}
+
+.w-3 {
+    min-width: 3rem;
+}
+
+.w-4 {
+    min-width: 4rem;
+}
+
+.w-5 {
+    min-width: 5rem;
+}
+
+.w-6 {
+    min-width: 6rem;
+}
+
+.w-13 {
+    min-width: 13rem;
+}
+
+// override bootstrap classes
+nav {
+    margin: 0.5rem;
+    margin-top: 0;
+
+    &.bg-dark {
+        background-color: @main-1 !important;
+        border-bottom: 1px solid @main-2;
+    }
+
+}
+
+.table {
+    border-radius: 10px;
+    th, tr, td  {
+        background-color: @main-1 !important;
+    }
+}
+
+.table-vertical {
+    th, tr, td  {
+        border-bottom: none;
+        border-left: 1px solid @main-3;
+    }
+}
+
+.card {
+    background-color: @main-1 !important;
+    border: 2px solid @main-3;
+    color: @text-1 !important;
+}
+
+.text-success {
+	color: rgb(0, 170, 50) !important;
+}

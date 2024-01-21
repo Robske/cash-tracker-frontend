@@ -3,11 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cash-tracker": {
+    "next-tracker": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "less"
         }
       },
       "root": "",
@@ -17,25 +17,25 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/cash-tracker",
+            "outputPath": "dist/next-tracker",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
+            "inlineStyleLanguage": "less",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
               "node_modules/bootstrap/scss/bootstrap.scss",
-              "src/styles.scss"
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+              "src/styles.less"
             ],
             "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "node_modules/apexcharts/dist/apexcharts.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
           },
           "configurations": {
@@ -43,8 +43,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "cash-tracker:build:production"
+              "browserTarget": "next-tracker:build:production"
             },
             "development": {
-              "browserTarget": "cash-tracker:build:development"
+              "browserTarget": "next-tracker:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "cash-tracker:build"
+            "browserTarget": "next-tracker:build"
           }
         },
         "test": {
@@ -91,13 +91,13 @@
               "zone.js/testing"
             ],
             "tsConfig": "tsconfig.spec.json",
-            "inlineStyleLanguage": "scss",
+            "inlineStyleLanguage": "less",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.less"
             ],
             "scripts": []
           }

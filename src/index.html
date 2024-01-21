@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>CashTracker</title>
+  <title>NextTracker</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -12,34 +12,5 @@
 <body>
   <app-root></app-root>
 </body>
-
-<script>
-  function checkOnlineFocus() {
-    if (document.hasFocus() && localStorage.getItem('userId') != null) {
-      let xhr = new XMLHttpRequest();
-      xhr.open("GET", 'https://vps.robalma.nl:5002/user/ping/' + localStorage.getItem('userId'));
-      xhr.send();
-      xhr.responseType = "json";
-    }
-  }
-
-  function checkPatch() {
-    let xhr = new XMLHttpRequest();
-    xhr.open("GET", 'https://vps.robalma.nl:5002/uptime/patch/current');
-    xhr.send();
-    xhr.responseType = "json";
-
-    xhr.onload = () => {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        if (xhr.response[0] != document.getElementById("current-patch").textContent)
-          location.reload(true);
-      }
-    };
-
-  }
-
-  setInterval(checkOnlineFocus, 1000 * 5);
-  setInterval(checkPatch, 1000 * 30);
-</script>
 
 </html>

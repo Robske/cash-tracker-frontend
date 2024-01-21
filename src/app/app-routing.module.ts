@@ -1,21 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './page/home/home.component';
-import { LoginComponent } from './page/login/login.component';
-import { RecordSharedComponent } from './page/record/record-shared/record-shared.component';
-import { RecordCreateComponent } from './page/record/record-create/record-create.component';
-import { UserProfileComponent } from './page/user/user-profile/user-profile.component';
-import { RecordManageComponent } from './page/record/record-manage/record-manage.component';
-import { UserSettingsComponent } from './page/user/user-settings/user-settings.component';
+import { OverviewComponent } from './overview/overview.component';
+import { OverviewChannelComponent } from './overview-channel/overview-channel.component';
+import { ProfileComponent } from './profile/profile.component';
+import { LoginComponent } from './login/login.component';
+import { ManageComponent } from './manage/manage.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: OverviewComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'shared', component: RecordSharedComponent },
-  { path: 'create', component: RecordCreateComponent },
-  { path: 'manage', component: RecordManageComponent },
-  { path: 'settings', component: UserSettingsComponent },
-  { path: 'profile/:userid', component: UserProfileComponent },
+  { path: 'channel/overview', component: OverviewChannelComponent },
+  { path: 'profile/:userId', component: ProfileComponent },
+  { path: 'manage', component: ManageComponent },
 ];
 
 @NgModule({

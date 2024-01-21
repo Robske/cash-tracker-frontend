@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 text-center">
+            <h3>Login</h3>
+            <form [formGroup]="form" *ngIf="form">
+                <app-text formControlName="username" [maxLength]="20" label="Username" classes="text-center"></app-text>
+                <app-password formControlName="password" label="Password" classes="text-center"></app-password>
+                <button (click)="onSubmit()" class="btn btn-primary w-100 mt-3">Login</button>
+            </form>
+            <hr>
+
+            <app-text [formControl]="usercodeInput" [maxLength]="8" label="8 digit code"
+                classes="text-center"></app-text>
+
+            <div class="error mt-3">
+                <!-- <ng-container *ngIf="loginError">
+                    <fa-icon [icon]="iconLock"></fa-icon> Try again...
+                </ng-container> -->
+            </div>
+        </div>
+    </div>
+</div>

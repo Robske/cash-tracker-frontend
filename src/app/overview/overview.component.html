@@ -1,0 +1,94 @@
+<div class="container" *ngIf="ls.userDayResults.length > 0">
+    <div class="row">
+        <!-- 
+        Summary of the last 7 days
+        -->
+        <div class="col-12">
+            <table class="table table-dark table-vertical">
+                <thead>
+                    <tr>
+                        <th *ngFor="let result of ls.userDayResults">{{ result.key }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td *ngFor="let result of ls.userDayResults">
+                            <span class="fw-bold" [ngClass]="{
+								'text-success' : result.value > 0,
+								'text-danger' : result.value < 0}">
+                                {{ result.value | currency:'EUR':'symbol':'1.2-2' }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 
+            Create a new record
+        -->
+        <div class="col-12">
+            <h2>Create record</h2>
+            <form [formGroup]="form" *ngIf="form">
+                <div class="row">
+                    <div class="col-12 col-lg-4">
+                        <app-date label="Date" [input]="today" formControlName="date"></app-date>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <app-select label="Casino" [options]="lse.casinosToKeyValue(ls.userCasinos)"
+                            placeholder="Selecteer casino" formControlName="casino"></app-select>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <app-select label="Type" [options]="lse.recordtypesToKeyValue(ls.userRecordTypes)"
+                            placeholder="Selecteer type" formControlName="recordType"></app-select>
+                    </div>
+
+                    <div class="col-12 col-lg-8 mt-1">
+                        <app-text label="Notitie ({{ noteLength }}/250)" formControlName="note"
+                            placeholder="Short summary" [maxLength]="250"></app-text>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-2">
+                        <app-number label="Storting" step="0.01" placeholder="0.00"
+                            formControlName="deposit"></app-number>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-2">
+                        <app-number label="Opname" step="0.01" placeholder="0.00"
+                            formControlName="withdrawal"></app-number>
+                    </div>
+                </div>
+
+                <!-- Submit button -->
+                <div class="row">
+                    <div class="col-9"></div>
+                    <div class="col-12 col-lg-3">
+                        <button (click)="onSubmit()" class="btn btn-primary w-100 mt-3">Record opslaan</button>
+                    </div>
+                </div>
+            </form>
+
+            <div *ngIf="createdRecord" class="alert alert-success mt-3 text-center" role="alert">
+                Record aangemaakt!
+            </div>
+        </div>
+
+        <!-- 
+            List of channels that user is connected to
+         -->
+        <div class="col-12">
+            <hr>
+            <h2>Channels</h2>
+            <p class="fst-italic">Currently selected: Cash tracker</p>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Cash tracker</h5>
+                    <p class="card-text">Fanaten die niets anders doen dan de tijd vullen met leuke gokspellen, de
+                        aanpak om hiermee geld te verdienen verschilt per speler.</p>
+                    <a class="btn btn-primary disabled" routerLink="channel/cash-tracker">Select channel</a>
+                </div>
+            </div>
+        </div>
+    </div>

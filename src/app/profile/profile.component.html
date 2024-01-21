@@ -1,0 +1,186 @@
+<div class="container" *ngIf="userId != undefined && ls.getRecordsByUserId(userId).length > 0">
+    <div class="row">
+        <div class="col-12">
+            <h5 class="bread-crumb d-inline-block">Profiel van: {{ ls.getUserConnectionName(userId) }}</h5>
+            <div class="float-end">
+                <span *ngFor="let user of ls.userConnections; let i = index">
+                    <a class="bread-crumb" [routerLink]="['/profile', user.id]" *ngIf="i != 0"> |</a>
+                    <a class="bread-crumb" [routerLink]="['/profile', user.id]"
+                        [ngClass]="user.id == userId ? 'fw-bold' : ''">
+                        {{ ls.getUserConnectionName(user.id) }}
+                    </a>
+                </span>
+            </div>
+        </div>
+        <!-- 
+        Casino / type stats
+        -->
+        <div class="col-6">
+            <div class="profile-results">
+                <h4>Casinos</h4>
+                <div class="row">
+                    <div class="col" *ngFor="let _ of [].constructor(3); let i=index;">
+                        <p
+                            *ngFor="let casinoResult of getCasinoResults().slice(i*math.ceil(getCasinoResults().length/3), i*math.ceil(getCasinoResults().length/3) + math.ceil(getCasinoResults().length/3));">
+                            <span class="w-6">{{ ls.getUserCasinoName(casinoResult.key) }}</span>
+                            <span [ngClass]="{
+                                'text-success': casinoResult.value > 0,
+                                'text-danger': casinoResult.value < 0
+                            }">{{ casinoResult.value | currency:'EUR':'symbol':'1.2-2' }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-results mt-2">
+                <h4>Types</h4>
+                <div class="row">
+                    <div class="col" *ngFor="let _ of [].constructor(2); let i=index;">
+                        <p
+                            *ngFor="let casinoResult of getTypeResults().slice(i*math.ceil(getTypeResults().length/2), i*math.ceil(getTypeResults().length/2) + math.ceil(getTypeResults().length/2));">
+                            <span class="w-13">{{ ls.getUserTypeName(casinoResult.key) }}</span>
+                            <span [ngClass]="{
+                                'text-success': casinoResult.value > 0,
+                                'text-danger': casinoResult.value < 0
+                            }">{{ casinoResult.value | currency:'EUR':'symbol':'1.2-2' }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 
+        Periodic stats
+        -->
+        <div class="col-6">
+            <div class="profile-results overflow">
+                <h4>Periodes</h4>
+                <div class="row">
+                    <ng-container *ngIf="getPeriodResults() != undefined">
+                        <div class="col">
+                            <p *ngFor="let yearResult of getPeriodResults().years">
+                                <span class="w-3">{{ yearResult.key | date: 'Y' }}</span>
+                                <span [ngClass]="{
+                                                            'text-success': yearResult.value > 0,
+                                                            'text-danger': yearResult.value < 0
+                                                        }">
+                                    {{ yearResult.value | currency:'EUR':'symbol':'1.2-2' }}
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col" *ngFor="let _ of [].constructor(2); let i=index;">
+                            <p
+                                *ngFor="let monthResult of getPeriodResults().months.slice(i*math.ceil(getPeriodResults().months.length/2), i*math.ceil(getPeriodResults().months.length/2) + math.ceil(getPeriodResults().months.length/2))">
+                                <span class="w-6">
+                                    {{ getMonthNameFromDate(monthResult.key) | titlecase }} '{{ monthResult.key | date:
+                                    'YY' }}
+                                </span>
+                                <span [ngClass]="{
+                                    'text-success': monthResult.value > 0,
+                                    'text-danger': monthResult.value < 0
+                                }">
+                                    {{ monthResult.value | currency:'EUR':'symbol':'1.2-2' }}
+                                </span>
+                            </p>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <hr>
+        </div>
+        <!-- 
+        Filters
+        -->
+        <div class="col-6">
+            <div>
+                <h2>Casino filters</h2>
+                <button *ngFor="let casino of getUniqueCasinos()" class="btn btn-sm me-1 mb-2 filter-button"
+                    (click)="addOrRemoveCasinoFilter(casino)" [ngClass]="{
+                                    'btn-outline-light': checkCasinoFilter(casino),
+                                    'btn-outline-secondary': !checkCasinoFilter(casino),
+                                }">
+                    {{ ls.getUserCasinoName(casino) }}
+                </button>
+            </div>
+            <div>
+                <h2>Type filters</h2>
+                <button *ngFor="let recordType of getUniqueRecordTypes()" class="btn btn-sm me-1 mb-2 filter-button"
+                    (click)="addOrRemoveRecordTypeFilter(recordType)" [ngClass]="{
+                                    'btn-outline-light': checkRecordTypeFilter(recordType),
+                                    'btn-outline-secondary': !checkRecordTypeFilter(recordType),
+                                }">
+                    {{ ls.getUserTypeName(recordType) }}
+                </button>
+            </div>
+        </div>
+
+        <!-- 
+        List of records 
+        -->
+        <div class="col-6">
+            <div>
+                <p class="d-inline-block">
+                    <span class="fw-bold" [ngClass]="{
+                        'text-success': getRecordStats().netto > 0,
+                        'text-danger': getRecordStats().netto < 0,
+                    } ">{{ getRecordStats().netto | currency:'EUR':'symbol':'1.2-2' }}</span> |
+                    {{ getRecordStats().deposit | currency:'EUR':'symbol':'1.2-2' }} gestort |
+                    {{ getRecordStats().withdraw | currency:'EUR':'symbol':'1.2-2' }} opgenomen |
+                    {{ getRecordStats().amount }} records
+                </p>
+                <button class="btn btn-light btn-sm mb-1 fw-bold float-end" (click)="changeAmountOfShownRecords()">
+                    Onthul/verberg alle records
+                </button>
+            </div>
+            <div class="table-overflow">
+                <table class="table table-dark border-top">
+                    <tbody>
+                        <p *ngIf="getFilteredRecords().length == 0">Geen records.</p>
+                        <ng-container *ngFor="let record of getFilteredRecords().slice(0, amountOfRecordsShown)">
+                            <tr>
+                                <td class="fw-bold">
+                                    {{ record.date | date: 'dd-MM' }}
+                                    <p class="record-comment" *ngIf="record.notes.length > 0">
+                                        {{ record.notes }}
+                                    </p>
+                                </td>
+                                <td>
+                                    {{ ls.getUserCasinoName(record.casinoId ?? '') }}
+                                </td>
+                                <td>
+                                    {{ ls.getUserTypeName(record.recordTypeId ?? '') }}
+                                </td>
+                                <td class="text-center">
+                                    {{ record.deposit | currency:'EUR':'symbol':'1.2-2' }}
+                                </td>
+                                <td class="text-center">
+                                    {{ record.withdrawal | currency:'EUR':'symbol':'1.2-2' }}
+                                </td>
+                                <td class="text-center">
+                                    <span [ngClass]="{
+                                'text-success': record.withdrawal > record.deposit,
+                                'text-danger': record.withdrawal < record.deposit
+                            }">
+                                        {{ (record.withdrawal - record.deposit) | currency:'EUR':'symbol':'1.2-2' }}
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <ng-container *ngIf="record.notes.length > 0">
+                                        <fa-icon [icon]="faCoffee"></fa-icon>
+                                    </ng-container>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-center"
+                *ngIf="amountOfRecordsShown == 8 && getFilteredRecords().length > amountOfRecordsShown">
+                {{ getFilteredRecords().length - amountOfRecordsShown}} records verborgen ...
+            </p>
+        </div>
+    </div>
+</div>
