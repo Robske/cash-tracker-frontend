@@ -15,11 +15,11 @@
         <!-- 
         Casino / type stats
         -->
-        <div class="col-6">
-            <div class="profile-results">
+        <div class="col-12 col-lg-6">
+            <div class="profile-results overflow mb-2">
                 <h4>Casinos</h4>
                 <div class="row">
-                    <div class="col" *ngFor="let _ of [].constructor(3); let i=index;">
+                    <div class="col-12 col-lg" *ngFor="let _ of [].constructor(3); let i=index;">
                         <p
                             *ngFor="let casinoResult of getCasinoResults().slice(i*math.ceil(getCasinoResults().length/3), i*math.ceil(getCasinoResults().length/3) + math.ceil(getCasinoResults().length/3));">
                             <span class="w-6">{{ ls.getUserCasinoName(casinoResult.key) }}</span>
@@ -31,10 +31,10 @@
                     </div>
                 </div>
             </div>
-            <div class="profile-results mt-2">
+            <div class="profile-results overflow mb-2 mb-lg-0">
                 <h4>Types</h4>
                 <div class="row">
-                    <div class="col" *ngFor="let _ of [].constructor(2); let i=index;">
+                    <div class="col-12 col-lg" *ngFor="let _ of [].constructor(2); let i=index;">
                         <p
                             *ngFor="let casinoResult of getTypeResults().slice(i*math.ceil(getTypeResults().length/2), i*math.ceil(getTypeResults().length/2) + math.ceil(getTypeResults().length/2));">
                             <span class="w-13">{{ ls.getUserTypeName(casinoResult.key) }}</span>
@@ -51,12 +51,12 @@
         <!-- 
         Periodic stats
         -->
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
             <div class="profile-results overflow">
                 <h4>Periodes</h4>
                 <div class="row">
                     <ng-container *ngIf="getPeriodResults() != undefined">
-                        <div class="col">
+                        <div class="col-12 col-lg">
                             <p *ngFor="let yearResult of getPeriodResults().years">
                                 <span class="w-3">{{ yearResult.key | date: 'Y' }}</span>
                                 <span [ngClass]="{
@@ -67,7 +67,7 @@
                                 </span>
                             </p>
                         </div>
-                        <div class="col" *ngFor="let _ of [].constructor(2); let i=index;">
+                        <div class="col-12 col-lg" *ngFor="let _ of [].constructor(2); let i=index;">
                             <p
                                 *ngFor="let monthResult of getPeriodResults().months.slice(i*math.ceil(getPeriodResults().months.length/2), i*math.ceil(getPeriodResults().months.length/2) + math.ceil(getPeriodResults().months.length/2))">
                                 <span class="w-6">
@@ -94,7 +94,7 @@
         <!-- 
         Filters
         -->
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
             <div>
                 <h2>Casino filters</h2>
                 <button *ngFor="let casino of getUniqueCasinos()" class="btn btn-sm me-1 mb-2 filter-button"
@@ -120,8 +120,11 @@
         <!-- 
         List of records 
         -->
-        <div class="col-6">
-            <div>
+        <div class="col-12 col-lg-6">
+            <div class="d-block d-lg-inline-block w-100">
+                <button class="btn btn-light btn-sm mb-1 fw-bold float-end" (click)="changeAmountOfShownRecords()">
+                    Onthul/verberg alle records
+                </button>
                 <p class="d-inline-block">
                     <span class="fw-bold" [ngClass]="{
                         'text-success': getRecordStats().netto > 0,
@@ -131,10 +134,8 @@
                     {{ getRecordStats().withdraw | currency:'EUR':'symbol':'1.2-2' }} opgenomen |
                     {{ getRecordStats().amount }} records
                 </p>
-                <button class="btn btn-light btn-sm mb-1 fw-bold float-end" (click)="changeAmountOfShownRecords()">
-                    Onthul/verberg alle records
-                </button>
             </div>
+
             <div class="table-overflow">
                 <table class="table table-dark border-top">
                     <tbody>
