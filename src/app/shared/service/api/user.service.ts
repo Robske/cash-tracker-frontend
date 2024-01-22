@@ -14,6 +14,10 @@ export class UserService {
     return this.client.get(environment.api + 'user/login-by-username?username=' + username + '&password=' + password, { responseType: 'json' });
   }
 
+  public loginByCode(code: string): Observable<any> {
+    return this.client.get(environment.api + 'user/login-by-code?code=' + code, { responseType: 'json' });
+  }
+
   public getConnectionsByUser(userId: string): Observable<any> {
     return this.client.get(environment.api + 'user/connections?requester=' + userId, { responseType: 'json' });
   }

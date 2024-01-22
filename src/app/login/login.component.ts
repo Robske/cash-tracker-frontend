@@ -19,7 +19,7 @@ export class LoginComponent {
   public loginError = false;
   // public iconLock = faLock;
 
-  constructor(private formBuilder: FormBuilder, private ls: LocalstorageService, private router: Router, private userApi: UserService) {
+  constructor(private formBuilder: FormBuilder, private ls: LocalstorageService, private router: Router, private user: UserService) {
     this.form = this.formBuilder.group({
       username: this.formBuilder.nonNullable.control('', { validators: [Validators.required,] }),
       password: this.formBuilder.nonNullable.control('', { validators: [Validators.required,] }),
@@ -30,13 +30,16 @@ export class LoginComponent {
       debounceTime(250),
     ).subscribe(async (code) => {
       if (code.length === 8) {
-        // _user.loginByCode(code).subscribe((result: boolean) => {
-        //   this.loginError = !result;
-        //   if (result) {
-        //     _localstorage.setUserLoginMethod('code');
-        //     _router.navigate(['']);
-        //   }
-        // });
+        user.loginByCode(code).subscribe(response => {
+          if (!response.loginSuccess)
+            return;
+
+          this.ls.setUser(<User>response.user);
+          this.ls.setToken(response.token);
+          this.ls.setLoginMethod('password');
+          this.ls.preLoadData();
+          this.router.navigate(['']);
+        });
       }
       else if (code.length > 8)
         this.usercodeInput.setValue(code.substring(0, 8));
@@ -47,7 +50,7 @@ export class LoginComponent {
     if (this.form?.valid) {
       const values = this.form.value;
 
-      this.userApi.loginByUsername(values.username, values.password).subscribe(response => {
+      this.user.loginByUsername(values.username, values.password).subscribe(response => {
         if (!response.loginSuccess)
           return;
 
