@@ -22,6 +22,7 @@
                     </tr>
                 </tbody>
             </table>
+            <hr>
         </div>
 
         <!-- 
@@ -45,7 +46,7 @@
                             placeholder="Selecteer type" formControlName="recordType"></app-select>
                     </div>
 
-                    <div class="col-12 col-lg-8 mt-1">
+                    <div class="col-12 col-lg-8">
                         <app-text label="Notitie ({{ noteLength }}/250)" formControlName="note"
                             placeholder="Short summary" [maxLength]="250"></app-text>
                     </div>
@@ -73,6 +74,113 @@
             <div *ngIf="createdRecord" class="alert alert-success mt-3 text-center" role="alert">
                 Record aangemaakt!
             </div>
+            <hr>
+        </div>
+
+        <!-- 
+        Table with the records of today
+        -->
+        <div class="col-12 col-md-6">
+            <h2>{{ header }}</h2>
+            <p *ngIf="ls.recordsToday.length == 0">Nog geen records vandaag.</p>
+            <table class="table table-dark" *ngIf="ls.recordsToday.length > 0">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Casino</th>
+                        <th scope="col">Type</th>
+                        <th scope="col" class="text-center">Storting</th>
+                        <th scope="col" class="text-center">Opname</th>
+                        <th scope="col" class="text-center">Netto</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let record of ls.recordsToday">
+                        <td class="fw-bold">
+                            <span [routerLink]="['/profile', record.userId]" role="button">
+                                {{ ls.getUserConnectionName(record.userId ?? '') }}
+                            </span>
+                            <p class="record-comment" *ngIf="record.notes.length > 0">
+                                {{ record.notes }}
+                            </p>
+                        </td>
+                        <td>
+                            {{ ls.getCasinoName(record.casinoId ?? '') }}
+                        </td>
+                        <td>
+                            {{ ls.getUserTypeName(record.recordTypeId ?? '') }}
+                        </td>
+                        <td class="text-center">
+                            {{ record.deposit | currency:'EUR':'symbol':'1.2-2' }}
+                        </td>
+                        <td class="text-center">
+                            {{ record.withdrawal | currency:'EUR':'symbol':'1.2-2' }}
+                        </td>
+                        <td class="text-center">
+                            <span [ngClass]="{
+                                                            'text-success': record.withdrawal > record.deposit,
+                                                            'text-danger': record.withdrawal < record.deposit
+                                                        }">
+                                {{ (record.withdrawal - record.deposit) | currency:'EUR':'symbol':'1.2-2' }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <ng-container *ngIf="record.notes.length > 0">
+                                <fa-icon [icon]="faComment"></fa-icon>
+                            </ng-container>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 
+        Table with the results of all players
+        -->
+        <div class="col-12 col-md-6">
+            <h2>Resultaat</h2>
+            <table class="table table-dark">
+                <thead>
+                    <tr class="border-start-0">
+                        <th scope="col" class="border-start-0"></th>
+                        <th scope="col">Vandaag</th>
+                        <th scope="col">30 dagen</th>
+                        <th scope="col">Totaal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let result of ls.sharedNettoResults">
+                        <td class="fw-bold">
+                            <span [routerLink]="['/profile', result.userId]" role="button">
+                                {{ ls.getUserConnectionName(result.userId) }}
+                            </span>
+                        </td>
+                        <td [ngClass]="{
+                                            'text-success': result.today > 0,
+                                            'text-danger': result.today < 0
+                                        
+                                        }">
+                            {{ result.today | currency:'EUR':'symbol':'1.2-2' }}
+                        </td>
+                        <td [ngClass]="{
+                                            'text-success': result.last30Days > 0,
+                                            'text-danger': result.last30Days < 0
+                                        
+                                        }">
+                            {{ result.last30Days | currency:'EUR':'symbol':'1.2-2' }}
+                        </td>
+                        <td [ngClass]="{
+                                            'text-success': result.alltime > 0,
+                                            'text-danger': result.alltime < 0
+                                        
+                                        }">
+                            {{ result.alltime | currency:'EUR':'symbol':'1.2-2' }}
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
         </div>
 
         <!-- 

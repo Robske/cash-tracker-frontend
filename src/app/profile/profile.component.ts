@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LocalstorageService } from '../shared/service/localstorage.service';
-import { IconDefinition, faMugHot } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition, faComment } from '@fortawesome/free-solid-svg-icons';
 import { Record } from '../shared/model/record';
 import { KeyValue } from '@angular/common';
 import { ProfilePeriodResult } from '../shared/model/ProfilePeriodResult';
@@ -15,7 +15,7 @@ import { LocalstorageExtensionService } from '../shared/service/localstorage-ext
 })
 export class ProfileComponent {
   public amountOfRecordsShown: number = 8;
-  public faCoffee: IconDefinition = faMugHot;
+  public faComment: IconDefinition = faComment;
   public filterCasinos: string[] = [];
   public filterRecordTypes: string[] = [];
   public filteredRecordsLength: number = 0;

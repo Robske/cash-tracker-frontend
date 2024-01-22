@@ -7,7 +7,7 @@
       <div class="nav-link active">Ingelogd als: {{ ls.getUserConnectionName(ls.getUserId()) }}</div>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="">Home</a>
+      <a class="nav-link" routerLink="">Aanmaken</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" routerLink="channel/overview">Overzicht</a>
@@ -16,13 +16,13 @@
       <a class="nav-link" routerLink="profile/{{ ls.getUserId() }}">Profiel</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="manage">Manage records</a>
+      <a class="nav-link" routerLink="manage">Beheer</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="settings">Settings</a>
+      <a class="nav-link" routerLink="settings">Instellingen</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" (click)="logout()" role="button">Logout</a>
+      <a class="nav-link" (click)="logout()" role="button">Uitloggen</a>
     </li>
   </ul>
 </nav>

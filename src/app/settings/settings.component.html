@@ -8,8 +8,8 @@
                 <h4>Connections</h4>
                 <ng-container *ngFor="let user of ls.users">
                     <div *ngIf="user.id != ls.getUserId()" class="btn btn-sm d-block mb-2" [ngClass]="{
-                    'btn-outline-light': isConnection(user.id),
-                    'btn-outline-danger': !isConnection(user.id)
+                    'btn-light': isConnection(user.id),
+                    'btn-outline-light': !isConnection(user.id)
                     }" (click)="toggleConnection(user.id)">
                         {{ user.name }}
                     </div>
@@ -22,9 +22,9 @@
             <div class="col-12 col-sm-6 col-md-4">
                 <h4>Types</h4>
                 <div *ngFor="let type of ls.types" class="btn btn-sm d-block mb-2" [ngClass]="{
-                                                'btn-outline-light': !isIgnoreType(type.id),
-                                                'btn-outline-danger': isIgnoreType(type.id)
-                                                }" (click)="toggleType(type.id)">
+                'btn-light': !isIgnoreType(type.id),
+                'btn-outline-light': isIgnoreType(type.id)
+                }" (click)="toggleType(type.id)">
                     {{ type.name }}
                 </div>
             </div>
@@ -38,9 +38,9 @@
                     <div class="col-12 col-sm" *ngFor="let _ of [].constructor(2); let i=index;">
                         <div *ngFor="let casino of ls.casinos.slice(i*math.ceil(ls.casinos.length/2), i*math.ceil(ls.casinos.length/2) + math.ceil(ls.casinos.length/2))"
                             class="btn btn-sm d-block mb-2" [ngClass]="{
-                                    'btn-outline-light': !isIgnoreCasino(casino.id),
-                                    'btn-outline-danger': isIgnoreCasino(casino.id)
-                                    }" (click)="toggleCasino(casino.id)">
+                            'btn-light': !isIgnoreCasino(casino.id),
+                            'btn-outline-light': isIgnoreCasino(casino.id)
+                            }" (click)="toggleCasino(casino.id)">
                             {{ casino.name }}
                         </div>
                     </div>

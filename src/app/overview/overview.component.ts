@@ -1,15 +1,11 @@
 import { Component } from '@angular/core';
-import { ResultService } from '../shared/service/api/result.service';
 import { LocalstorageService } from '../shared/service/localstorage.service';
 import { DatePipe, KeyValue } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CasinoService } from '../shared/service/api/casino.service';
-import { RecordtypeService } from '../shared/service/api/recordtype.service';
-import { Casino } from '../shared/model/casino';
-import { RecordType } from '../shared/model/recordtype';
 import { Record } from '../shared/model/record';
 import { RecordService } from '../shared/service/api/record.service';
 import { LocalstorageExtensionService } from '../shared/service/localstorage-extension.service';
+import { IconDefinition, faComment } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-overview',
@@ -19,7 +15,7 @@ import { LocalstorageExtensionService } from '../shared/service/localstorage-ext
 export class OverviewComponent {
 
   private noDepositRecordTypes: string[] = ['01gsrdhg3mw1k3js39affqpm33', '01gv62fx2y01bp2xf0p72z50z5', '01gx3y2jeyeh3298e2sd76qkhr'];
-
+  public faComment: IconDefinition = faComment;
   public createdRecord: boolean = false;
   public casinos: KeyValue<string, string>[] = [];
   public recordTypes: KeyValue<string, string>[] = [];
@@ -28,9 +24,17 @@ export class OverviewComponent {
   public noteLength: number = 0;
   public today: string;
 
+  public header: string = '';
+  public weekday: string = '';
+  public daynumber: number = 0;
+  public month: string = '';
+  public todayDate: Date = new Date();
+
   constructor(private datePipe: DatePipe, private formBuilder: FormBuilder, public ls: LocalstorageService, public lse: LocalstorageExtensionService, private record: RecordService) {
     this.today = datePipe.transform(new Date(), 'yyyy-MM-dd') || '2020-01-01'
     setInterval(() => this.today = datePipe.transform(new Date(), 'yyyy-MM-dd') || '2020-01-01');
+    this.setHeader();
+    setInterval(() => this.setHeader, 10000);
 
     this.form = this.formBuilder.group({
       date: this.formBuilder.nonNullable.control(this.today, { validators: [Validators.required] }),
@@ -52,6 +56,17 @@ export class OverviewComponent {
     this.form.get('note')?.valueChanges.subscribe(val => {
       this.noteLength = val.length;
     });
+  }
+
+  private setHeader(): void {
+    this.todayDate = new Date();
+    this.weekday = this.todayDate.toLocaleString('default', { weekday: 'long' });
+    this.weekday = this.lse.weekdays[this.todayDate.getDay()];
+    this.daynumber = this.todayDate.getDate();
+    this.month = this.lse.monthNamesLong[this.todayDate.getMonth()]
+
+    this.header = this.weekday + ', ' + this.daynumber + ' ' + this.month;
+    this.header = this.header[0].toUpperCase() + this.header.slice(1);
   }
 
   public onSubmit() {
@@ -77,6 +92,7 @@ export class OverviewComponent {
 
       this.record.create(newRecord).subscribe((response: any) => {
         this.createdRecord = response;
+        this.ls.loadAppData();
       });
     }
   }
