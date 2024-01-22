@@ -40,7 +40,7 @@ export class LocalstorageExtensionService {
         dayResults.push({ key: dayHeader, value: dayResult });
       }
 
-      observable.next(dayResults);
+      observable.next(dayResults.reverse());
     });
 
     return observable;
