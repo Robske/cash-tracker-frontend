@@ -18,7 +18,7 @@ export class SelectComponent implements ControlValueAccessor {
   @Input() label = '';
   @Input() placeholder = '';
   @Input() options: KeyValue<string, string>[] = [];
-  public selected?: string;
+  public selected: string | undefined;
 
   public onChange: any = () => {
     //callback
@@ -29,6 +29,8 @@ export class SelectComponent implements ControlValueAccessor {
   };
 
   public onSelect($event: any): void {
+    this.selected = this.options.find((x: KeyValue<string, string>) => x.value === $event.target.value)?.key;
+
     this.onChange(  //return key instead of value
       this.options?.filter((x: KeyValue<string, string>) =>
         x.value === ($event.target as HTMLSelectElement).value)[0].key);
