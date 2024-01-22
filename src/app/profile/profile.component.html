@@ -22,7 +22,7 @@
                     <div class="col-12 col-lg" *ngFor="let _ of [].constructor(3); let i=index;">
                         <p
                             *ngFor="let casinoResult of getCasinoResults().slice(i*math.ceil(getCasinoResults().length/3), i*math.ceil(getCasinoResults().length/3) + math.ceil(getCasinoResults().length/3));">
-                            <span class="w-6">{{ ls.getUserCasinoName(casinoResult.key) }}</span>
+                            <span class="w-6">{{ ls.getCasinoName(casinoResult.key) }}</span>
                             <span [ngClass]="{
                                 'text-success': casinoResult.value > 0,
                                 'text-danger': casinoResult.value < 0
@@ -99,18 +99,18 @@
                 <h2>Casino filters</h2>
                 <button *ngFor="let casino of getUniqueCasinos()" class="btn btn-sm me-1 mb-2 filter-button"
                     (click)="addOrRemoveCasinoFilter(casino)" [ngClass]="{
-                                    'btn-outline-light': checkCasinoFilter(casino),
-                                    'btn-outline-secondary': !checkCasinoFilter(casino),
+                                    'btn-outline-light': checkCasinoFilter(casino) || filterCasinos.length == 0,
+                                    'btn-outline-secondary': !checkCasinoFilter(casino) && filterCasinos.length > 0,
                                 }">
-                    {{ ls.getUserCasinoName(casino) }}
+                    {{ ls.getCasinoName(casino) }}
                 </button>
             </div>
             <div>
                 <h2>Type filters</h2>
                 <button *ngFor="let recordType of getUniqueRecordTypes()" class="btn btn-sm me-1 mb-2 filter-button"
                     (click)="addOrRemoveRecordTypeFilter(recordType)" [ngClass]="{
-                                    'btn-outline-light': checkRecordTypeFilter(recordType),
-                                    'btn-outline-secondary': !checkRecordTypeFilter(recordType),
+                                    'btn-outline-light': checkRecordTypeFilter(recordType) || filterRecordTypes.length == 0,
+                                    'btn-outline-secondary': !checkRecordTypeFilter(recordType) && filterRecordTypes.length > 0,
                                 }">
                     {{ ls.getUserTypeName(recordType) }}
                 </button>
@@ -149,7 +149,7 @@
                                     </p>
                                 </td>
                                 <td>
-                                    {{ ls.getUserCasinoName(record.casinoId ?? '') }}
+                                    {{ ls.getCasinoName(record.casinoId ?? '') }}
                                 </td>
                                 <td>
                                     {{ ls.getUserTypeName(record.recordTypeId ?? '') }}

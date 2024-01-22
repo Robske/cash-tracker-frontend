@@ -34,7 +34,7 @@ export class ManageComponent {
   }
 
   public deleteRecord(id: string) {
-    this.record.delete(id, this.ls.getUserId()).subscribe(response => this.ls.preLoadData());
+    this.record.delete(id, this.ls.getUserId()).subscribe(response => this.ls.loadAppData());
   }
 
   public onSubmit() {
@@ -48,7 +48,7 @@ export class ManageComponent {
 
       this.record.update(this.editRecord).subscribe(response => {
         this.editRecord = undefined;
-        this.ls.preLoadData();
+        this.ls.loadAppData();
       });
     }
   }

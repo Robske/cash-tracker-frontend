@@ -5,6 +5,7 @@ import { OverviewChannelComponent } from './overview-channel/overview-channel.co
 import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component';
 import { ManageComponent } from './manage/manage.component';
+import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
   { path: '', component: OverviewComponent },
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'channel/overview', component: OverviewChannelComponent },
   { path: 'profile/:userId', component: ProfileComponent },
   { path: 'manage', component: ManageComponent },
+  { path: 'settings', component: SettingsComponent },
 ];
 
 @NgModule({

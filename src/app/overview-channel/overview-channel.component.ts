@@ -19,11 +19,17 @@ export class OverviewChannelComponent {
   public month: string = '';
   public today: Date = new Date();
 
-  constructor(public ls: LocalstorageService, public lsExtension: LocalstorageExtensionService, record: RecordService) {
+  constructor(public ls: LocalstorageService, public lse: LocalstorageExtensionService, record: RecordService) {
+    this.setHeader();
+    setInterval(() => this.setHeader, 10000);
+  }
+
+  private setHeader(): void {
+    this.today = new Date();
     this.weekday = this.today.toLocaleString('default', { weekday: 'long' });
-    this.weekday = lsExtension.weekdays[this.today.getDay()];
+    this.weekday = this.lse.weekdays[this.today.getDay()];
     this.daynumber = this.today.getDate();
-    this.month = lsExtension.monthNamesLong[this.today.getMonth()]
+    this.month = this.lse.monthNamesLong[this.today.getMonth()]
 
     this.header = this.weekday + ', ' + this.daynumber + ' ' + this.month;
     this.header = this.header[0].toUpperCase() + this.header.slice(1);

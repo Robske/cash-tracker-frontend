@@ -104,7 +104,7 @@ export class ProfileComponent {
 
   public getUniqueCasinos(): string[] {
     let casinos: string[] = [...new Set(this.ls.getRecordsByUserId(this.userId ?? '').map((item) => item.casinoId ?? ''))];
-    casinos.sort((a, b) => this.ls.getUserCasinoName(a).localeCompare(this.ls.getUserCasinoName(b)));
+    casinos.sort((a, b) => this.ls.getCasinoName(a).localeCompare(this.ls.getCasinoName(b)));
     return casinos;
   }
 

@@ -78,6 +78,12 @@ export class LocalstorageExtensionService {
     return observable;
   }
 
+  public loadCasinosByUser(userId: string): Observable<Casino[]> {
+    const observable: Subject<Casino[]> = new Subject<Casino[]>();
+    this.casino.getAllByUser(userId).subscribe((response: Casino[]) => observable.next(response));
+    return observable;
+  }
+
   public casinosToKeyValue(casinos: Casino[]): KeyValue<string, string>[] {
     let result: KeyValue<string, string>[] = [];
 
@@ -120,6 +126,12 @@ export class LocalstorageExtensionService {
     return observable;
   }
 
+  public loadRecordTypesByUser(userId: string): Observable<RecordType[]> {
+    const observable: Subject<RecordType[]> = new Subject<RecordType[]>();
+    this.recordType.getAllByUser(userId).subscribe((response: RecordType[]) => observable.next(response));
+    return observable;
+  }
+
   public recordtypesToKeyValue(recordTypes: RecordType[]): KeyValue<string, string>[] {
     let result: KeyValue<string, string>[] = [];
 
@@ -132,22 +144,17 @@ export class LocalstorageExtensionService {
   }
   // #endregion
 
-  // #region connections
+  // #region users/connections
+  public loadUsers(): Observable<User[]> {
+    const observable: Subject<User[]> = new Subject<User[]>();
+    this.user.getAll().subscribe((response: User[]) => observable.next(response));
+    return observable;
+  }
+
   public loadConnections(userId: string): Observable<User[]> {
     const observable: Subject<User[]> = new Subject<User[]>();
     this.user.getConnectionsByUser(userId).subscribe((response: User[]) => observable.next(response));
     return observable;
-  }
-
-  public connectionsToKeyValue(connections: User[]): KeyValue<string, string>[] {
-    let result: KeyValue<string, string>[] = [];
-
-    for (let i = 0; i < connections.length; i++) {
-      result.push({ key: connections[i].id, value: connections[i].name });
-    }
-
-    result.sort((a, b) => (a.value > b.value ? 1 : -1));
-    return result;
   }
   // #endregion
 }

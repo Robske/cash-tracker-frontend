@@ -15,9 +15,12 @@ export class LocalstorageService {
 
   constructor(private localstorageExtension: LocalstorageExtensionService) { }
 
-  public preLoadData(): void {
-    this.localstorageExtension.loadCasinos().subscribe((response: Casino[]) => this._userCasinos = response);
-    this.localstorageExtension.loadRecordTypes().subscribe((response: RecordType[]) => this._userTypes = response);
+  public loadAppData(): void {
+    console.log('loading data');
+    this.localstorageExtension.loadCasinos().subscribe((response: Casino[]) => this._casinos = response);
+    this.localstorageExtension.loadCasinosByUser(this.getUserId()).subscribe((response: Casino[]) => this._userIgnoreCasinos = response);
+    this.localstorageExtension.loadRecordTypes().subscribe((response: RecordType[]) => this._types = response);
+    this.localstorageExtension.loadRecordTypesByUser(this.getUserId()).subscribe((response: RecordType[]) => this._userIgnoreTypes = response);
     this.localstorageExtension.loadConnections(this.getUserId()).subscribe((response: User[]) => this._userConnections = response);
     this.localstorageExtension.loadAllRecords(this.getUserId()).subscribe((response: KeyValue<string, Record[]>[]) => this._allRecords = response);
     this.localstorageExtension.loadRecordsToday(this.getUserId()).subscribe((response: Record[]) => this._recordsToday = response);
@@ -27,6 +30,7 @@ export class LocalstorageService {
     this.localstorageExtension.loadCasinoNettoResults(this.getUserId()).subscribe((response: KeyValue<string, KeyValue<string, number>[]>[]) => this._casinoNettoResults = response);
     this.localstorageExtension.loadPeriodNettoResults(this.getUserId()).subscribe((response: ProfilePeriodResult[]) => this._periodNettoResults = response);
     this.localstorageExtension.loadTypeNettoResults(this.getUserId()).subscribe((response: KeyValue<string, KeyValue<string, number>[]>[]) => this._typeNettoResults = response);
+    this.localstorageExtension.loadUsers().subscribe((response: User[]) => this._users = response);
   }
 
   // #region user
@@ -126,18 +130,32 @@ export class LocalstorageService {
   // #endregion
 
   // #region casino
-  private _userCasinos: Casino[] | undefined;
-  public get userCasinos(): Casino[] {
-    if (this._userCasinos === undefined) {
-      this._userCasinos = [];
-      this.localstorageExtension.loadCasinos().subscribe((response: Casino[]) => this._userCasinos = response);
+  private _casinos: Casino[] | undefined;
+  public get casinos(): Casino[] {
+    if (this._casinos === undefined) {
+      this._casinos = [];
+      this.localstorageExtension.loadCasinos().subscribe((response: Casino[]) => this._casinos = response);
     }
 
-    return this._userCasinos;
+    return this._casinos;
   }
 
-  public getUserCasinoName(id: string): string {
-    return this.userCasinos.find(casino => casino.id === id)?.name ?? '';
+  private _userIgnoreCasinos: Casino[] | undefined;
+  public get userIgnoreCasinos(): Casino[] {
+    if (this._userIgnoreCasinos === undefined) {
+      this._userIgnoreCasinos = [];
+      this.localstorageExtension.loadCasinosByUser(this.getUserId()).subscribe((response: Casino[]) => this._userIgnoreCasinos = response);
+    }
+
+    return this._userIgnoreCasinos;
+  }
+
+  public getUserCasinos(): Casino[] {
+    return this.casinos.filter(casino => this.userIgnoreCasinos.find(userCasino => userCasino.id === casino.id) !== undefined);
+  }
+
+  public getCasinoName(id: string): string {
+    return this.casinos.find(casino => casino.id === id)?.name ?? '';
   }
   // #endregion
 
@@ -177,22 +195,46 @@ export class LocalstorageService {
   // #endregion
 
   // #region recordType
-  private _userTypes: RecordType[] | undefined;
-  public get userRecordTypes(): RecordType[] {
-    if (this._userTypes === undefined) {
-      this._userTypes = [];
-      this.localstorageExtension.loadRecordTypes().subscribe((response: RecordType[]) => this._userTypes = response);
+  private _types: RecordType[] | undefined;
+  public get types(): RecordType[] {
+    if (this._types === undefined) {
+      this._types = [];
+      this.localstorageExtension.loadRecordTypes().subscribe((response: RecordType[]) => this._types = response);
     }
 
-    return this._userTypes;
+    return this._types;
+  }
+
+  private _userIgnoreTypes: RecordType[] | undefined;
+  public get userIgnoreTypes(): RecordType[] {
+    if (this._userIgnoreTypes === undefined) {
+      this._userIgnoreTypes = [];
+      this.localstorageExtension.loadRecordTypesByUser(this.getUserId()).subscribe((response: RecordType[]) => this._userIgnoreTypes = response);
+    }
+
+    return this._userIgnoreTypes;
+  }
+
+  public getUserTypes(): RecordType[] {
+    return this.types.filter(type => this.userIgnoreTypes.find(userType => userType.id === type.id) !== undefined);
   }
 
   public getUserTypeName(id: string): string {
-    return this.userRecordTypes.find(recordType => recordType.id === id)?.name ?? '';
+    return this.types.find(type => type.id === id)?.name ?? '';
   }
   // #endregion
 
   // #region connections
+  private _users: User[] | undefined;
+  public get users(): User[] {
+    if (this._users === undefined) {
+      this._users = [];
+      this.localstorageExtension.loadUsers().subscribe((response: User[]) => this._users = response);
+    }
+
+    return this._users;
+  }
+
   private _userConnections: User[] | undefined;
   public get userConnections(): User[] {
     if (this._userConnections === undefined) {

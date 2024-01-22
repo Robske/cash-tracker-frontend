@@ -37,7 +37,7 @@ export class LoginComponent {
           this.ls.setUser(<User>response.user);
           this.ls.setToken(response.token);
           this.ls.setLoginMethod('password');
-          this.ls.preLoadData();
+          this.ls.loadAppData();
           this.router.navigate(['']);
         });
       }
@@ -57,7 +57,7 @@ export class LoginComponent {
         this.ls.setUser(<User>response.user);
         this.ls.setToken(response.token);
         this.ls.setLoginMethod('password');
-        this.ls.preLoadData();
+        this.ls.loadAppData();
         this.router.navigate(['']);
       });
     }

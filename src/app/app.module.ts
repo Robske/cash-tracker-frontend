@@ -17,6 +17,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpRequestInterceptor } from './http-request.interceptor';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ManageComponent } from './manage/manage.component';
+import { SettingsComponent } from './settings/settings.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { ManageComponent } from './manage/manage.component';
     TextComponent,
     PasswordComponent,
     LoginComponent,
-    ManageComponent
+    ManageComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

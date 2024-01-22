@@ -11,12 +11,20 @@ import { LocalstorageService } from './shared/service/localstorage.service';
 export class AppComponent {
   title = 'Next Tracker';
 
+  public interval: any;
   constructor(public ls: LocalstorageService, public router: Router) {
     // redirect to login if not logged in
-    if (!ls.isLoggedIn()) { router.navigate(['login']); }
+    if (!ls.isLoggedIn())
+      router.navigate(['login']);
+    else
+      ls.loadAppData();
 
-    if (ls.isLoggedIn())
-      ls.preLoadData();
+    // set interval
+    this.interval = setInterval(() => {
+      if (ls.isLoggedIn())
+        ls.loadAppData();
+    }, 30000);
+
   }
 
   public logout(): void {

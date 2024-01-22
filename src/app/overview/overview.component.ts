@@ -29,8 +29,8 @@ export class OverviewComponent {
   public today: string;
 
   constructor(private datePipe: DatePipe, private formBuilder: FormBuilder, public ls: LocalstorageService, public lse: LocalstorageExtensionService, private record: RecordService) {
-    // set or load and set needed values
-    this.today = datePipe.transform(new Date(), 'yyyy-MM-dd') || '2020-01-01';
+    this.today = datePipe.transform(new Date(), 'yyyy-MM-dd') || '2020-01-01'
+    setInterval(() => this.today = datePipe.transform(new Date(), 'yyyy-MM-dd') || '2020-01-01');
 
     this.form = this.formBuilder.group({
       date: this.formBuilder.nonNullable.control(this.today, { validators: [Validators.required] }),
