@@ -17,36 +17,31 @@
             </div>
 
             <!-- 
+            Record types
+             -->
+            <div class="col-12 col-sm-6 col-md-4">
+                <h4>Types</h4>
+                <div *ngFor="let type of ls.types" class="btn btn-sm d-block mb-2" [ngClass]="{
+                                                'btn-outline-light': !isIgnoreType(type.id),
+                                                'btn-outline-danger': isIgnoreType(type.id)
+                                                }" (click)="toggleType(type.id)">
+                    {{ type.name }}
+                </div>
+            </div>
+
+            <!-- 
             Casinos
              -->
-            <div class="col-12 col-md-6 border-left">
+            <div class="col-12 col-md-5">
                 <h4>Casinos</h4>
                 <div class="row">
-                    <div class="col" *ngFor="let _ of [].constructor(2); let i=index;">
+                    <div class="col-12 col-sm" *ngFor="let _ of [].constructor(2); let i=index;">
                         <div *ngFor="let casino of ls.casinos.slice(i*math.ceil(ls.casinos.length/2), i*math.ceil(ls.casinos.length/2) + math.ceil(ls.casinos.length/2))"
                             class="btn btn-sm d-block mb-2" [ngClass]="{
                                     'btn-outline-light': !isIgnoreCasino(casino.id),
                                     'btn-outline-danger': isIgnoreCasino(casino.id)
                                     }" (click)="toggleCasino(casino.id)">
                             {{ casino.name }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 
-            Record types
-             -->
-            <div class="col-12 col-md-3 border-left">
-                <h4>Types</h4>
-                <div class="row">
-                    <div class="col" *ngFor="let _ of [].constructor(2); let i=index;">
-                        <div *ngFor="let type of ls.types.slice(i*math.ceil(ls.types.length/2), i*math.ceil(ls.types.length/2) + math.ceil(ls.types.length/2))"
-                            class="btn btn-sm d-block mb-2" [ngClass]="{
-                                                'btn-outline-light': !isIgnoreType(type.id),
-                                                'btn-outline-danger': isIgnoreType(type.id)
-                                                }" (click)="toggleType(type.id)">
-                            {{ type.name }}
                         </div>
                     </div>
                 </div>
