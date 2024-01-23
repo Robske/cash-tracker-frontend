@@ -59,33 +59,37 @@ export class OverviewComponent {
     });
   }
 
-  public uniqueRecordCombinations(): Record[] {
-    let uniqueRecords: Record[] = [];
+  // public uniqueRecordCombinations(): Record[] {
+  //   let uniqueRecords: Record[] = [];
 
-    for (let index = 0; index < this.ls.recordsToday.length; index++) {
-      const record = this.ls.recordsToday[index];
+  //   for (let index = 0; index < this.ls.recordsToday.length; index++) {
+  //     const record = this.ls.recordsToday[index];
 
-      if (this.ls.userIgnoreTypes.find(type => type.id == record.recordTypeId) === undefined || this.ls.userIgnoreCasinos.find(casino => casino.id == record.casinoId) === undefined)
-        continue;
+  //     if (this.ls.userIgnoreTypes.find(type => type.id == record.recordTypeId) === undefined || this.ls.userIgnoreCasinos.find(casino => casino.id == record.casinoId) === undefined)
+  //       continue;
 
-      if (uniqueRecords.length === 0)
-        uniqueRecords.push(record);
-      else if (uniqueRecords.find(r => r.casinoId === record.casinoId && r.recordTypeId === record.recordTypeId && r.deposit == record.deposit) === undefined)
-        uniqueRecords.push(record);
-    };
+  //     if (uniqueRecords.length === 0)
+  //       uniqueRecords.push(record);
+  //     else if (uniqueRecords.find(r => r.casinoId === record.casinoId && r.recordTypeId === record.recordTypeId && r.deposit == record.deposit) === undefined)
+  //       uniqueRecords.push(record);
+  //   };
 
-    // sort on casino, record type and deposit
-    uniqueRecords.sort((a, b) => {
-      if (a?.casinoId > b.casinoId) return 1;
-      if (a.casinoId < b.casinoId) return -1;
-      if (a.recordTypeId > b.recordTypeId) return 1;
-      if (a.recordTypeId < b.recordTypeId) return -1;
-      if (a.deposit > b.deposit) return 1;
-      if (a.deposit < b.deposit) return -1;
-      return 0;
-    });
+  //   // sort on casino, record type and deposit
+  //   uniqueRecords.sort((a, b) => {
+  //     if (a?.casinoId > b.casinoId) return 1;
+  //     if (a.casinoId < b.casinoId) return -1;
+  //     if (a.recordTypeId > b.recordTypeId) return 1;
+  //     if (a.recordTypeId < b.recordTypeId) return -1;
+  //     if (a.deposit > b.deposit) return 1;
+  //     if (a.deposit < b.deposit) return -1;
+  //     return 0;
+  //   });
 
-    return uniqueRecords;
+  //   return uniqueRecords;
+  // }
+
+  public isValidUserRecordCombination(casinoId: string, recordTypeId: string) {
+    return this.ls.userIgnoreTypes.find(type => type.id == recordTypeId) !== undefined && this.ls.userIgnoreCasinos.find(casino => casino.id == casinoId) !== undefined;
   }
 
   public copyToForm(record: Record): void {
