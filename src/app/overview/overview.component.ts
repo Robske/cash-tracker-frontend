@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Record } from '../shared/model/record';
 import { RecordService } from '../shared/service/api/record.service';
 import { LocalstorageExtensionService } from '../shared/service/localstorage-extension.service';
-import { IconDefinition, faComment } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition, faComment, faCopy } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-overview',
@@ -16,6 +16,7 @@ export class OverviewComponent {
 
   private noDepositRecordTypes: string[] = ['01gsrdhg3mw1k3js39affqpm33', '01gv62fx2y01bp2xf0p72z50z5', '01gx3y2jeyeh3298e2sd76qkhr'];
   public faComment: IconDefinition = faComment;
+  public faCopy: IconDefinition = faCopy;
   public createdRecord: boolean = false;
   public casinos: KeyValue<string, string>[] = [];
   public recordTypes: KeyValue<string, string>[] = [];
@@ -32,8 +33,8 @@ export class OverviewComponent {
 
   constructor(private datePipe: DatePipe, private formBuilder: FormBuilder, public ls: LocalstorageService, public lse: LocalstorageExtensionService, private record: RecordService) {
     this.today = datePipe.transform(new Date(), 'yyyy-MM-dd') || '2020-01-01'
-    setInterval(() => this.today = datePipe.transform(new Date(), 'yyyy-MM-dd') || '2020-01-01');
     this.setHeader();
+    setInterval(() => this.today = datePipe.transform(new Date(), 'yyyy-MM-dd') || '2020-01-01');
     setInterval(() => this.setHeader, 10000);
 
     this.form = this.formBuilder.group({
@@ -56,6 +57,41 @@ export class OverviewComponent {
     this.form.get('note')?.valueChanges.subscribe(val => {
       this.noteLength = val.length;
     });
+  }
+
+  public uniqueRecordCombinations(): Record[] {
+    let uniqueRecords: Record[] = [];
+
+    for (let index = 0; index < this.ls.recordsToday.length; index++) {
+      const record = this.ls.recordsToday[index];
+
+      if (this.ls.userIgnoreTypes.find(type => type.id == record.recordTypeId) === undefined || this.ls.userIgnoreCasinos.find(casino => casino.id == record.casinoId) === undefined)
+        continue;
+
+      if (uniqueRecords.length === 0)
+        uniqueRecords.push(record);
+      else if (uniqueRecords.find(r => r.casinoId === record.casinoId && r.recordTypeId === record.recordTypeId && r.deposit == record.deposit) === undefined)
+        uniqueRecords.push(record);
+    };
+
+    // sort on casino, record type and deposit
+    uniqueRecords.sort((a, b) => {
+      if (a?.casinoId > b.casinoId) return 1;
+      if (a.casinoId < b.casinoId) return -1;
+      if (a.recordTypeId > b.recordTypeId) return 1;
+      if (a.recordTypeId < b.recordTypeId) return -1;
+      if (a.deposit > b.deposit) return 1;
+      if (a.deposit < b.deposit) return -1;
+      return 0;
+    });
+
+    return uniqueRecords;
+  }
+
+  public copyToForm(record: Record): void {
+    this.form?.controls['casino'].setValue(record.casinoId);
+    this.form?.controls['recordType'].setValue(record.recordTypeId);
+    this.form?.controls['deposit'].setValue(record.deposit);
   }
 
   private setHeader(): void {

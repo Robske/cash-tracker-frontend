@@ -219,7 +219,7 @@ export class LocalstorageService {
     return this.types.filter(type => this.userIgnoreTypes.find(userType => userType.id === type.id) !== undefined);
   }
 
-  public getUserTypeName(id: string): string {
+  public getTypeName(id: string): string {
     return this.types.find(type => type.id === id)?.name ?? '';
   }
   // #endregion

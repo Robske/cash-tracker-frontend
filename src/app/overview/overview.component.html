@@ -74,129 +74,160 @@
             <div *ngIf="createdRecord" class="alert alert-success mt-3 text-center" role="alert">
                 Record aangemaakt!
             </div>
+            <div class="row mt-2 fw-bold" *ngIf="uniqueRecordCombinations().length > 0">
+                <div class="col-lg-5 col-xxl-6"></div>
+                <div class="col-4 col-sm-3 col-lg-2 col-xxl-1">
+                    Casino
+                </div>
+                <div class="col-8 col-sm-5 col-lg-3">
+                    Type
+                </div>
+                <div class="col-4 col-sm-2 col-lg-1">
+                    Storting
+                </div>
+                <div class="col-8 col-sm-2 col-lg-1 text-center">
+                    Kopieer
+                </div>
+            </div>
+            <div class="row" *ngFor="let record of uniqueRecordCombinations()">
+                <div class="col-lg-5 col-xxl-6"></div>
+                <div class="col-4 col-sm-3 col-lg-2 col-xxl-1">
+                    {{ ls.getCasinoName(record.casinoId) }}
+                </div>
+                <div class="col-8 col-sm-5 col-lg-3">
+                    {{ ls.getTypeName(record.recordTypeId) }}
+                </div>
+                <div class="col-4 col-sm-2 col-lg-1">
+                    {{ record.deposit | currency:'EUR':'symbol':'1.2-2' }}
+                </div>
+                <div class="col-8 col-sm-2 col-lg-1 text-center">
+                    <button class="btn btn-sm btn-primary" (click)="copyToForm(record)"><fa-icon
+                            [icon]="faCopy"></fa-icon></button>
+                </div>
+            </div>
             <hr>
-        </div>
 
-        <!-- 
-        Table with the records of today
-        -->
-        <div class="col-12 col-md-6">
-            <h2>{{ header }}</h2>
-            <p *ngIf="ls.recordsToday.length == 0">Nog geen records vandaag.</p>
-            <table class="table table-dark" *ngIf="ls.recordsToday.length > 0">
-                <thead>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Casino</th>
-                        <th scope="col">Type</th>
-                        <th scope="col" class="text-center">Storting</th>
-                        <th scope="col" class="text-center">Opname</th>
-                        <th scope="col" class="text-center">Netto</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let record of ls.recordsToday">
-                        <td class="fw-bold">
-                            <span [routerLink]="['/profile', record.userId]" role="button">
-                                {{ ls.getUserConnectionName(record.userId ?? '') }}
-                            </span>
-                            <p class="record-comment" *ngIf="record.notes.length > 0">
-                                {{ record.notes }}
-                            </p>
-                        </td>
-                        <td>
-                            {{ ls.getCasinoName(record.casinoId ?? '') }}
-                        </td>
-                        <td>
-                            {{ ls.getUserTypeName(record.recordTypeId ?? '') }}
-                        </td>
-                        <td class="text-center">
-                            {{ record.deposit | currency:'EUR':'symbol':'1.2-2' }}
-                        </td>
-                        <td class="text-center">
-                            {{ record.withdrawal | currency:'EUR':'symbol':'1.2-2' }}
-                        </td>
-                        <td class="text-center">
-                            <span [ngClass]="{
+            <!-- 
+            Table with the records of today
+            -->
+            <div class="col-12 col-md-6">
+                <h2>{{ header }}</h2>
+                <p *ngIf="ls.recordsToday.length == 0">Nog geen records vandaag.</p>
+                <table class="table table-dark" *ngIf="ls.recordsToday.length > 0">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Casino</th>
+                            <th scope="col">Type</th>
+                            <th scope="col" class="text-center d-none d-sm-table-cell">Storting</th>
+                            <th scope="col" class="text-center d-none d-sm-table-cell">Opname</th>
+                            <th scope="col" class="text-center">Netto</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let record of ls.recordsToday">
+                            <td class="fw-bold">
+                                <span [routerLink]="['/profile', record.userId]" role="button">
+                                    {{ ls.getUserConnectionName(record.userId) }}
+                                </span>
+                                <p class="record-comment" *ngIf="record.notes.length > 0">
+                                    {{ record.notes }}
+                                </p>
+                            </td>
+                            <td>
+                                {{ ls.getCasinoName(record.casinoId) }}
+                            </td>
+                            <td>
+                                {{ ls.getTypeName(record.recordTypeId) }}
+                            </td>
+                            <td class="text-center d-none d-sm-table-cell">
+                                {{ record.deposit | currency:'EUR':'symbol':'1.2-2' }}
+                            </td>
+                            <td class="text-center d-none d-sm-table-cell">
+                                {{ record.withdrawal | currency:'EUR':'symbol':'1.2-2' }}
+                            </td>
+                            <td class="text-center">
+                                <span [ngClass]="{
                                                             'text-success': record.withdrawal > record.deposit,
                                                             'text-danger': record.withdrawal < record.deposit
                                                         }">
-                                {{ (record.withdrawal - record.deposit) | currency:'EUR':'symbol':'1.2-2' }}
-                            </span>
-                        </td>
-                        <td class="text-center">
-                            <ng-container *ngIf="record.notes.length > 0">
-                                <fa-icon [icon]="faComment"></fa-icon>
-                            </ng-container>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                                    {{ (record.withdrawal - record.deposit) | currency:'EUR':'symbol':'1.2-2' }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <ng-container *ngIf="record.notes.length > 0">
+                                    <fa-icon [icon]="faComment"></fa-icon>
+                                </ng-container>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <!-- 
-        Table with the results of all players
-        -->
-        <div class="col-12 col-md-6">
-            <h2>Resultaat</h2>
-            <table class="table table-dark">
-                <thead>
-                    <tr class="border-start-0">
-                        <th scope="col" class="border-start-0"></th>
-                        <th scope="col">Vandaag</th>
-                        <th scope="col">30 dagen</th>
-                        <th scope="col">Totaal</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let result of ls.sharedNettoResults">
-                        <td class="fw-bold">
-                            <span [routerLink]="['/profile', result.userId]" role="button">
-                                {{ ls.getUserConnectionName(result.userId) }}
-                            </span>
-                        </td>
-                        <td [ngClass]="{
+            <!-- 
+            Table with the results of all players
+            -->
+            <div class="col-12 col-md-6">
+                <h2>Resultaat</h2>
+                <table class="table table-dark">
+                    <thead>
+                        <tr class="border-start-0">
+                            <th scope="col" class="border-start-0"></th>
+                            <th scope="col">Vandaag</th>
+                            <th scope="col">30 dagen</th>
+                            <th scope="col">Totaal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let result of ls.sharedNettoResults">
+                            <td class="fw-bold">
+                                <span [routerLink]="['/profile', result.userId]" role="button">
+                                    {{ ls.getUserConnectionName(result.userId) }}
+                                </span>
+                            </td>
+                            <td [ngClass]="{
                                             'text-success': result.today > 0,
                                             'text-danger': result.today < 0
                                         
                                         }">
-                            {{ result.today | currency:'EUR':'symbol':'1.2-2' }}
-                        </td>
-                        <td [ngClass]="{
+                                {{ result.today | currency:'EUR':'symbol':'1.2-2' }}
+                            </td>
+                            <td [ngClass]="{
                                             'text-success': result.last30Days > 0,
                                             'text-danger': result.last30Days < 0
                                         
                                         }">
-                            {{ result.last30Days | currency:'EUR':'symbol':'1.2-2' }}
-                        </td>
-                        <td [ngClass]="{
+                                {{ result.last30Days | currency:'EUR':'symbol':'1.2-2' }}
+                            </td>
+                            <td [ngClass]="{
                                             'text-success': result.alltime > 0,
                                             'text-danger': result.alltime < 0
                                         
                                         }">
-                            {{ result.alltime | currency:'EUR':'symbol':'1.2-2' }}
-                        </td>
-                    </tr>
+                                {{ result.alltime | currency:'EUR':'symbol':'1.2-2' }}
+                            </td>
+                        </tr>
 
-                </tbody>
-            </table>
-        </div>
+                    </tbody>
+                </table>
+            </div>
 
-        <!-- 
+            <!-- 
             List of channels that user is connected to
          -->
-        <div class="col-12">
-            <hr>
-            <h2>Channels</h2>
-            <p class="fst-italic">Currently selected: Cash tracker</p>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Cash tracker</h5>
-                    <p class="card-text">Fanaten die niets anders doen dan de tijd vullen met leuke gokspellen, de
-                        aanpak om hiermee geld te verdienen verschilt per speler.</p>
-                    <a class="btn btn-primary disabled" routerLink="channel/cash-tracker">Select channel</a>
+            <div class="col-12">
+                <hr>
+                <h2>Channels</h2>
+                <p class="fst-italic">Currently selected: Cash tracker</p>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cash tracker</h5>
+                        <p class="card-text">Fanaten die niets anders doen dan de tijd vullen met leuke gokspellen,
+                            de
+                            aanpak om hiermee geld te verdienen verschilt per speler.</p>
+                        <a class="btn btn-primary disabled" routerLink="channel/cash-tracker">Select channel</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>

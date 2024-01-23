@@ -37,7 +37,7 @@
                     <div class="col-12 col-lg" *ngFor="let _ of [].constructor(2); let i=index;">
                         <p
                             *ngFor="let casinoResult of getTypeResults().slice(i*math.ceil(getTypeResults().length/2), i*math.ceil(getTypeResults().length/2) + math.ceil(getTypeResults().length/2));">
-                            <span class="w-13">{{ ls.getUserTypeName(casinoResult.key) }}</span>
+                            <span class="w-13">{{ ls.getTypeName(casinoResult.key) }}</span>
                             <span [ngClass]="{
                                 'text-success': casinoResult.value > 0,
                                 'text-danger': casinoResult.value < 0
@@ -112,7 +112,7 @@
                                     'btn-outline-light': checkRecordTypeFilter(recordType) || filterRecordTypes.length == 0,
                                     'btn-outline-secondary': !checkRecordTypeFilter(recordType) && filterRecordTypes.length > 0,
                                 }">
-                    {{ ls.getUserTypeName(recordType) }}
+                    {{ ls.getTypeName(recordType) }}
                 </button>
             </div>
         </div>
@@ -149,10 +149,10 @@
                                     </p>
                                 </td>
                                 <td>
-                                    {{ ls.getCasinoName(record.casinoId ?? '') }}
+                                    {{ ls.getCasinoName(record.casinoId') }}
                                 </td>
                                 <td>
-                                    {{ ls.getUserTypeName(record.recordTypeId ?? '') }}
+                                    {{ ls.getTypeName(record.recordTypeId) }}
                                 </td>
                                 <td class="d-none d-lg-table-cell text-center">
                                     {{ record.deposit | currency:'EUR':'symbol':'1.2-2' }}

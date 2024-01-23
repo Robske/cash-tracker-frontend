@@ -7,34 +7,30 @@
 				<div class="edit-form">
 					<h3>
 						Edit record
-						<fa-icon [icon]="iconClose" class="float-end" role="button"
-							(click)="editRecord = undefined;"></fa-icon>
+						<fa-icon [icon]="iconClose" class="float-end" role="button" (click)="editRecord = undefined;"></fa-icon>
 					</h3>
 
 					<form [formGroup]="form">
 						<div class="row">
 							<div class="col-12 col-sm-6 col-md-4 col-lg-3">
-								<app-select label="Casino" [options]="lse.casinosToKeyValue(ls.casinos)"
-									placeholder="Selecteer casino" formControlName="casino"></app-select>
+								<app-select label="Casino" [options]="lse.casinosToKeyValue(ls.casinos)" placeholder="Selecteer casino"
+									formControlName="casino"></app-select>
 							</div>
 
 							<div class="col-12 col-sm-6 col-md-4 col-lg-3">
-								<app-select label="Type" [options]="lse.recordtypesToKeyValue(ls.types)"
-									placeholder="Selecteer type" formControlName="recordType"></app-select>
+								<app-select label="Type" [options]="lse.recordtypesToKeyValue(ls.types)" placeholder="Selecteer type"
+									formControlName="recordType"></app-select>
 							</div>
 
 							<div class="col-12 col-sm-6 col-lg-2">
-								<app-number label="Deposit" step="0.01" placeholder="0.00"
-									formControlName="deposit"></app-number>
+								<app-number label="Deposit" step="0.01" placeholder="0.00" formControlName="deposit"></app-number>
 							</div>
 
 							<div class="col-12 col-sm-6 col-lg-2">
-								<app-number label="Opname" step="0.01" placeholder="0.00"
-									formControlName="withdrawal"></app-number>
+								<app-number label="Opname" step="0.01" placeholder="0.00" formControlName="withdrawal"></app-number>
 							</div>
 							<div class="col-12 mt-1">
-								<app-text label="Note" formControlName="note" placeholder="Short summary"
-									[maxLength]="250"></app-text>
+								<app-text label="Note" formControlName="note" placeholder="Short summary" [maxLength]="250"></app-text>
 							</div>
 							<div class="col-9"></div>
 							<div class="col-12 col-sm-3">
@@ -61,13 +57,12 @@
 				<tbody>
 					<tr *ngFor="let record of ls.getRecordsByUserId(ls.getUserId()).slice(0, 100)">
 						<td>{{ record.date | date:"dd-MM" }}</td>
-						<td>{{ ls.getCasinoName(record.casinoId ?? '') }}</td>
-						<td>{{ ls.getUserTypeName(record.recordTypeId ?? '') }}</td>
+						<td>{{ ls.getCasinoName(record.casinoId) }}</td>
+						<td>{{ ls.getTypeName(record.recordTypeId) }}</td>
 						<td class="d-none d-md-table-cell text-center">€{{ record.deposit }}</td>
 						<td class="d-none d-md-table-cell text-center">€{{ record.withdrawal }}</td>
 						<td class="text-center fw-bold">
-							<span
-								[ngClass]="(record.withdrawal - record.deposit) >= 0 ? 'text-success' : 'text-danger'">
+							<span [ngClass]="(record.withdrawal - record.deposit) >= 0 ? 'text-success' : 'text-danger'">
 								€{{ record.withdrawal - record.deposit | number:'1.0-2' }}
 							</span>
 						</td>

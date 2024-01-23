@@ -1,8 +1,8 @@
 export class Record {
   id?: string;
-  casinoId?: string;
-  userId?: string;
-  recordTypeId?: string;
+  casinoId: string = '';
+  userId: string = '';
+  recordTypeId: string = '';
 
   casino: string = '';
   type: string = '';

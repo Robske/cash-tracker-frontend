@@ -122,7 +122,7 @@ export class ProfileComponent {
 
   public getUniqueRecordTypes(): string[] {
     let recordTypes: string[] = [...new Set(this.ls.getRecordsByUserId(this.userId ?? '').map((item) => item.recordTypeId ?? ''))];
-    recordTypes.sort((a, b) => this.ls.getUserTypeName(a).localeCompare(this.ls.getUserTypeName(b)));
+    recordTypes.sort((a, b) => this.ls.getTypeName(a).localeCompare(this.ls.getTypeName(b)));
     return recordTypes;
   }
 }
