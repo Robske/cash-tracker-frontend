@@ -85,7 +85,7 @@
                 <div class="col-4 col-sm-2 col-lg-1">
                     Storting
                 </div>
-                <div class="col-8 col-sm-2 col-lg-1 text-center">
+                <div class="col-8 col-sm-2 col-lg-1 text-sm-center">
                     Kopieer
                 </div>
             </div>
@@ -100,13 +100,17 @@
                 <div class="col-4 col-sm-2 col-lg-1">
                     {{ record.deposit | currency:'EUR':'symbol':'1.2-2' }}
                 </div>
-                <div class="col-8 col-sm-2 col-lg-1 text-center">
+                <div class="col-8 col-sm-2 col-lg-1 text-sm-center">
                     <button class="btn btn-sm btn-primary" (click)="copyToForm(record)"><fa-icon
                             [icon]="faCopy"></fa-icon></button>
                 </div>
             </div>
             <hr>
         </div>
+
+        <!-- 
+        Today records, period results and list of channels
+         -->
         <div class="row">
             <!-- 
             Table with the records of today
@@ -216,7 +220,7 @@
 
             <!-- 
             List of channels that user is connected to
-         -->
+            -->
             <div class="col-12">
                 <hr>
                 <h2>Channels</h2>
