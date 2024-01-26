@@ -14,7 +14,6 @@ import { IconDefinition, faComment, faCopy } from '@fortawesome/free-solid-svg-i
 })
 export class OverviewComponent {
 
-  private noDepositRecordTypes: string[] = ['01gsrdhg3mw1k3js39affqpm33', '01gv62fx2y01bp2xf0p72z50z5', '01gx3y2jeyeh3298e2sd76qkhr'];
   public faComment: IconDefinition = faComment;
   public faCopy: IconDefinition = faCopy;
   public createdRecord: boolean = false;
@@ -24,18 +23,32 @@ export class OverviewComponent {
   public form?: FormGroup<any>;
   public noteLength: number = 0;
   public today: string;
-
   public header: string = '';
   public weekday: string = '';
   public daynumber: number = 0;
   public month: string = '';
   public todayDate: Date = new Date();
+  private interval: any;
+  public userCasinos: KeyValue<string, string>[] = [];
+  public userTypes: KeyValue<string, string>[] = [];
+
+  private noDepositRecordTypes: string[] = ['01gsrdhg3mw1k3js39affqpm33', '01gv62fx2y01bp2xf0p72z50z5', '01gx3y2jeyeh3298e2sd76qkhr'];
 
   constructor(private datePipe: DatePipe, private formBuilder: FormBuilder, public ls: LocalstorageService, public lse: LocalstorageExtensionService, private record: RecordService) {
     this.today = datePipe.transform(new Date(), 'yyyy-MM-dd') || '2020-01-01'
     this.setHeader();
     setInterval(() => this.today = datePipe.transform(new Date(), 'yyyy-MM-dd') || '2020-01-01');
     setInterval(() => this.setHeader, 10000);
+
+    this.interval = setInterval(() => {
+      if (ls.getUserCasinos().length > 0 && ls.getUserTypes().length > 0) {
+        this.userCasinos = lse.casinosToKeyValue(ls.getUserCasinos());
+        this.userTypes = lse.recordtypesToKeyValue(ls.getUserTypes());
+        clearInterval(this.interval);
+      }
+    }, 1000);
+
+    lse.casinosToKeyValue(ls.getUserCasinos())
 
     this.form = this.formBuilder.group({
       date: this.formBuilder.nonNullable.control(this.today, { validators: [Validators.required] }),
@@ -58,35 +71,6 @@ export class OverviewComponent {
       this.noteLength = val.length;
     });
   }
-
-  // public uniqueRecordCombinations(): Record[] {
-  //   let uniqueRecords: Record[] = [];
-
-  //   for (let index = 0; index < this.ls.recordsToday.length; index++) {
-  //     const record = this.ls.recordsToday[index];
-
-  //     if (this.ls.userIgnoreTypes.find(type => type.id == record.recordTypeId) === undefined || this.ls.userIgnoreCasinos.find(casino => casino.id == record.casinoId) === undefined)
-  //       continue;
-
-  //     if (uniqueRecords.length === 0)
-  //       uniqueRecords.push(record);
-  //     else if (uniqueRecords.find(r => r.casinoId === record.casinoId && r.recordTypeId === record.recordTypeId && r.deposit == record.deposit) === undefined)
-  //       uniqueRecords.push(record);
-  //   };
-
-  //   // sort on casino, record type and deposit
-  //   uniqueRecords.sort((a, b) => {
-  //     if (a?.casinoId > b.casinoId) return 1;
-  //     if (a.casinoId < b.casinoId) return -1;
-  //     if (a.recordTypeId > b.recordTypeId) return 1;
-  //     if (a.recordTypeId < b.recordTypeId) return -1;
-  //     if (a.deposit > b.deposit) return 1;
-  //     if (a.deposit < b.deposit) return -1;
-  //     return 0;
-  //   });
-
-  //   return uniqueRecords;
-  // }
 
   public isValidUserRecordCombination(casinoId: string, recordTypeId: string) {
     return this.ls.userIgnoreTypes.find(type => type.id == recordTypeId) !== undefined && this.ls.userIgnoreCasinos.find(casino => casino.id == casinoId) !== undefined;
