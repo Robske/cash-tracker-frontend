@@ -30,7 +30,7 @@
         -->
         <div class="col-12">
             <h2>Record aanmaken</h2>
-            <form [formGroup]="form" *ngIf="form && userTypes.length > 0 && userCasinos.length > 0">
+            <form [formGroup]="form" *ngIf="form">
                 <div class="row">
                     <div class="col-12 col-lg-4">
                         <app-date label="Date" [input]="today" formControlName="date"></app-date>
