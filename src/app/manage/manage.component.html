@@ -55,7 +55,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor="let record of ls.getRecordsByUserId(ls.getUserId()).slice(0, 100)">
+					<tr *ngFor="let record of ls.getRecordsByUserId(ls.getUserId())">
 						<td>{{ record.date | date:"dd-MM" }}</td>
 						<td>{{ ls.getCasinoName(record.casinoId) }}</td>
 						<td>{{ ls.getTypeName(record.recordTypeId) }}</td>

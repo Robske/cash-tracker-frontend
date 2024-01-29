@@ -2,9 +2,10 @@
 
 .card {
     margin-bottom: 0.5rem;
+    padding-bottom: 0;
 
     .card-title {
-        margin-bottom: 0;
+        // margin-bottom: 0;
     }
 
     .card-body {
@@ -13,9 +14,6 @@
         .table {
             margin-bottom: 0;
 
-            th, tr, td {
-                border: none;
-            }
 
             tr.record-today {
                 td {
@@ -23,9 +21,13 @@
                 }
             }
 
+            tr:last-child > td {
+                border-bottom: none;
+            }
+
             td {
                 color: @text-2 !important;
-                padding: 0 0.5rem;
+                // padding: 0 0.5rem;
             }
         }
     }
