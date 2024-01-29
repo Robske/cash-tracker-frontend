@@ -115,6 +115,10 @@
                     {{ ls.getTypeName(recordType) }}
                 </button>
             </div>
+            <div>
+                <h2>Notitie</h2>
+                <app-text [formControl]="noteInput" [maxLength]="100"></app-text>
+            </div>
         </div>
 
         <!-- 

@@ -7,6 +7,7 @@ import { Record } from '../shared/model/record';
 import { KeyValue } from '@angular/common';
 import { ProfilePeriodResult } from '../shared/model/ProfilePeriodResult';
 import { LocalstorageExtensionService } from '../shared/service/localstorage-extension.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
@@ -17,15 +18,19 @@ export class ProfileComponent {
   public amountOfRecordsShown: number = 8;
   public faComment: IconDefinition = faComment;
   public filterCasinos: string[] = [];
+  public filterNotes: string = '';
   public filterRecordTypes: string[] = [];
   public filteredRecordsLength: number = 0;
   public math = Math;
   public routeSubscription: Subscription | undefined;
   public userId: string | undefined;
   public recordStats: RecordStats = { amount: 0, deposit: 0, withdraw: 0, netto: 0 };
+  public noteInput = new FormControl();
 
   constructor(public ls: LocalstorageService, public lse: LocalstorageExtensionService, private route: ActivatedRoute) {
-    var x = ls.casinoNettoResults;
+    this.noteInput.valueChanges.subscribe(async (note) => {
+      this.filterNotes = note;
+    });
   }
 
   public ngOnInit(): void {
@@ -49,7 +54,8 @@ export class ProfileComponent {
       records = records.filter((item) => this.filterCasinos.includes(item.casinoId ?? ''));
     if (this.filterRecordTypes.length > 0)
       records = records.filter((item) => this.filterRecordTypes.includes(item.recordTypeId ?? ''));
-
+    if (this.filterNotes.length > 0)
+      records = records.filter((item) => item.notes?.toLowerCase().includes(this.filterNotes.toLowerCase()));
     return records;
   }
 
