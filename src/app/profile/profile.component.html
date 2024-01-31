@@ -1,4 +1,4 @@
-<div class="container" *ngIf="userId != undefined && ls.getRecordsByUserId(userId).length > 0">
+<div class="container mb-3" *ngIf="userId != undefined">
     <div class="row">
         <div class="col-12">
             <h5 class="bread-crumb d-inline-block">Profiel van: {{ ls.getUserConnectionName(userId) }}</h5>
@@ -94,39 +94,57 @@
         <!-- 
         Filters
         -->
-        <div class="col-12 col-lg-6">
-            <div>
-                <h2>Casino filters</h2>
-                <button *ngFor="let casino of getUniqueCasinos()" class="btn btn-sm me-1 mb-2 filter-button"
-                    (click)="addOrRemoveCasinoFilter(casino)" [ngClass]="{
+        <div class="col-12" [ngClass]="{
+            'col-lg-6': amountOfRecordsShown == 10,
+            'col-lg-12': amountOfRecordsShown != 10,       
+        }">
+            <div class="row">
+                <div class="col-12" [ngClass]="{
+                    'col-lg-12': amountOfRecordsShown == 10,
+                    'col-lg-6': amountOfRecordsShown != 10,
+                }">
+                    <h3>Casino filters</h3>
+                    <button *ngFor="let casino of getUniqueCasinos()"
+                        class="btn btn-sm me-1 mb-2 filter-button filter-button-small"
+                        (click)="addOrRemoveCasinoFilter(casino)" [ngClass]="{
                                     'btn-outline-light': checkCasinoFilter(casino) || filterCasinos.length == 0,
                                     'btn-outline-secondary': !checkCasinoFilter(casino) && filterCasinos.length > 0,
                                 }">
-                    {{ ls.getCasinoName(casino) }}
-                </button>
-            </div>
-            <div>
-                <h2>Type filters</h2>
-                <button *ngFor="let recordType of getUniqueRecordTypes()" class="btn btn-sm me-1 mb-2 filter-button"
-                    (click)="addOrRemoveRecordTypeFilter(recordType)" [ngClass]="{
+                        {{ ls.getCasinoName(casino) }}
+                    </button>
+                </div>
+                <div class="col-12" [ngClass]="{
+                    'col-lg-12': amountOfRecordsShown == 10,
+                    'col-lg-6': amountOfRecordsShown != 10,
+                }">
+                    <h3>Type filters</h3>
+                    <button *ngFor="let recordType of getUniqueRecordTypes()"
+                        class="btn btn-sm me-1 mb-2 filter-button filter-button-wide"
+                        (click)="addOrRemoveRecordTypeFilter(recordType)" [ngClass]="{
                                     'btn-outline-light': checkRecordTypeFilter(recordType) || filterRecordTypes.length == 0,
                                     'btn-outline-secondary': !checkRecordTypeFilter(recordType) && filterRecordTypes.length > 0,
                                 }">
-                    {{ ls.getTypeName(recordType) }}
-                </button>
-            </div>
-            <div>
-                <h2>Notitie</h2>
-                <app-text [formControl]="noteInput" [maxLength]="100"></app-text>
+                        {{ ls.getTypeName(recordType) }}
+                    </button>
+                </div>
+                <div class="col-12">
+                    <h3>Notitie</h3>
+                    <app-text [formControl]="noteInput" [maxLength]="100"></app-text>
+                </div>
             </div>
         </div>
 
         <!-- 
         List of records 
         -->
-        <div class="col-12 col-lg-6">
+        <div class="col-12" [ngClass]="{
+            'col-lg-6': amountOfRecordsShown == 10,
+            'col-lg-12': amountOfRecordsShown != 10,
+                      
+        }">
             <div class="d-block d-lg-inline-block w-100">
-                <button class="btn btn-light btn-sm mb-1 fw-bold float-end" (click)="changeAmountOfShownRecords()">
+                <button class="btn btn-light btn-sm mb-1 fw-bold float-end"
+                    [ngClass]="amountOfRecordsShown != 10 ? 'mt-1' : ''" (click)="changeAmountOfShownRecords()">
                     Onthul/verberg alle records
                 </button>
                 <p class="d-inline-block">
@@ -183,7 +201,7 @@
                 </table>
             </div>
             <p class="text-center"
-                *ngIf="amountOfRecordsShown == 8 && getFilteredRecords().length > amountOfRecordsShown">
+                *ngIf="amountOfRecordsShown == 10 && getFilteredRecords().length > amountOfRecordsShown">
                 {{ getFilteredRecords().length - amountOfRecordsShown}} records verborgen ...
             </p>
         </div>

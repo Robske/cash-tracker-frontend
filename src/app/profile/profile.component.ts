@@ -15,7 +15,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./profile.component.less']
 })
 export class ProfileComponent {
-  public amountOfRecordsShown: number = 8;
+  public amountOfRecordsShown: number = 10;
   public faComment: IconDefinition = faComment;
   public filterCasinos: string[] = [];
   public filterNotes: string = '';
@@ -88,11 +88,11 @@ export class ProfileComponent {
   }
 
   public changeAmountOfShownRecords(): void {
-    if (this.amountOfRecordsShown == 8) {
+    if (this.amountOfRecordsShown == 10) {
       this.amountOfRecordsShown = Number.MAX_VALUE;
     }
     else {
-      this.amountOfRecordsShown = 8;
+      this.amountOfRecordsShown = 10;
     }
   }
 
