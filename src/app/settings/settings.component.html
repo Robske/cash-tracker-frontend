@@ -8,7 +8,7 @@
                 <h4>Connections</h4>
                 <ul class="list-group">
                     <li *ngFor="let user of ls.users" class="list-group-item" (click)="toggleConnection(user.id)"
-                        role="button" [ngClass]="!isConnection(user.id) ? 'filtered' : ''">
+                        role="button" [ngClass]="!isConnection(user.id) ? 'filtered' : 'bg-gradient'">
                         <span class="badge bg-success" *ngIf="isConnection(user.id)">Actief</span>
                         {{ user.name }}
                     </li>
@@ -22,7 +22,7 @@
                 <h4>Types</h4>
                 <ul class="list-group">
                     <li *ngFor="let type of ls.types" class="list-group-item" (click)="toggleType(type.id)"
-                        role="button" [ngClass]="isIgnoreType(type.id) ? 'filtered' : ''">
+                        role="button" [ngClass]="isIgnoreType(type.id) ? 'filtered' : 'bg-gradient'">
                         <span class="badge bg-success" *ngIf="!isIgnoreType(type.id)">Actief</span>
                         {{ type.name }}
                     </li>
@@ -39,7 +39,7 @@
                         <ul class="list-group">
                             <li *ngFor="let casino of ls.casinos.slice(i*math.ceil(ls.casinos.length/2), i*math.ceil(ls.casinos.length/2) + math.ceil(ls.casinos.length/2))"
                                 class="list-group-item" (click)="toggleCasino(casino.id)" role="button"
-                                [ngClass]="isIgnoreCasino(casino.id) ? 'filtered' : ''">
+                                [ngClass]="isIgnoreCasino(casino.id) ? 'filtered' : 'bg-gradient'">
                                 <span class="badge bg-success" *ngIf="!isIgnoreCasino(casino.id)">Actief</span>
                                 {{ casino.name }}
                             </li>

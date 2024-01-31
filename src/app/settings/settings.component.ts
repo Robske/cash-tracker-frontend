@@ -19,7 +19,7 @@ export class SettingsComponent {
   }
 
   public toggleType(typeId: string) {
-    this.recordType.toggleRecordType(this.ls.getUserId(), typeId).subscribe((response: boolean) => { this.ls.loadAppData(); });
+    this.recordType.toggleRecordType(this.ls.getUserId(), typeId).subscribe((response: boolean) => { this.ls.loadUserTypes(); });
   }
 
   public isIgnoreCasino(casinoId: string) {
@@ -27,7 +27,7 @@ export class SettingsComponent {
   }
 
   public toggleCasino(casinoId: string) {
-    this.casino.toggleCasino(this.ls.getUserId(), casinoId).subscribe((response: boolean) => { this.ls.loadAppData(); });
+    this.casino.toggleCasino(this.ls.getUserId(), casinoId).subscribe((response: boolean) => { this.ls.loadUserCasinos(); });
   }
 
   public isConnection(userId: string) {
@@ -35,6 +35,6 @@ export class SettingsComponent {
   }
 
   public toggleConnection(connectionId: string) {
-    this.user.toggleConnection(this.ls.getUserId(), connectionId).subscribe((response: boolean) => { this.ls.loadAppData(); });
+    this.user.toggleConnection(this.ls.getUserId(), connectionId).subscribe((response: boolean) => { this.ls.loadUserConnections(); this.ls.loadAppData(); });
   }
 }

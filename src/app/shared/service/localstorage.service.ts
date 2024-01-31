@@ -143,10 +143,14 @@ export class LocalstorageService {
   public get userIgnoreCasinos(): Casino[] {
     if (this._userIgnoreCasinos === undefined) {
       this._userIgnoreCasinos = [];
-      this.localstorageExtension.loadCasinosByUser(this.getUserId()).subscribe((response: Casino[]) => this._userIgnoreCasinos = response);
+      this.loadUserCasinos();
     }
 
     return this._userIgnoreCasinos;
+  }
+
+  public loadUserCasinos(): void {
+    this.localstorageExtension.loadCasinosByUser(this.getUserId()).subscribe((response: Casino[]) => this._userIgnoreCasinos = response);
   }
 
   public getUserCasinos(): Casino[] {
@@ -208,10 +212,14 @@ export class LocalstorageService {
   public get userIgnoreTypes(): RecordType[] {
     if (this._userIgnoreTypes === undefined) {
       this._userIgnoreTypes = [];
-      this.localstorageExtension.loadRecordTypesByUser(this.getUserId()).subscribe((response: RecordType[]) => this._userIgnoreTypes = response);
+      this.loadUserTypes();
     }
 
     return this._userIgnoreTypes;
+  }
+
+  public loadUserTypes(): void {
+    this.localstorageExtension.loadRecordTypesByUser(this.getUserId()).subscribe((response: RecordType[]) => this._userIgnoreTypes = response);
   }
 
   public getUserTypes(): RecordType[] {
@@ -238,10 +246,14 @@ export class LocalstorageService {
   public get userConnections(): User[] {
     if (this._userConnections === undefined) {
       this._userConnections = [];
-      this.localstorageExtension.loadConnections(this.getUserId()).subscribe((response: User[]) => this._userConnections = response);
+      this.loadUserConnections();
     }
 
     return this._userConnections;
+  }
+
+  public loadUserConnections(): void {
+    this.localstorageExtension.loadConnections(this.getUserId()).subscribe((response: User[]) => this._userConnections = response);
   }
 
   public getUserConnectionName(id: string): string {
