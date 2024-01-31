@@ -16,7 +16,6 @@ export class LocalstorageService {
   constructor(private localstorageExtension: LocalstorageExtensionService) { }
 
   public loadAppData(): void {
-    console.log('loading data');
     this.localstorageExtension.loadCasinos().subscribe((response: Casino[]) => this._casinos = response);
     this.localstorageExtension.loadCasinosByUser(this.getUserId()).subscribe((response: Casino[]) => this._userIgnoreCasinos = response);
     this.localstorageExtension.loadRecordTypes().subscribe((response: RecordType[]) => this._types = response);

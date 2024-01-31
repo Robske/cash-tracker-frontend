@@ -6,27 +6,27 @@
              -->
             <div class="col-12 col-sm-6 col-md-3">
                 <h4>Connections</h4>
-                <ng-container *ngFor="let user of ls.users">
-                    <div *ngIf="user.id != ls.getUserId()" class="btn btn-sm d-block mb-2" [ngClass]="{
-                    'btn-light': isConnection(user.id),
-                    'btn-outline-light': !isConnection(user.id)
-                    }" (click)="toggleConnection(user.id)">
+                <ul class="list-group">
+                    <li *ngFor="let user of ls.users" class="list-group-item" (click)="toggleConnection(user.id)"
+                        role="button" [ngClass]="!isConnection(user.id) ? 'filtered' : ''">
+                        <span class="badge bg-success" *ngIf="isConnection(user.id)">Actief</span>
                         {{ user.name }}
-                    </div>
-                </ng-container>
+                    </li>
+                </ul>
             </div>
 
             <!-- 
             Record types
              -->
-            <div class="col-12 col-sm-6 col-md-4">
+            <div class="col-12 col-sm-6 col-lg-4 col-xxl-3">
                 <h4>Types</h4>
-                <div *ngFor="let type of ls.types" class="btn btn-sm d-block mb-2" [ngClass]="{
-                'btn-light': !isIgnoreType(type.id),
-                'btn-outline-light': isIgnoreType(type.id)
-                }" (click)="toggleType(type.id)">
-                    {{ type.name }}
-                </div>
+                <ul class="list-group">
+                    <li *ngFor="let type of ls.types" class="list-group-item" (click)="toggleType(type.id)"
+                        role="button" [ngClass]="isIgnoreType(type.id) ? 'filtered' : ''">
+                        <span class="badge bg-success" *ngIf="!isIgnoreType(type.id)">Actief</span>
+                        {{ type.name }}
+                    </li>
+                </ul>
             </div>
 
             <!-- 
@@ -36,13 +36,14 @@
                 <h4>Casinos</h4>
                 <div class="row">
                     <div class="col-12 col-sm" *ngFor="let _ of [].constructor(2); let i=index;">
-                        <div *ngFor="let casino of ls.casinos.slice(i*math.ceil(ls.casinos.length/2), i*math.ceil(ls.casinos.length/2) + math.ceil(ls.casinos.length/2))"
-                            class="btn btn-sm d-block mb-2" [ngClass]="{
-                            'btn-light': !isIgnoreCasino(casino.id),
-                            'btn-outline-light': isIgnoreCasino(casino.id)
-                            }" (click)="toggleCasino(casino.id)">
-                            {{ casino.name }}
-                        </div>
+                        <ul class="list-group">
+                            <li *ngFor="let casino of ls.casinos.slice(i*math.ceil(ls.casinos.length/2), i*math.ceil(ls.casinos.length/2) + math.ceil(ls.casinos.length/2))"
+                                class="list-group-item" (click)="toggleCasino(casino.id)" role="button"
+                                [ngClass]="isIgnoreCasino(casino.id) ? 'filtered' : ''">
+                                <span class="badge bg-success" *ngIf="!isIgnoreCasino(casino.id)">Actief</span>
+                                {{ casino.name }}
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

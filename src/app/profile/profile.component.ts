@@ -88,12 +88,10 @@ export class ProfileComponent {
   }
 
   public changeAmountOfShownRecords(): void {
-    if (this.amountOfRecordsShown == 10) {
+    if (this.amountOfRecordsShown == 10)
       this.amountOfRecordsShown = Number.MAX_VALUE;
-    }
-    else {
+    else
       this.amountOfRecordsShown = 10;
-    }
   }
 
   // Casino functions
