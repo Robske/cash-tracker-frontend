@@ -21,4 +21,8 @@ export class CasinoService {
   public toggleCasino(userId: string, casinoId: string): Observable<any> {
     return this.client.get(environment.api + 'casino/toggle-casino?requester=' + userId + '&casino=' + casinoId, { responseType: 'json' });
   }
+
+  public createCasino(userId: string, casinoName: string): Observable<any> {
+    return this.client.get(environment.api + 'casino/create?requester=' + userId + '&casino=' + casinoName, { responseType: 'json' });
+  }
 }

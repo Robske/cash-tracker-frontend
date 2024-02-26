@@ -40,6 +40,9 @@ export class LocalstorageService {
   public setUser(user: User): void {
     localStorage.setItem('userId', user.id);
     localStorage.setItem('username', user.name);
+    localStorage.setItem('isAdmin', user.isAdmin.toString());
+    console.log(user);
+    console.log(user.isAdmin.toString());
   }
 
   public setToken(token: string): void {
@@ -52,6 +55,10 @@ export class LocalstorageService {
 
   public getUserId(): string {
     return localStorage.getItem('userId') ?? '';
+  }
+
+  public getUserIsAdmin(): boolean {
+    return (localStorage.getItem('isAdmin') == 'true') ?? false;
   }
 
   public getUserName(): string {
@@ -133,7 +140,7 @@ export class LocalstorageService {
   public get casinos(): Casino[] {
     if (this._casinos === undefined) {
       this._casinos = [];
-      this.localstorageExtension.loadCasinos().subscribe((response: Casino[]) => this._casinos = response);
+      this.loadCasinos();
     }
 
     return this._casinos;
@@ -147,6 +154,10 @@ export class LocalstorageService {
     }
 
     return this._userIgnoreCasinos;
+  }
+
+  public loadCasinos(): void {
+    this.localstorageExtension.loadCasinos().subscribe((response: Casino[]) => this._casinos = response);
   }
 
   public loadUserCasinos(): void {

@@ -155,7 +155,7 @@
                         <tr class="border-start-0">
                             <th scope="col" class="border-start-0"></th>
                             <th scope="col">Vandaag</th>
-                            <th scope="col">30 dagen</th>
+                            <th scope="col">Maand</th>
                             <th scope="col">Totaal</th>
                         </tr>
                     </thead>
@@ -174,11 +174,11 @@
                                 {{ result.today | currency:'EUR':'symbol':'1.2-2' }}
                             </td>
                             <td [ngClass]="{
-                                            'text-success': result.last30Days > 0,
-                                            'text-danger': result.last30Days < 0
+                                            'text-success': result.month > 0,
+                                            'text-danger': result.month < 0
                                         
                                         }">
-                                {{ result.last30Days | currency:'EUR':'symbol':'1.2-2' }}
+                                {{ result.month | currency:'EUR':'symbol':'1.2-2' }}
                             </td>
                             <td [ngClass]="{
                                             'text-success': result.alltime > 0,

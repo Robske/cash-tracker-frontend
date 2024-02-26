@@ -34,11 +34,7 @@ export class LoginComponent {
           if (!response.loginSuccess)
             return;
 
-          this.ls.setUser(<User>response.user);
-          this.ls.setToken(response.token);
-          this.ls.setLoginMethod('password');
-          this.ls.loadAppData();
-          this.router.navigate(['']);
+          this.login(response);
         });
       }
       else if (code.length > 8)
@@ -54,12 +50,16 @@ export class LoginComponent {
         if (!response.loginSuccess)
           return;
 
-        this.ls.setUser(<User>response.user);
-        this.ls.setToken(response.token);
-        this.ls.setLoginMethod('password');
-        this.ls.loadAppData();
-        this.router.navigate(['']);
+        this.login(response);
       });
     }
+  }
+
+  private login(response: any) {
+    this.ls.setUser(<User>response.user);
+    this.ls.setToken(response.token);
+    this.ls.setLoginMethod('password');
+    this.ls.loadAppData();
+    this.router.navigate(['']);
   }
 }
