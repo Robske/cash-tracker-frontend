@@ -105,8 +105,7 @@
                                 <span [routerLink]="['/profile', record.userId]" role="button">
                                     {{ ls.getUserConnectionName(record.userId) }}
                                 </span>
-                                <p class="record-comment" *ngIf="record.notes.length > 0">
-                                    {{ record.notes }}
+                                <p class="record-comment" *ngIf="record.notes.length > 0" [innerHtml]="record.notes">
                                 </p>
                             </td>
                             <td>

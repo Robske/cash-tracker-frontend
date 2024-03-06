@@ -169,9 +169,8 @@
                             <tr>
                                 <td class="fw-bold">
                                     {{ record.date | date: 'dd-MM' }}
-                                    <p class="record-comment" *ngIf="record.notes.length > 0">
-                                        {{ record.notes }}
-                                    </p>
+                                    <p class="record-comment" *ngIf="record.notes.length > 0"
+                                        [innerHtml]="record.notes"></p>
                                 </td>
                                 <td>
                                     {{ ls.getCasinoName(record.casinoId) }}

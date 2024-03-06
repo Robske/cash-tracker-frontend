@@ -19,9 +19,8 @@
                                             [ngClass]="{'record-today': (record.date | date: 'dd-MM') == (today | date: 'dd-MM') }">
                                             <td>
                                                 {{ record.date | date: 'dd-MM' }}
-                                                <p class="record-comment" *ngIf="record.notes.length > 0">
-                                                    {{ record.notes }}
-                                                </p>
+                                                <p class="record-comment" *ngIf="record.notes.length > 0"
+                                                    [innerHtml]="record.notes"></p>
                                             </td>
                                             <td>
                                                 {{ ls.getCasinoName(record.casinoId) }}

@@ -99,13 +99,26 @@ export class LocalstorageExtensionService {
   // #region record
   public loadAllRecords(userId: string): Observable<KeyValue<string, Record[]>[]> {
     const observable: Subject<KeyValue<string, Record[]>[]> = new Subject<KeyValue<string, Record[]>[]>();
-    this.record.all(userId).subscribe((response: KeyValue<string, Record[]>[]) => observable.next(response));
+    this.record.all(userId).subscribe((response: KeyValue<string, Record[]>[]) => {
+
+      for (let userRecords of response)
+        for (let record of userRecords.value)
+          if (record.notes != '')
+            record.notes = record.notes.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+
+      observable.next(response)
+    });
     return observable;
   }
 
   public loadRecordsToday(userId: string): Observable<Record[]> {
     const observable: Subject<Record[]> = new Subject<Record[]>();
-    this.record.allFromToday(userId).subscribe((response: Record[]) => observable.next(response));
+    this.record.allFromToday(userId).subscribe((response: Record[]) => {
+      for (let record of response)
+        if (record.notes != '')
+          record.notes = record.notes.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+      observable.next(response)
+    });
     return observable;
   }
 
@@ -113,6 +126,11 @@ export class LocalstorageExtensionService {
     const observable: Subject<Record[][]> = new Subject<Record[][]>();
     this.record.lastFromConnections(userId).subscribe((response: Record[][]) => {
       response.sort((a, b) => (a[0].date > b[0].date ? 1 : -1)).sort((a, b) => (a[0].createdAt > b[0].createdAt ? 1 : -1)).reverse();
+      for (let userRecords of response)
+        for (let record of userRecords)
+          if (record.notes != '')
+            record.notes = record.notes.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+
       observable.next(response);
     });
     return observable;

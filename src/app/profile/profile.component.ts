@@ -50,12 +50,14 @@ export class ProfileComponent {
 
   public getFilteredRecords(): Record[] {
     let records: Record[] = this.ls.getRecordsByUserId(this.userId ?? '');
+
     if (this.filterCasinos.length > 0)
       records = records.filter((item) => this.filterCasinos.includes(item.casinoId ?? ''));
     if (this.filterRecordTypes.length > 0)
       records = records.filter((item) => this.filterRecordTypes.includes(item.recordTypeId ?? ''));
     if (this.filterNotes.length > 0)
       records = records.filter((item) => item.notes?.toLowerCase().includes(this.filterNotes.toLowerCase()));
+
     return records;
   }
 
