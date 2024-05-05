@@ -17,6 +17,7 @@ export class ManageComponent {
   public iconClose: IconDefinition = faXmark;
   public editRecord: Record | undefined;
   public form?: FormGroup<any>;
+  public maxShownRecords: number = 100;
 
   constructor(private fb: FormBuilder, public ls: LocalstorageService, public lse: LocalstorageExtensionService, private record: RecordService) { }
 
@@ -29,7 +30,7 @@ export class ManageComponent {
         recordType: this.fb.nonNullable.control(this.editRecord.recordTypeId, { validators: [Validators.required,] }),
         deposit: this.fb.nonNullable.control(this.editRecord.deposit, { validators: [Validators.required, Validators.min(0)] }),
         withdrawal: this.fb.nonNullable.control(this.editRecord.withdrawal, { validators: [Validators.required, Validators.min(0)] }),
-        note: this.fb.nonNullable.control(this.editRecord.notes.length > 0 ? this.editRecord.notes : '', { validators: [Validators.maxLength(250)] }),
+        note: this.fb.nonNullable.control(this.editRecord.notes.length > 0 ? this.editRecord.notes.replace(/<a\b[^>]*>/i,"").replace(/<\/a>/i, "") : '', { validators: [Validators.maxLength(250)] }),
       });
   }
 

@@ -84,6 +84,20 @@ export class LocalstorageService {
   // #endregion
 
   // #region results
+  public getShowResultsOf(): number {
+    return parseInt(localStorage.getItem('showResultsOf') ?? '0');
+  }
+
+  public setShowResultsOf(value: number): void {
+    localStorage.setItem('showResultsOf', value.toString());
+  }
+
+  public incrementShowResultsOf(): void {
+    (this.getShowResultsOf() == 3)
+    ? this.setShowResultsOf(0)
+    : this.setShowResultsOf(this.getShowResultsOf() + 1);
+  }
+
   private _userDayResults: KeyValue<string, number>[] | undefined;
   public get userDayResults(): KeyValue<string, number>[] {
     if (this._userDayResults === undefined) {
@@ -102,6 +116,10 @@ export class LocalstorageService {
     }
 
     return this._SharedNettoResults;
+  }
+
+  public getUserAlltimeNetto(userId: string): number {
+    return this.sharedNettoResults.find(result => result.userId === userId)?.alltime ?? 0;
   }
 
   private _casinoNettoResults: KeyValue<string, KeyValue<string, number>[]>[] | undefined;

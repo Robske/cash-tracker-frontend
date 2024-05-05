@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Record } from '../shared/model/record';
 import { RecordService } from '../shared/service/api/record.service';
 import { LocalstorageExtensionService } from '../shared/service/localstorage-extension.service';
-import { IconDefinition, faComment, faCopy } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition, faComment, faCopy, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-overview',
@@ -16,6 +16,8 @@ export class OverviewComponent {
 
   public faComment: IconDefinition = faComment;
   public faCopy: IconDefinition = faCopy;
+  public faPlus: IconDefinition = faPlus;
+  public faTimes: IconDefinition = faTimes;
   public createdRecord: boolean = false;
   public casinos: KeyValue<string, string>[] = [];
   public recordTypes: KeyValue<string, string>[] = [];
@@ -31,6 +33,7 @@ export class OverviewComponent {
   private interval: any;
   public userCasinos: KeyValue<string, string>[] = [];
   public userTypes: KeyValue<string, string>[] = [];
+  public showCreateRecord: boolean = false;
 
   private noDepositRecordTypes: string[] = ['01gsrdhg3mw1k3js39affqpm33', '01gv62fx2y01bp2xf0p72z50z5', '01gx3y2jeyeh3298e2sd76qkhr'];
 
@@ -80,6 +83,7 @@ export class OverviewComponent {
     this.form?.controls['casino'].setValue(record.casinoId);
     this.form?.controls['recordType'].setValue(record.recordTypeId);
     this.form?.controls['deposit'].setValue(record.deposit);
+    this.showCreateRecord = true;
   }
 
   private setHeader(): void {
@@ -116,6 +120,7 @@ export class OverviewComponent {
 
       this.record.create(newRecord).subscribe((response: any) => {
         this.createdRecord = response;
+        this.showCreateRecord = false;
         this.ls.loadAppData();
       });
     }

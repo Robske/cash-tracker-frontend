@@ -1,4 +1,76 @@
 <div class="container mb-3" *ngIf="ls.lastRecords.length > 0">
+    <div class="row mb-2">
+        <!-- Day results -->
+        <div class="col-12" *ngIf="ls.getShowResultsOf() == 0">
+            <div>
+                <fa-icon class="d-inline-block" [icon]="faRotate" (click)="ls.incrementShowResultsOf()"
+                    role="button"></fa-icon>
+                <h4 class="d-inline-block ms-2">Vandaag</h4>
+            </div>
+            <ng-container *ngFor="let result of getNettoResultSortedByToday()">
+                <div class="d-inline-block me-2" *ngIf="result.today != 0">
+                    <!-- Show user -->
+                    <h6 class="d-inline-block me-2" [routerLink]="['/profile', result.userId]" role="button">
+                        {{ ls.getUserConnectionName(result.userId) }}
+                        <span class="me-4" [ngClass]="{
+                    'text-success': result.today > 0,
+                    'text-danger': result.today < 0
+                }">{{ result.today | currency:'EUR':'symbol':'1.2-2' }}</span>
+                    </h6>
+                </div>
+            </ng-container>
+        </div>
+
+        <!-- Month results -->
+        <div class="col-12" *ngIf="ls.getShowResultsOf() == 1">
+            <div>
+                <fa-icon class="d-inline-block" [icon]="faRotate" (click)="ls.incrementShowResultsOf()"
+                    role="button"></fa-icon>
+                <h4 class="d-inline-block ms-2">Deze maand</h4>
+            </div>
+            <ng-container *ngFor="let result of getNettoResultSortedByMonth()">
+                <div class="d-inline-block me-2" *ngIf="result.month != 0">
+                    <!-- Show user -->
+                    <h6 class="d-inline-block me-2" [routerLink]="['/profile', result.userId]" role="button">
+                        {{ ls.getUserConnectionName(result.userId) }}
+                        <span class="me-4" [ngClass]="{
+                        'text-success': result.month > 0,
+                        'text-danger': result.month < 0
+                    }">{{ result.month | currency:'EUR':'symbol':'1.2-2' }}</span>
+                    </h6>
+                </div>
+            </ng-container>
+        </div>
+
+        <!-- Alltime results -->
+        <div class="col-12" *ngIf="ls.getShowResultsOf() == 2">
+            <div>
+                <fa-icon class="d-inline-block" [icon]="faRotate" (click)="ls.incrementShowResultsOf()"
+                    role="button"></fa-icon>
+                <h4 class="d-inline-block ms-2">Alltime</h4>
+            </div>
+            <ng-container *ngFor="let result of getNettoResultSortedByAlltime()">
+                <div class="d-inline-block me-2" *ngIf="result.alltime != 0">
+                    <!-- Show user -->
+                    <h6 class="d-inline-block me-2" [routerLink]="['/profile', result.userId]" role="button">
+                        {{ ls.getUserConnectionName(result.userId) }}
+                        <span class="me-4" [ngClass]="{
+                        'text-success': result.alltime > 0,
+                        'text-danger': result.alltime < 0
+                    }">{{ result.alltime | currency:'EUR':'symbol':'1.2-2' }}</span>
+                    </h6>
+                </div>
+            </ng-container>
+        </div>
+
+        <!-- Hide period results -->
+        <div class="col-12" *ngIf="ls.getShowResultsOf() == 3">
+            <fa-icon class="d-inline-block" [icon]="faRotate" (click)="ls.incrementShowResultsOf()"
+                role="button"></fa-icon>
+        </div>
+    </div>
+
+
     <div class="row">
         <!-- 
             List of players their last records
@@ -11,6 +83,15 @@
                             <h5 class="card-title mb-0" routerLink="/profile/{{ lastUserRecords[0].userId }}"
                                 role="button">
                                 {{ ls.getUserConnectionName(lastUserRecords[0].userId) }}
+                                <!-- <span class="badge bg-secondary">{{ lastUserRecords.length }}</span> -->
+                                <!-- User getUserAlltimeNetto -->
+                                <span class="badge" [ngClass]="{
+                                    'text-success': ls.getUserAlltimeNetto(lastUserRecords[0].userId) > 0,
+                                    'text-danger': ls.getUserAlltimeNetto(lastUserRecords[0].userId) < 0
+                                }" *ngIf="ls.getUserAlltimeNetto(lastUserRecords[0].userId) != 0">
+                                    {{ ls.getUserAlltimeNetto(lastUserRecords[0].userId) |
+                                    currency:'EUR':'symbol':'1.2-2' }}
+                                </span>
                             </h5>
                             <table class="table table-dark">
                                 <tbody>

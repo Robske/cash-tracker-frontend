@@ -18,6 +18,7 @@ import { HttpRequestInterceptor } from './http-request.interceptor';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ManageComponent } from './manage/manage.component';
 import { SettingsComponent } from './settings/settings.component';
+import { TextareaComponent } from './shared/form/textarea/textarea.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { SettingsComponent } from './settings/settings.component';
     PasswordComponent,
     LoginComponent,
     ManageComponent,
-    SettingsComponent
+    SettingsComponent,
+    TextareaComponent
   ],
   imports: [
     BrowserModule,

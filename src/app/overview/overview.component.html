@@ -1,214 +1,225 @@
 <div class="container" *ngIf="ls.userDayResults.length > 0">
     <div class="row">
-        <!-- 
-        Summary of the last 7 days
-        -->
-        <div class="col-12 d-none d-md-block">
-            <table class="table table-dark table-vertical">
-                <thead>
-                    <tr>
-                        <th *ngFor="let result of ls.userDayResults">{{ result.key }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td *ngFor="let result of ls.userDayResults">
-                            <span class="fw-bold" [ngClass]="{
-								'text-success' : result.value > 0,
-								'text-danger' : result.value < 0}">
-                                {{ result.value | currency:'EUR':'symbol':'1.2-2' }}
-                            </span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <hr>
+        <div class="col-12 col-lg-3">
+            <!-- Toggle between creating record and week summary -->
+            <button type="button" class="btn btn-light mb-3 fw-bold w-100" (click)="showCreateRecord = true"
+                *ngIf="!showCreateRecord"><fa-icon [icon]="faPlus"></fa-icon> Record aanmaken
+            </button>
         </div>
-
-        <!-- 
-            Create a new record
-        -->
-        <div class="col-12">
-            <h2>Record aanmaken</h2>
-            <form [formGroup]="form" *ngIf="form">
-                <div class="row">
-                    <div class="col-12 col-lg-4">
-                        <app-date label="Date" [input]="today" formControlName="date"></app-date>
-                    </div>
-
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <app-select label="Casino" [options]="userCasinos" placeholder="Selecteer casino"
-                            formControlName="casino"></app-select>
-                    </div>
-
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <app-select label="Type" [options]="userTypes" placeholder="Selecteer type"
-                            formControlName="recordType"></app-select>
-                    </div>
-
-                    <div class="col-12 col-lg-8">
-                        <app-text label="Notitie ({{ noteLength }}/250)" formControlName="note"
-                            placeholder="Short summary" [maxLength]="250"></app-text>
-                    </div>
-
-                    <div class="col-12 col-md-6 col-lg-2">
-                        <app-number label="Storting" step="0.01" placeholder="0.00"
-                            formControlName="deposit"></app-number>
-                    </div>
-
-                    <div class="col-12 col-md-6 col-lg-2">
-                        <app-number label="Opname" step="0.01" placeholder="0.00"
-                            formControlName="withdrawal"></app-number>
-                    </div>
-                </div>
-
-                <!-- Submit button -->
-                <div class="row">
-                    <div class="col-9"></div>
-                    <div class="col-12 col-lg-3">
-                        <button (click)="onSubmit()" class="btn btn-primary w-100 mt-3">Record opslaan</button>
-                    </div>
-                </div>
-            </form>
-
-            <div *ngIf="createdRecord" class="alert alert-success mt-3 text-center" role="alert">
+        <div class="col-12 col-lg-9">
+            <div *ngIf="!showCreateRecord && createdRecord" class="alert alert-success text-center p-2 fw-bold" role="alert">
                 Record aangemaakt!
             </div>
         </div>
 
-        <!-- 
+    <!-- 
+            Create a new record
+        -->
+    <div class="col-12 mb-3" *ngIf="showCreateRecord">
+        <form [formGroup]="form" *ngIf="form">
+            <div class="row">
+                <div class="col-12 col-lg-6">
+                    <div class="row">
+                        <div class="col-12">
+                            <app-date label="Date" [input]="today" formControlName="date"></app-date>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <app-select label="Casino" [options]="userCasinos" placeholder="Selecteer casino"
+                                formControlName="casino"></app-select>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <app-select label="Type" [options]="userTypes" placeholder="Selecteer type"
+                                formControlName="recordType"></app-select>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <app-number label="Storting" step="0.01" placeholder="0.00"
+                                formControlName="deposit"></app-number>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                            <app-number label="Opname" step="0.01" placeholder="0.00"
+                                formControlName="withdrawal"></app-number>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <app-textarea label="Notitie ({{ noteLength }}/250)" formControlName="note"
+                        placeholder="Extra toelichting..." [maxLength]="250"></app-textarea>
+                </div>
+            </div>
+
+            <!-- Submit button -->
+            <div class="row">
+                <div class="col-12 col-lg-3 d-none d-lg-block">
+                    <!-- Hide create record -->
+                    <button type="button" class="btn btn-secondary w-100 mt-3 fw-bold" (click)="showCreateRecord = false">
+                        <fa-icon [icon]="faTimes"></fa-icon> Annuleren
+                    </button>
+                </div>
+                <div class="col-12 col-lg-3">
+                    <button (click)="onSubmit()" class="btn btn-light w-100 mt-3 fw-bold">Record opslaan</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- 
+        Summary of the last 7 days
+        -->
+    <div class="col-12 d-none d-md-block">
+        <table class="table table-dark table-vertical">
+            <thead>
+                <tr>
+                    <th *ngFor="let result of ls.userDayResults">{{ result.key }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td *ngFor="let result of ls.userDayResults">
+                        <span class="fw-bold" [ngClass]="{
+								'text-success' : result.value > 0,
+								'text-danger' : result.value < 0}">
+                            {{ result.value | currency:'EUR':'symbol':'1.2-2' }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+    </div>
+
+    <!-- 
         Today records, period results and list of channels
          -->
-        <div class="row">
-            <!-- 
+    <div class="row">
+        <!-- 
             Table with the records of today
             -->
-            <div class="col-12 col-md-7">
-                <h2>{{ header }}</h2>
-                <p *ngIf="ls.recordsToday.length == 0">Nog geen records vandaag.</p>
-                <table class="table table-dark" *ngIf="ls.recordsToday.length > 0">
-                    <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">Casino</th>
-                            <th scope="col">Type</th>
-                            <th scope="col" class="text-center d-none d-sm-table-cell">Storting</th>
-                            <th scope="col" class="text-center d-none d-sm-table-cell">Opname</th>
-                            <th scope="col" class="text-center">Netto</th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let record of ls.recordsToday">
-                            <td class="fw-bold">
-                                <span [routerLink]="['/profile', record.userId]" role="button">
-                                    {{ ls.getUserConnectionName(record.userId) }}
-                                </span>
-                                <p class="record-comment" *ngIf="record.notes.length > 0" [innerHtml]="record.notes">
-                                </p>
-                            </td>
-                            <td>
-                                {{ ls.getCasinoName(record.casinoId) }}
-                            </td>
-                            <td>
-                                {{ ls.getTypeName(record.recordTypeId) }}
-                            </td>
-                            <td class="text-center d-none d-sm-table-cell">
-                                {{ record.deposit | currency:'EUR':'symbol':'1.2-2' }}
-                            </td>
-                            <td class="text-center d-none d-sm-table-cell">
-                                {{ record.withdrawal | currency:'EUR':'symbol':'1.2-2' }}
-                            </td>
-                            <td class="text-center">
-                                <span [ngClass]="{
+        <div class="col-12 col-md-7">
+            <h2>{{ header }}</h2>
+            <p *ngIf="ls.recordsToday.length == 0">Nog geen records vandaag.</p>
+            <table class="table table-dark" *ngIf="ls.recordsToday.length > 0">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Casino</th>
+                        <th scope="col">Type</th>
+                        <th scope="col" class="text-center d-none d-sm-table-cell">Storting</th>
+                        <th scope="col" class="text-center d-none d-sm-table-cell">Opname</th>
+                        <th scope="col" class="text-center">Netto</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let record of ls.recordsToday">
+                        <td class="fw-bold">
+                            <span [routerLink]="['/profile', record.userId]" role="button">
+                                {{ ls.getUserConnectionName(record.userId) }}
+                            </span>
+                            <p class="record-comment" *ngIf="record.notes.length > 0" [innerHtml]="record.notes">
+                            </p>
+                        </td>
+                        <td>
+                            {{ ls.getCasinoName(record.casinoId) }}
+                        </td>
+                        <td>
+                            {{ ls.getTypeName(record.recordTypeId) }}
+                        </td>
+                        <td class="text-center d-none d-sm-table-cell">
+                            {{ record.deposit | currency:'EUR':'symbol':'1.2-2' }}
+                        </td>
+                        <td class="text-center d-none d-sm-table-cell">
+                            {{ record.withdrawal | currency:'EUR':'symbol':'1.2-2' }}
+                        </td>
+                        <td class="text-center">
+                            <span [ngClass]="{
                                     'text-success': record.withdrawal > record.deposit,
                                     'text-danger': record.withdrawal < record.deposit
                                 }">
-                                    {{ (record.withdrawal - record.deposit) | currency:'EUR':'symbol':'1.2-2' }}
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <ng-container *ngIf="record.notes.length > 0">
-                                    <fa-icon [icon]="faComment"></fa-icon>
-                                </ng-container>
-                            </td>
-                            <td>
-                                <button class="btn btn-sm btn-outline-light" (click)="copyToForm(record)"
-                                    *ngIf="isValidUserRecordCombination(record.casinoId, record.recordTypeId)">
-                                    <fa-icon [icon]="faCopy"></fa-icon>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                                {{ (record.withdrawal - record.deposit) | currency:'EUR':'symbol':'1.2-2' }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <ng-container *ngIf="record.notes.length > 0">
+                                <fa-icon [icon]="faComment"></fa-icon>
+                            </ng-container>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-light" (click)="copyToForm(record)"
+                                *ngIf="isValidUserRecordCombination(record.casinoId, record.recordTypeId)">
+                                <fa-icon [icon]="faCopy"></fa-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-            <!-- 
+        <!-- 
             Table with the results of all players
             -->
-            <div class="col-12 col-md-5">
-                <h2>Resultaat</h2>
-                <table class="table table-dark">
-                    <thead>
-                        <tr class="border-start-0">
-                            <th scope="col" class="border-start-0"></th>
-                            <th scope="col">Vandaag</th>
-                            <th scope="col">Maand</th>
-                            <th scope="col">Totaal</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let result of ls.sharedNettoResults">
-                            <td class="fw-bold">
-                                <span [routerLink]="['/profile', result.userId]" role="button">
-                                    {{ ls.getUserConnectionName(result.userId) }}
-                                </span>
-                            </td>
-                            <td [ngClass]="{
+        <div class="col-12 col-md-5">
+            <h2>Resultaat</h2>
+            <table class="table table-dark">
+                <thead>
+                    <tr class="border-start-0">
+                        <th scope="col" class="border-start-0"></th>
+                        <th scope="col">Vandaag</th>
+                        <th scope="col">Maand</th>
+                        <th scope="col">Alltime</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let result of ls.sharedNettoResults">
+                        <td class="fw-bold">
+                            <span [routerLink]="['/profile', result.userId]" role="button">
+                                {{ ls.getUserConnectionName(result.userId) }}
+                            </span>
+                        </td>
+                        <td [ngClass]="{
                                             'text-success': result.today > 0,
                                             'text-danger': result.today < 0
                                         
                                         }">
-                                {{ result.today | currency:'EUR':'symbol':'1.2-2' }}
-                            </td>
-                            <td [ngClass]="{
+                            {{ result.today | currency:'EUR':'symbol':'1.2-2' }}
+                        </td>
+                        <td [ngClass]="{
                                             'text-success': result.month > 0,
                                             'text-danger': result.month < 0
                                         
                                         }">
-                                {{ result.month | currency:'EUR':'symbol':'1.2-2' }}
-                            </td>
-                            <td [ngClass]="{
+                            {{ result.month | currency:'EUR':'symbol':'1.2-2' }}
+                        </td>
+                        <td [ngClass]="{
                                             'text-success': result.alltime > 0,
                                             'text-danger': result.alltime < 0
                                         
                                         }">
-                                {{ result.alltime | currency:'EUR':'symbol':'1.2-2' }}
-                            </td>
-                        </tr>
+                            {{ result.alltime | currency:'EUR':'symbol':'1.2-2' }}
+                        </td>
+                    </tr>
 
-                    </tbody>
-                </table>
-            </div>
+                </tbody>
+            </table>
+        </div>
 
-            <!-- 
+        <!-- 
             List of channels that user is connected to
             -->
-            <div class="col-12">
-                <hr>
-                <h2>Channels</h2>
-                <p class="fst-italic">Currently selected: Cash tracker</p>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Cash tracker</h5>
-                        <p class="card-text">Fanaten die niets anders doen dan de tijd vullen met leuke gokspellen,
-                            de
-                            aanpak om hiermee geld te verdienen verschilt per speler.</p>
-                        <a class="btn btn-primary disabled" routerLink="channel/cash-tracker">Select channel</a>
-                    </div>
+        <div class="col-12">
+            <hr>
+            <h2>Channels</h2>
+            <p class="fst-italic">Currently selected: Cash tracker</p>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Cash tracker</h5>
+                    <p class="card-text">Fanaten die niets anders doen dan de tijd vullen met leuke gokspellen,
+                        de
+                        aanpak om hiermee geld te verdienen verschilt per speler.</p>
+                    <a class="btn btn-primary disabled" routerLink="channel/cash-tracker">Select channel</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
